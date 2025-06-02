@@ -72,20 +72,17 @@ void main() {
       );
     });
 
-    test(
-        'throws when the pubspec.yaml does '
+    test('throws when the pubspec.yaml does '
         'not contain a dart_frog dependency', () {
       const expected =
           'Expected to find a dependency on "dart_frog" in the pubspec.yaml';
-      File(path.join(tempDir.path, 'pubspec.yaml')).writeAsStringSync(
-        '''
+      File(path.join(tempDir.path, 'pubspec.yaml')).writeAsStringSync('''
 name: example
 version: 0.1.0+1
 
 environment:
   sdk: ">=2.17.0 <3.0.0"
-''',
-      );
+''');
       expect(
         () => ensureRuntimeCompatibility(tempDir),
         throwsA(
@@ -102,8 +99,7 @@ environment:
       const incompatibleVersion = '^99.99.99';
       const expected =
           '''The current version of "dart_frog_cli" requires "dart_frog" $compatibleDartFrogVersion.\nBecause the current version of "dart_frog" is $incompatibleVersion, version solving failed.''';
-      File(path.join(tempDir.path, 'pubspec.yaml')).writeAsStringSync(
-        '''
+      File(path.join(tempDir.path, 'pubspec.yaml')).writeAsStringSync('''
 name: example
 version: 0.1.0+1
 
@@ -112,8 +108,7 @@ environment:
 
 dependencies:
   dart_frog: $incompatibleVersion
-''',
-      );
+''');
       expect(
         () => ensureRuntimeCompatibility(tempDir),
         throwsA(
@@ -127,8 +122,7 @@ dependencies:
     });
 
     test('completes when the version is compatible.', () {
-      File(path.join(tempDir.path, 'pubspec.yaml')).writeAsStringSync(
-        '''
+      File(path.join(tempDir.path, 'pubspec.yaml')).writeAsStringSync('''
 name: example
 version: 0.1.0+1
 
@@ -137,8 +131,7 @@ environment:
 
 dependencies:
   dart_frog: "$compatibleDartFrogVersion"
-''',
-      );
+''');
       expect(() => ensureRuntimeCompatibility(tempDir), returnsNormally);
     });
   });

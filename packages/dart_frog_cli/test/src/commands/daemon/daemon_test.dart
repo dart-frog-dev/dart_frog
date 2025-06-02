@@ -28,7 +28,7 @@ const expectedUsage = [
       'Usage: dart_frog daemon [arguments]\n'
       '-h, --help    Print this usage information.\n'
       '\n'
-      'Run "dart_frog help" to see global options.'
+      'Run "dart_frog help" to see global options.',
 ];
 
 void main() {
@@ -75,12 +75,8 @@ void main() {
       () async {
         final daemonServer = _MockDaemonServer();
         final completer = Completer<ExitCode>();
-        when(() => daemonServer.exitCode).thenAnswer(
-          (_) => completer.future,
-        );
-        final command = DaemonCommand(
-          daemonBuilder: () => daemonServer,
-        );
+        when(() => daemonServer.exitCode).thenAnswer((_) => completer.future);
+        final command = DaemonCommand(daemonBuilder: () => daemonServer);
         final future = command.run();
         verify(() => daemonServer.exitCode).called(1);
         completer.complete(ExitCode.success);

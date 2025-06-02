@@ -17,7 +17,7 @@ class RouteConfigurationDomain extends DomainBase {
     @visibleForTesting
     RouteConfigurationWatcherBuilder? routeConfigurationWatcherBuilder,
   }) : _routeConfigWatcherBuilder =
-            routeConfigurationWatcherBuilder ?? RouteConfigurationWatcher.new {
+           routeConfigurationWatcherBuilder ?? RouteConfigurationWatcher.new {
     addHandler('watcherStart', _watcherStart);
     addHandler(
       'watcherGenerateRouteConfiguration',
@@ -86,10 +86,7 @@ class RouteConfigurationDomain extends DomainBase {
     } catch (e) {
       return DaemonResponse.error(
         id: request.id,
-        error: {
-          'watcherId': watcherId,
-          'message': e.toString(),
-        },
+        error: {'watcherId': watcherId, 'message': e.toString()},
       );
     }
 
@@ -114,9 +111,7 @@ class RouteConfigurationDomain extends DomainBase {
 
     return DaemonResponse.success(
       id: request.id,
-      result: {
-        'watcherId': watcherId,
-      },
+      result: {'watcherId': watcherId},
     );
   }
 
@@ -129,10 +124,7 @@ class RouteConfigurationDomain extends DomainBase {
     if (watcher == null) {
       return DaemonResponse.error(
         id: request.id,
-        error: {
-          'watcherId': watcherId,
-          'message': 'Watcher not found',
-        },
+        error: {'watcherId': watcherId, 'message': 'Watcher not found'},
       );
     }
 
@@ -164,10 +156,7 @@ class RouteConfigurationDomain extends DomainBase {
     if (watcher == null) {
       return DaemonResponse.error(
         id: request.id,
-        error: {
-          'watcherId': watcherId,
-          'message': 'Watcher not found',
-        },
+        error: {'watcherId': watcherId, 'message': 'Watcher not found'},
       );
     }
 
@@ -178,10 +167,7 @@ class RouteConfigurationDomain extends DomainBase {
 
       return DaemonResponse.success(
         id: request.id,
-        result: {
-          'watcherId': watcherId,
-          'exitCode': exitCode.code,
-        },
+        result: {'watcherId': watcherId, 'exitCode': exitCode.code},
       );
     } catch (e) {
       if (!watcher.isCompleted) {

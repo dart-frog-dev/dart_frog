@@ -49,14 +49,8 @@ void main() {
   var requestCount = 0;
 
   setUpAll(() async {
-    await dartFrogCreate(
-      projectName: projectName1,
-      directory: tempDirectory,
-    );
-    await dartFrogCreate(
-      projectName: projectName2,
-      directory: tempDirectory,
-    );
+    await dartFrogCreate(projectName: projectName1, directory: tempDirectory);
+    await dartFrogCreate(projectName: projectName2, directory: tempDirectory);
 
     daemonProcess = await dartFrogDaemonStart();
     daemonStdio = DaemonStdioHelper(daemonProcess);
@@ -191,8 +185,9 @@ void main() {
       );
     });
 
-    testServer(port: project1Server2Port, 'GET / on project 1 server 2',
-        (host) async {
+    testServer(port: project1Server2Port, 'GET / on project 1 server 2', (
+      host,
+    ) async {
       final response = await http.get(Uri.parse(host));
       expect(response.statusCode, equals(HttpStatus.ok));
       expect(response.body, equals('Welcome to Dart Frog!'));
@@ -205,10 +200,7 @@ void main() {
 
     test('modify files on project 2', () async {
       final routesDirectory = Directory(
-        path.join(
-          projectDirectory2.path,
-          'routes',
-        ),
+        path.join(projectDirectory2.path, 'routes'),
       );
 
       expect(fileAt('index.dart', on: routesDirectory), exists);
@@ -224,17 +216,16 @@ void main() {
           id: '${++requestCount}',
           domain: 'dev_server',
           method: 'reload',
-          params: {
-            'applicationId': project2ServerId,
-          },
+          params: {'applicationId': project2ServerId},
         ),
       );
 
       expect(response.isSuccess, isTrue);
     });
 
-    testServer(port: project2ServerPort, 'GET /new_route on project 2',
-        (host) async {
+    testServer(port: project2ServerPort, 'GET /new_route on project 2', (
+      host,
+    ) async {
       final response = await http.get(Uri.parse(host));
       expect(response.statusCode, equals(HttpStatus.ok));
       expect(response.headers, contains('date'));
@@ -245,27 +236,21 @@ void main() {
     });
 
     test('try staggered-stop a dev server on project 1', () async {
-      final (response1, response2) =
-          await daemonStdio.sendStaggeredDaemonRequest(
-        (
-          DaemonRequest(
-            id: '${++requestCount}',
-            domain: 'dev_server',
-            method: 'stop',
-            params: {
-              'applicationId': project1Server1Id,
-            },
-          ),
-          DaemonRequest(
-            id: '${++requestCount}',
-            domain: 'dev_server',
-            method: 'stop',
-            params: {
-              'applicationId': project1Server1Id,
-            },
-          ),
-        ),
-      );
+      final (response1, response2) = await daemonStdio
+          .sendStaggeredDaemonRequest((
+            DaemonRequest(
+              id: '${++requestCount}',
+              domain: 'dev_server',
+              method: 'stop',
+              params: {'applicationId': project1Server1Id},
+            ),
+            DaemonRequest(
+              id: '${++requestCount}',
+              domain: 'dev_server',
+              method: 'stop',
+              params: {'applicationId': project1Server1Id},
+            ),
+          ));
 
       expect(response1.isSuccess, isTrue);
       expect(response1.result!['exitCode'], equals(0));
@@ -278,9 +263,7 @@ void main() {
           id: '${++requestCount}',
           domain: 'dev_server',
           method: 'stop',
-          params: {
-            'applicationId': project1Server1Id,
-          },
+          params: {'applicationId': project1Server1Id},
         ),
       );
 
@@ -305,16 +288,15 @@ void main() {
     });
 
     testServer(
-        // TODO(renancaraujo): this fails on linux: https://github.com/VeryGoodOpenSource/dart_frog/issues/807
-        skip: Platform.isLinux,
-        'GET on project 1 server 1: connection refused', (host) async {
-      final responseFuture = http.get(Uri.parse(host));
+      // TODO(renancaraujo): this fails on linux: https://github.com/VeryGoodOpenSource/dart_frog/issues/807
+      skip: Platform.isLinux,
+      'GET on project 1 server 1: connection refused',
+      (host) async {
+        final responseFuture = http.get(Uri.parse(host));
 
-      await expectLater(
-        responseFuture,
-        throwsA(isA<SocketException>()),
-      );
-    });
+        await expectLater(responseFuture, throwsA(isA<SocketException>()));
+      },
+    );
 
     testServer(
       port: project2ServerPort,
@@ -325,12 +307,7 @@ void main() {
       (host) async {
         final responseFuture = http.get(Uri.parse(host));
 
-        await expectLater(
-          responseFuture,
-          throwsA(
-            isA<SocketException>(),
-          ),
-        );
+        await expectLater(responseFuture, throwsA(isA<SocketException>()));
       },
     );
 
@@ -340,16 +317,13 @@ void main() {
       // TODO(renancaraujo): this fails on linux: https://github.com/VeryGoodOpenSource/dart_frog/issues/807
       skip: Platform.isLinux,
       (host) async {
-        await expectLater(
-          () async {
-            final response = await http.get(Uri.parse(host));
-            stderr
-              ..writeln(response.statusCode)
-              ..writeln(response.body);
-            return response;
-          },
-          throwsA(isA<SocketException>()),
-        );
+        await expectLater(() async {
+          final response = await http.get(Uri.parse(host));
+          stderr
+            ..writeln(response.statusCode)
+            ..writeln(response.body);
+          return response;
+        }, throwsA(isA<SocketException>()));
       },
     );
   });

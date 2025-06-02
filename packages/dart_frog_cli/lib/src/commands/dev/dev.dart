@@ -16,9 +16,9 @@ class DevCommand extends DartFrogCommand {
     super.logger,
     GeneratorBuilder? generator,
     DevServerRunnerConstructor? devServerRunnerConstructor,
-  })  : _generator = generator ?? MasonGenerator.fromBundle,
-        _devServerRunnerConstructor =
-            devServerRunnerConstructor ?? DevServerRunner.new {
+  }) : _generator = generator ?? MasonGenerator.fromBundle,
+       _devServerRunnerConstructor =
+           devServerRunnerConstructor ?? DevServerRunner.new {
     argParser
       ..addOption(
         'port',
@@ -103,7 +103,8 @@ class DevCommand extends DartFrogCommand {
   Future<int> run() async {
     final port = io.Platform.environment['PORT'] ?? results['port'] as String;
 
-    final dartVmServicePort = (results['dart-vm-service-port'] as String?) ??
+    final dartVmServicePort =
+        (results['dart-vm-service-port'] as String?) ??
         _defaultDartVmServicePort;
     final generator = await _generator(dartFrogDevServerBundle);
 

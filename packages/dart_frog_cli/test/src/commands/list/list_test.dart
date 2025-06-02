@@ -38,7 +38,7 @@ const expectedUsage = [
       '-p, --plain    Return the output in a plain format, printing each route '
       'on a new line.\n'
       '\n'
-      'Run "dart_frog help" to see global options.'
+      'Run "dart_frog help" to see global options.',
 ];
 
 void main() {
@@ -60,12 +60,13 @@ void main() {
       progress = _MockProgress();
       routeConfiguration = _MockRouteConfiguration();
       when(() => logger.progress(any())).thenReturn(progress);
-      command = ListCommand(
-        logger: logger,
-        buildConfiguration: (_) => routeConfiguration,
-      )
-        ..testArgResults = argResults
-        ..testUsage = 'test usage';
+      command =
+          ListCommand(
+              logger: logger,
+              buildConfiguration: (_) => routeConfiguration,
+            )
+            ..testArgResults = argResults
+            ..testUsage = 'test usage';
 
       when(() => argResults['plain']).thenReturn(false);
 
@@ -93,20 +94,16 @@ void main() {
     );
 
     test('logs all the endpoints', () async {
-      when(() => routeConfiguration.endpoints).thenReturn({
-        '/turles/<id>': [],
-        '/turles/random': [],
-      });
+      when(
+        () => routeConfiguration.endpoints,
+      ).thenReturn({'/turles/<id>': [], '/turles/random': []});
       final directory = Directory.systemTemp.createTempSync();
 
       command.testCwd = directory;
 
       when(() => argResults.rest).thenReturn(['my_project']);
 
-      await expectLater(
-        await command.run(),
-        equals(ExitCode.success.code),
-      );
+      await expectLater(await command.run(), equals(ExitCode.success.code));
 
       verify(() => logger.info('Route list 🐸:')).called(1);
       verify(() => logger.info('==============\n')).called(1);
@@ -117,20 +114,16 @@ void main() {
     test('logs all the endpoints in plain mode', () async {
       when(() => argResults['plain']).thenReturn(true);
 
-      when(() => routeConfiguration.endpoints).thenReturn({
-        '/turles/<id>': [],
-        '/turles/random': [],
-      });
+      when(
+        () => routeConfiguration.endpoints,
+      ).thenReturn({'/turles/<id>': [], '/turles/random': []});
       final directory = Directory.systemTemp.createTempSync();
 
       command.testCwd = directory;
 
       when(() => argResults.rest).thenReturn(['my_project']);
 
-      await expectLater(
-        await command.run(),
-        equals(ExitCode.success.code),
-      );
+      await expectLater(await command.run(), equals(ExitCode.success.code));
 
       verifyNever(() => logger.info('Route list 🐸:'));
       verifyNever(() => logger.info('==============\n'));
@@ -141,20 +134,16 @@ void main() {
     test(
       'logs all the endpoints of the current dir when a project is ommited',
       () async {
-        when(() => routeConfiguration.endpoints).thenReturn({
-          '/turles/<id>': [],
-          '/turles/random': [],
-        });
+        when(
+          () => routeConfiguration.endpoints,
+        ).thenReturn({'/turles/<id>': [], '/turles/random': []});
         final directory = Directory.systemTemp.createTempSync();
 
         command.testCwd = directory;
 
         when(() => argResults.rest).thenReturn([]);
 
-        await expectLater(
-          await command.run(),
-          equals(ExitCode.success.code),
-        );
+        await expectLater(await command.run(), equals(ExitCode.success.code));
 
         verify(() => logger.info('Route list 🐸:')).called(1);
         verify(() => logger.info('==============\n')).called(1);
