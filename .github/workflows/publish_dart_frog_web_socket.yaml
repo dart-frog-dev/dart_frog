@@ -1,17 +1,19 @@
-name: publish_dart_frog_web_socket
+name: publish/dart_frog_web_socket
 
 on:
   push:
     tags:
-      - "dart_frog_web_socket-v*.*.*"
-  workflow_dispatch:
+      - "dart_frog_web_socket-v[0-9]+.[0-9]+.[0-9]+*"
 
 jobs:
   publish:
+    environment: pub.dev
+    runs-on: ubuntu-latest
     permissions:
       id-token: write # Required for authentication using OIDC
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_pub_publish.yml@v1
-    with:
-      working_directory: "packages/dart_frog_web_socket"
-    secrets:
-      pub_credentials: ${{ secrets.PUB_CREDENTIALS }}
+
+    steps:
+      - name: 📦 Publish
+        uses: ./.github/actions/pub_publish
+        with:
+          working_directory: packages/dart_frog_web_socket
