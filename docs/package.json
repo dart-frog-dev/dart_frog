@@ -28,7 +28,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.28.0",
     "@docusaurus/eslint-plugin": "^3.7.0",
-    "@docusaurus/module-type-aliases": "^3.7.0",
+    "@docusaurus/module-type-aliases": "^3.8.1",
     "eslint": "^8.57.1",
     "prettier": "^3.6.2"
   },
