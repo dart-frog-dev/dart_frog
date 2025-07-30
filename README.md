@@ -15,6 +15,10 @@ Developed with 💙 by [Very Good Ventures][very_good_ventures_link] 🦄
 
 For official documentation, please visit https://dartfrog.vgv.dev.
 
+## Help ?
+
+There is a [Dart Frog Discord server](https://discord.gg/dart-frog) where you can ask any of your Dart Frog related questions.
+
 ## Packages 📦
 
 | Package                                                                                                         | Pub                                                                                                                    |
