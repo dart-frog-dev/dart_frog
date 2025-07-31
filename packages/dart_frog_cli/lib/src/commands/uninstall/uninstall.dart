@@ -8,9 +8,7 @@ import 'package:mason/mason.dart' hide packageVersion;
 /// {@endtemplate}
 class UninstallCommand extends Command<int> {
   /// {@macro uninstall_command}
-  UninstallCommand({
-    required Logger logger,
-  }) : _logger = logger;
+  UninstallCommand({required Logger logger}) : _logger = logger;
 
   final Logger _logger;
 

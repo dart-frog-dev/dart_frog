@@ -11,9 +11,9 @@ final doesNotExist = FileExistsMatcher(isFalse);
 
 class FileExistsMatcher extends CustomMatcher {
   FileExistsMatcher(Matcher matcher)
-      : super(
-          'File exists',
-          'file exists',
-          isA<File>().having((p) => p.existsSync(), 'exists', matcher),
-        );
+    : super(
+        'File exists',
+        'file exists',
+        isA<File>().having((p) => p.existsSync(), 'exists', matcher),
+      );
 }

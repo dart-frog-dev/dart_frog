@@ -11,10 +11,7 @@ import 'package:meta/meta.dart';
 /// {@endtemplate}
 class DaemonDomain extends DomainBase {
   /// {@macro daemon_domain}
-  DaemonDomain(
-    super.daemon, {
-    @visibleForTesting int? processId,
-  }) {
+  DaemonDomain(super.daemon, {@visibleForTesting int? processId}) {
     addHandler('requestVersion', _requestVersion);
     addHandler('kill', _kill);
 
@@ -22,10 +19,7 @@ class DaemonDomain extends DomainBase {
       DaemonEvent(
         domain: domainName,
         event: 'ready',
-        params: {
-          'version': daemon.version,
-          'processId': processId ?? pid,
-        },
+        params: {'version': daemon.version, 'processId': processId ?? pid},
       ),
     );
   }
@@ -40,9 +34,7 @@ class DaemonDomain extends DomainBase {
   Future<DaemonResponse> _requestVersion(DaemonRequest request) async {
     return DaemonResponse.success(
       id: request.id,
-      result: {
-        'version': daemon.version,
-      },
+      result: {'version': daemon.version},
     );
   }
 
@@ -51,9 +43,7 @@ class DaemonDomain extends DomainBase {
     daemon.kill(ExitCode.success).ignore();
     return DaemonResponse.success(
       id: request.id,
-      result: const {
-        'message': 'Hogarth. You stay, I go. No following.',
-      },
+      result: const {'message': 'Hogarth. You stay, I go. No following.'},
     );
   }
 

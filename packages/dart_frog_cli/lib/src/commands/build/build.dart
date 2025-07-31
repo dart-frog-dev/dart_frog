@@ -15,13 +15,14 @@ class BuildCommand extends DartFrogCommand {
     @visibleForTesting GeneratorBuilder? generator,
     @visibleForTesting
     ProdServerBuilderConstructor? prodServerBuilderConstructor,
-  })  : _generator = generator ?? MasonGenerator.fromBundle,
-        _prodServerBuilderConstructor =
-            prodServerBuilderConstructor ?? ProdServerBuilder.new {
+  }) : _generator = generator ?? MasonGenerator.fromBundle,
+       _prodServerBuilderConstructor =
+           prodServerBuilderConstructor ?? ProdServerBuilder.new {
     argParser.addOption(
       'dart-version',
       defaultsTo: 'stable',
-      help: 'The Dart SDK version used to build the Dockerfile, defaults to'
+      help:
+          'The Dart SDK version used to build the Dockerfile, defaults to'
           ' stable.',
     );
   }

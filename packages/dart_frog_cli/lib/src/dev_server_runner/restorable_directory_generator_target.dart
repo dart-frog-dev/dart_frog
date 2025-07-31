@@ -4,20 +4,21 @@ import 'dart:io' as io;
 import 'package:mason/mason.dart';
 
 /// Signature for the [DirectoryGeneratorTarget.createFile] method.
-typedef CreateFile = Future<GeneratedFile> Function(
-  String path,
-  List<int> contents, {
-  Logger? logger,
-  OverwriteRule? overwriteRule,
-});
+typedef CreateFile =
+    Future<GeneratedFile> Function(
+      String path,
+      List<int> contents, {
+      Logger? logger,
+      OverwriteRule? overwriteRule,
+    });
 
 /// Typedef for [RestorableDirectoryGeneratorTarget.new]
-typedef RestorableDirectoryGeneratorTargetBuilder
-    = RestorableDirectoryGeneratorTarget Function(
-  io.Directory dir, {
-  CreateFile? createFile,
-  Logger? logger,
-});
+typedef RestorableDirectoryGeneratorTargetBuilder =
+    RestorableDirectoryGeneratorTarget Function(
+      io.Directory dir, {
+      CreateFile? createFile,
+      Logger? logger,
+    });
 
 /// {@template cached_file}
 /// A cached file which consists of the file path and contents.
@@ -43,9 +44,9 @@ class RestorableDirectoryGeneratorTarget extends DirectoryGeneratorTarget {
     super.dir, {
     CreateFile? createFile,
     Logger? logger,
-  })  : _cachedSnapshots = Queue<CachedFile>(),
-        _createFile = createFile,
-        _logger = logger;
+  }) : _cachedSnapshots = Queue<CachedFile>(),
+       _createFile = createFile,
+       _logger = logger;
 
   final CreateFile? _createFile;
   final Logger? _logger;

@@ -21,10 +21,7 @@ void main() {
   late final DaemonStdioHelper daemonStdio;
 
   setUpAll(() async {
-    await dartFrogCreate(
-      projectName: projectName,
-      directory: tempDirectory,
-    );
+    await dartFrogCreate(projectName: projectName, directory: tempDirectory);
     daemonProcess = await dartFrogDaemonStart();
 
     daemonStdio = DaemonStdioHelper(daemonProcess);
@@ -34,10 +31,7 @@ void main() {
   group('daemon domain', () {
     test('daemon is ready', () async {
       final readyEvent = await daemonStdio.awaitForDaemonEvent('daemon.ready');
-      expect(
-        readyEvent.params?.keys,
-        containsAll(['version', 'processId']),
-      );
+      expect(readyEvent.params?.keys, containsAll(['version', 'processId']));
     });
 
     group('daemon responds to invalid messages', () {
@@ -46,10 +40,7 @@ void main() {
         final protocolError = await daemonStdio.awaitForDaemonEvent(
           'daemon.protocolError',
         );
-        expect(
-          protocolError.params?['message'],
-          equals('Not a valid JSON'),
-        );
+        expect(protocolError.params?['message'], equals('Not a valid JSON'));
       });
 
       test('daemon process responds to invalid json', () async {
@@ -127,10 +118,7 @@ void main() {
         ),
       );
 
-      expect(
-        response.result,
-        equals({'version': '0.0.1'}),
-      );
+      expect(response.result, equals({'version': '0.0.1'}));
     });
 
     test('daemon.kill', () async {

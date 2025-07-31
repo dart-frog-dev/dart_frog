@@ -33,7 +33,7 @@ const expectedUsage = [
       '    --verify-only    Check if an update is available, without '
       'committing to update.\n'
       '\n'
-      'Run "dart_frog help" to see global options.'
+      'Run "dart_frog help" to see global options.',
 ];
 
 void main() {
@@ -109,53 +109,46 @@ void main() {
     });
 
     group('--verify-only', () {
-      test(
-        'logs latest available version',
-        () async {
-          when(
-            () => pubUpdater.getLatestVersion(any()),
-          ).thenAnswer((_) async => latestVersion);
-          when(() => argResults['verify-only']).thenReturn(true);
+      test('logs latest available version', () async {
+        when(
+          () => pubUpdater.getLatestVersion(any()),
+        ).thenAnswer((_) async => latestVersion);
+        when(() => argResults['verify-only']).thenReturn(true);
 
-          final result = await command.run();
+        final result = await command.run();
 
-          expect(result, equals(ExitCode.success.code));
-          verify(
-            () => logger.info('A new version of $packageName is available.\n'),
-          ).called(1);
-          verify(
-            () => logger.info(
-              styleBold.wrap('The latest version: $latestVersion'),
-            ),
-          ).called(1);
-          verify(
-            () => logger.info('Your current version: $packageVersion\n'),
-          ).called(1);
-          verify(
-            () => logger.info('To update now, run "$executableName update".'),
-          ).called(1);
-        },
-      );
+        expect(result, equals(ExitCode.success.code));
+        verify(
+          () => logger.info('A new version of $packageName is available.\n'),
+        ).called(1);
+        verify(
+          () =>
+              logger.info(styleBold.wrap('The latest version: $latestVersion')),
+        ).called(1);
+        verify(
+          () => logger.info('Your current version: $packageVersion\n'),
+        ).called(1);
+        verify(
+          () => logger.info('To update now, run "$executableName update".'),
+        ).called(1);
+      });
 
-      test(
-        'does not update',
-        () async {
-          when(
-            () => pubUpdater.getLatestVersion(any()),
-          ).thenAnswer((_) async => latestVersion);
-          when(() => argResults['verify-only']).thenReturn(true);
+      test('does not update', () async {
+        when(
+          () => pubUpdater.getLatestVersion(any()),
+        ).thenAnswer((_) async => latestVersion);
+        when(() => argResults['verify-only']).thenReturn(true);
 
-          final result = await command.run();
+        final result = await command.run();
 
-          expect(result, equals(ExitCode.success.code));
-          verifyNever(
-            () => pubUpdater.update(
-              packageName: any(named: 'packageName'),
-              versionConstraint: any(named: 'versionConstraint'),
-            ),
-          );
-        },
-      );
+        expect(result, equals(ExitCode.success.code));
+        verifyNever(
+          () => pubUpdater.update(
+            packageName: any(named: 'packageName'),
+            versionConstraint: any(named: 'versionConstraint'),
+          ),
+        );
+      });
     });
 
     test('handles pub update errors', () async {

@@ -147,13 +147,9 @@ class DaemonRequest extends DaemonMessage {
     if (param is! T) {
       // Check if param type is optional or not
       if (param == null && null is! T) {
-        throw DartFrogDaemonMissingParameterException(
-          '$name not found',
-        );
+        throw DartFrogDaemonMissingParameterException('$name not found');
       }
-      throw DartFrogDaemonMalformedMessageException(
-        'invalid $name',
-      );
+      throw DartFrogDaemonMalformedMessageException('invalid $name');
     }
 
     return param;
@@ -174,21 +170,13 @@ class DaemonResponse extends DaemonMessage {
   const DaemonResponse.success({
     required String id,
     required Map<String, dynamic> result,
-  }) : this._(
-          id: id,
-          result: result,
-          error: null,
-        );
+  }) : this._(id: id, result: result, error: null);
 
   /// Creates an error [DaemonResponse].
   const DaemonResponse.error({
     required String id,
     required Map<String, dynamic> error,
-  }) : this._(
-          id: id,
-          result: null,
-          error: error,
-        );
+  }) : this._(id: id, result: null, error: error);
 
   /// Creates a [DaemonResponse] from a [rawMessage] json.
   factory DaemonResponse.fromJson(Map<String, dynamic> rawMessage) {
@@ -213,11 +201,7 @@ class DaemonResponse extends DaemonMessage {
       );
     }
 
-    return DaemonResponse._(
-      id: id,
-      result: result,
-      error: error,
-    );
+    return DaemonResponse._(id: id, result: result, error: error);
   }
 
   /// Whether this response is a success.
@@ -250,11 +234,7 @@ class DaemonResponse extends DaemonMessage {
 /// {@endtemplate}
 class DaemonEvent extends DaemonMessage {
   /// {@macro daemon_event}
-  const DaemonEvent({
-    required this.domain,
-    required this.event,
-    this.params,
-  });
+  const DaemonEvent({required this.domain, required this.event, this.params});
 
   /// Creates a [DaemonEvent] from a [rawMessage] json.
   factory DaemonEvent.fromJson(Map<String, dynamic> rawMessage) {
@@ -281,11 +261,7 @@ class DaemonEvent extends DaemonMessage {
       );
     }
 
-    return DaemonEvent(
-      event: eventName,
-      domain: domainName,
-      params: params,
-    );
+    return DaemonEvent(event: eventName, domain: domainName, params: params);
   }
 
   /// The name of the event.
@@ -299,10 +275,7 @@ class DaemonEvent extends DaemonMessage {
 
   @override
   Map<String, dynamic> toJson() {
-    return {
-      'event': '$domain.$event',
-      if (params != null) 'params': params,
-    };
+    return {'event': '$domain.$event', if (params != null) 'params': params};
   }
 
   @override

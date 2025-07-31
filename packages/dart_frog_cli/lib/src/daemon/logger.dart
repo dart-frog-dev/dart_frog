@@ -48,10 +48,7 @@ class DaemonLogger implements Logger {
       DaemonEvent(
         domain: domain,
         event: 'loggerAlert',
-        params: {
-          ...params,
-          'message': message ?? '',
-        },
+        params: {...params, 'message': message ?? ''},
       ),
     );
   }
@@ -65,10 +62,7 @@ class DaemonLogger implements Logger {
       DaemonEvent(
         domain: domain,
         event: 'loggerDetail',
-        params: {
-          ...params,
-          'message': message ?? '',
-        },
+        params: {...params, 'message': message ?? ''},
       ),
     );
   }
@@ -79,10 +73,7 @@ class DaemonLogger implements Logger {
       DaemonEvent(
         domain: domain,
         event: 'loggerError',
-        params: {
-          ...params,
-          'message': message ?? '',
-        },
+        params: {...params, 'message': message ?? ''},
       ),
     );
   }
@@ -102,10 +93,7 @@ class DaemonLogger implements Logger {
       DaemonEvent(
         domain: domain,
         event: 'loggerInfo',
-        params: {
-          ...params,
-          'message': message ?? '',
-        },
+        params: {...params, 'message': message ?? ''},
       ),
     );
   }
@@ -127,10 +115,7 @@ class DaemonLogger implements Logger {
       DaemonEvent(
         domain: domain,
         event: 'loggerSuccess',
-        params: {
-          ...params,
-          'message': message ?? '',
-        },
+        params: {...params, 'message': message ?? ''},
       ),
     );
   }
@@ -141,10 +126,7 @@ class DaemonLogger implements Logger {
       DaemonEvent(
         domain: domain,
         event: 'loggerWarning',
-        params: {
-          ...params,
-          'message': message ?? '',
-        },
+        params: {...params, 'message': message ?? ''},
       ),
     );
   }
@@ -155,10 +137,7 @@ class DaemonLogger implements Logger {
       DaemonEvent(
         domain: domain,
         event: 'loggerWrite',
-        params: {
-          ...params,
-          'message': message ?? '',
-        },
+        params: {...params, 'message': message ?? ''},
       ),
     );
   }
@@ -216,11 +195,7 @@ class DaemonProgress implements Progress {
       DaemonEvent(
         domain: domain,
         event: 'progressStart',
-        params: {
-          ...params,
-          'progressMessage': message,
-          'progressId': id,
-        },
+        params: {...params, 'progressMessage': message, 'progressId': id},
       ),
     );
   }
@@ -246,11 +221,7 @@ class DaemonProgress implements Progress {
       DaemonEvent(
         domain: domain,
         event: 'progressCancel',
-        params: {
-          ...params,
-          'progressMessage': message,
-          'progressId': id,
-        },
+        params: {...params, 'progressMessage': message, 'progressId': id},
       ),
     );
   }
@@ -262,11 +233,7 @@ class DaemonProgress implements Progress {
       DaemonEvent(
         domain: domain,
         event: 'progressComplete',
-        params: {
-          ...params,
-          'progressMessage': message,
-          'progressId': id,
-        },
+        params: {...params, 'progressMessage': message, 'progressId': id},
       ),
     );
   }
@@ -278,11 +245,7 @@ class DaemonProgress implements Progress {
       DaemonEvent(
         domain: domain,
         event: 'progressFail',
-        params: {
-          ...params,
-          'progressMessage': message,
-          'progressId': id,
-        },
+        params: {...params, 'progressMessage': message, 'progressId': id},
       ),
     );
   }
@@ -294,11 +257,7 @@ class DaemonProgress implements Progress {
       DaemonEvent(
         domain: domain,
         event: 'progressUpdate',
-        params: {
-          ...params,
-          'progressMessage': message,
-          'progressId': id,
-        },
+        params: {...params, 'progressMessage': message, 'progressId': id},
       ),
     );
   }

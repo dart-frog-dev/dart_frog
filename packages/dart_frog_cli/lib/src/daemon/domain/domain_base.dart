@@ -5,9 +5,8 @@ import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
 
 /// Type definition for a daemon method which handles a [DaemonRequest].
-typedef DomainRequestHandler = Future<DaemonResponse> Function(
-  DaemonRequest request,
-);
+typedef DomainRequestHandler =
+    Future<DaemonResponse> Function(DaemonRequest request);
 
 const Uuid _uuidGenerator = Uuid();
 
@@ -18,10 +17,8 @@ String _defaultIdGenerator() => _uuidGenerator.v4();
 /// {@endtemplate}
 abstract class DomainBase {
   /// {@macro domain}
-  DomainBase(
-    this.daemon, {
-    @visibleForTesting String Function()? getId,
-  }) : getId = getId ?? _defaultIdGenerator;
+  DomainBase(this.daemon, {@visibleForTesting String Function()? getId})
+    : getId = getId ?? _defaultIdGenerator;
 
   final Map<String, DomainRequestHandler> _handlers = {};
 
@@ -51,9 +48,7 @@ abstract class DomainBase {
     if (handler == null) {
       return DaemonResponse.error(
         id: request.id,
-        error: {
-          'message': 'Method not found: ${request.method}',
-        },
+        error: {'message': 'Method not found: ${request.method}'},
       );
     }
     try {
@@ -61,9 +56,7 @@ abstract class DomainBase {
     } on DartFrogDaemonException catch (e) {
       return DaemonResponse.error(
         id: request.id,
-        error: {
-          'message': e.message,
-        },
+        error: {'message': e.message},
       );
     }
   }

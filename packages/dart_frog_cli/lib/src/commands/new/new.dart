@@ -16,10 +16,8 @@ import 'package:path/path.dart' as path;
 /// {@endtemplate}
 class NewCommand extends DartFrogCommand {
   /// {@macro new_command}
-  NewCommand({
-    super.logger,
-    GeneratorBuilder? generator,
-  }) : _generator = generator ?? MasonGenerator.fromBundle {
+  NewCommand({super.logger, GeneratorBuilder? generator})
+    : _generator = generator ?? MasonGenerator.fromBundle {
     addSubcommand(newRouteCommand = _NewSubCommand('route'));
     addSubcommand(newMiddlewareCommand = _NewSubCommand('middleware'));
   }
@@ -79,21 +77,16 @@ class _NewSubCommand extends DartFrogCommand {
     }
     final routeName = rest.first;
     if (routeName.isEmpty) {
-      throw UsageException(
-        'Route path must not be empty',
-        usageString,
-      );
+      throw UsageException('Route path must not be empty', usageString);
     }
 
-    final segments =
-        routeName.split('/').skipWhile((element) => element.isEmpty);
+    final segments = routeName
+        .split('/')
+        .skipWhile((element) => element.isEmpty);
 
     for (final segment in segments) {
       if (segment.isEmpty) {
-        throw UsageException(
-          'Route path cannot contain empty segments',
-          '',
-        );
+        throw UsageException('Route path cannot contain empty segments', '');
       }
       if (segment.contains(RegExp(r'[^a-zA-Z\d_\[\]]'))) {
         throw UsageException(
@@ -112,10 +105,7 @@ class _NewSubCommand extends DartFrogCommand {
 
     final generator = await parent._generator(dartFrogNewBundle);
 
-    final vars = <String, dynamic>{
-      'route_path': routePath,
-      'type': name,
-    };
+    final vars = <String, dynamic>{'route_path': routePath, 'type': name};
 
     final routesDirectory = Directory(path.join(cwd.path, 'routes'));
     if (!routesDirectory.existsSync()) {

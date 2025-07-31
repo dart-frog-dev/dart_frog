@@ -7,22 +7,16 @@ import 'run_process.dart';
 Future<void> dartFrogNewRoute(
   String routePath, {
   required Directory directory,
-}) =>
-    _dartFrogNew(
-      routePath: routePath,
-      what: 'route',
-      directory: directory,
-    );
+}) => _dartFrogNew(routePath: routePath, what: 'route', directory: directory);
 
 Future<void> dartFrogNewMiddleware(
   String routePath, {
   required Directory directory,
-}) =>
-    _dartFrogNew(
-      routePath: routePath,
-      what: 'middleware',
-      directory: directory,
-    );
+}) => _dartFrogNew(
+  routePath: routePath,
+  what: 'middleware',
+  directory: directory,
+);
 
 Future<void> _dartFrogNew({
   required String routePath,

@@ -34,8 +34,9 @@ void main() {
       stdin = _MockStdin();
 
       when<dynamic>(() => argResults['port']).thenReturn('8080');
-      when<dynamic>(() => argResults['dart-vm-service-port'])
-          .thenReturn('8181');
+      when<dynamic>(
+        () => argResults['dart-vm-service-port'],
+      ).thenReturn('8181');
       when(() => argResults.rest).thenReturn(['--enable-experiment=macros']);
       when(() => stdin.hasTerminal).thenReturn(false);
     });
@@ -47,9 +48,9 @@ void main() {
 
     test('run the dev server with the given parameters', () async {
       when(() => runner.start(any())).thenAnswer((_) => Future.value());
-      when(() => runner.exitCode).thenAnswer(
-        (_) => Future.value(ExitCode.success),
-      );
+      when(
+        () => runner.exitCode,
+      ).thenAnswer((_) => Future.value(ExitCode.success));
 
       when(() => argResults['hostname']).thenReturn('192.168.1.2');
       when(() => argResults['port']).thenReturn('1234');
@@ -65,30 +66,32 @@ void main() {
       late Directory givenWorkingDirectory;
       late void Function()? givenOnHotReloadEnabled;
 
-      final command = DevCommand(
-        generator: (_) async => generator,
-        devServerRunnerConstructor: ({
-          required logger,
-          required port,
-          required address,
-          required devServerBundleGenerator,
-          required dartVmServicePort,
-          required workingDirectory,
-          void Function()? onHotReloadEnabled,
-        }) {
-          givenPort = port;
-          givenAddress = address;
-          givenDartVmServicePort = dartVmServicePort;
-          givenDevServerBundleGenerator = devServerBundleGenerator;
-          givenWorkingDirectory = workingDirectory;
-          givenOnHotReloadEnabled = onHotReloadEnabled;
-          return runner;
-        },
-        logger: logger,
-      )
-        ..testStdin = stdin
-        ..testArgResults = argResults
-        ..testCwd = cwd;
+      final command =
+          DevCommand(
+              generator: (_) async => generator,
+              devServerRunnerConstructor:
+                  ({
+                    required logger,
+                    required port,
+                    required address,
+                    required devServerBundleGenerator,
+                    required dartVmServicePort,
+                    required workingDirectory,
+                    void Function()? onHotReloadEnabled,
+                  }) {
+                    givenPort = port;
+                    givenAddress = address;
+                    givenDartVmServicePort = dartVmServicePort;
+                    givenDevServerBundleGenerator = devServerBundleGenerator;
+                    givenWorkingDirectory = workingDirectory;
+                    givenOnHotReloadEnabled = onHotReloadEnabled;
+                    return runner;
+                  },
+              logger: logger,
+            )
+            ..testStdin = stdin
+            ..testArgResults = argResults
+            ..testCwd = cwd;
 
       await expectLater(command.run(), completion(ExitCode.success.code));
 
@@ -105,23 +108,25 @@ void main() {
     });
 
     test('results with dev server exit code', () async {
-      final command = DevCommand(
-        generator: (_) async => generator,
-        devServerRunnerConstructor: ({
-          required logger,
-          required port,
-          required address,
-          required devServerBundleGenerator,
-          required dartVmServicePort,
-          required workingDirectory,
-          void Function()? onHotReloadEnabled,
-        }) {
-          return runner;
-        },
-        logger: logger,
-      )
-        ..testArgResults = argResults
-        ..testStdin = stdin;
+      final command =
+          DevCommand(
+              generator: (_) async => generator,
+              devServerRunnerConstructor:
+                  ({
+                    required logger,
+                    required port,
+                    required address,
+                    required devServerBundleGenerator,
+                    required dartVmServicePort,
+                    required workingDirectory,
+                    void Function()? onHotReloadEnabled,
+                  }) {
+                    return runner;
+                  },
+              logger: logger,
+            )
+            ..testArgResults = argResults
+            ..testStdin = stdin;
 
       when(() => runner.start(any())).thenAnswer((_) => Future.value());
       when(() => runner.exitCode).thenAnswer((_) async => ExitCode.unavailable);
@@ -130,23 +135,25 @@ void main() {
     });
 
     test('fails if dev server runner fails on start', () async {
-      final command = DevCommand(
-        generator: (_) async => generator,
-        devServerRunnerConstructor: ({
-          required logger,
-          required port,
-          required address,
-          required devServerBundleGenerator,
-          required dartVmServicePort,
-          required workingDirectory,
-          void Function()? onHotReloadEnabled,
-        }) {
-          return runner;
-        },
-        logger: logger,
-      )
-        ..testArgResults = argResults
-        ..testStdin = stdin;
+      final command =
+          DevCommand(
+              generator: (_) async => generator,
+              devServerRunnerConstructor:
+                  ({
+                    required logger,
+                    required port,
+                    required address,
+                    required devServerBundleGenerator,
+                    required dartVmServicePort,
+                    required workingDirectory,
+                    void Function()? onHotReloadEnabled,
+                  }) {
+                    return runner;
+                  },
+              logger: logger,
+            )
+            ..testArgResults = argResults
+            ..testStdin = stdin;
 
       when(() => runner.start(any())).thenAnswer((_) async {
         throw DartFrogDevServerException('oops');
@@ -158,9 +165,9 @@ void main() {
 
     test('fails if hostname is invalid', () async {
       when(() => runner.start(any())).thenAnswer((_) => Future.value());
-      when(() => runner.exitCode).thenAnswer(
-        (_) => Future.value(ExitCode.success),
-      );
+      when(
+        () => runner.exitCode,
+      ).thenAnswer((_) => Future.value(ExitCode.success));
 
       when(() => argResults['hostname']).thenReturn('ticarica');
       when(() => argResults['port']).thenReturn('1234');
@@ -168,24 +175,26 @@ void main() {
 
       final cwd = Directory.systemTemp;
 
-      final command = DevCommand(
-        generator: (_) async => generator,
-        devServerRunnerConstructor: ({
-          required logger,
-          required port,
-          required address,
-          required devServerBundleGenerator,
-          required dartVmServicePort,
-          required workingDirectory,
-          void Function()? onHotReloadEnabled,
-        }) {
-          return runner;
-        },
-        logger: logger,
-      )
-        ..testStdin = stdin
-        ..testArgResults = argResults
-        ..testCwd = cwd;
+      final command =
+          DevCommand(
+              generator: (_) async => generator,
+              devServerRunnerConstructor:
+                  ({
+                    required logger,
+                    required port,
+                    required address,
+                    required devServerBundleGenerator,
+                    required dartVmServicePort,
+                    required workingDirectory,
+                    void Function()? onHotReloadEnabled,
+                  }) {
+                    return runner;
+                  },
+              logger: logger,
+            )
+            ..testStdin = stdin
+            ..testArgResults = argResults
+            ..testCwd = cwd;
 
       await expectLater(command.run(), completion(ExitCode.software.code));
 
@@ -235,28 +244,28 @@ void main() {
         when(() => runner.start(any())).thenAnswer((_) => Future.value());
 
         when(() => runner.reload()).thenAnswer((_) => Future.value());
-        when(() => runner.exitCode).thenAnswer(
-          (_) => exitCodeCompleter.future,
-        );
+        when(() => runner.exitCode).thenAnswer((_) => exitCodeCompleter.future);
 
-        command = DevCommand(
-          generator: (_) async => generator,
-          devServerRunnerConstructor: ({
-            required logger,
-            required port,
-            required address,
-            required devServerBundleGenerator,
-            required dartVmServicePort,
-            required workingDirectory,
-            void Function()? onHotReloadEnabled,
-          }) {
-            givenOnHotReloadEnabled = onHotReloadEnabled!;
-            return runner;
-          },
-          logger: logger,
-        )
-          ..testArgResults = argResults
-          ..testStdin = stdin;
+        command =
+            DevCommand(
+                generator: (_) async => generator,
+                devServerRunnerConstructor:
+                    ({
+                      required logger,
+                      required port,
+                      required address,
+                      required devServerBundleGenerator,
+                      required dartVmServicePort,
+                      required workingDirectory,
+                      void Function()? onHotReloadEnabled,
+                    }) {
+                      givenOnHotReloadEnabled = onHotReloadEnabled!;
+                      return runner;
+                    },
+                logger: logger,
+              )
+              ..testArgResults = argResults
+              ..testStdin = stdin;
       });
 
       Future<void> hotReloadTest(int asciiValue, String character) async {

@@ -9,26 +9,23 @@ import 'package:stream_transform/stream_transform.dart';
 import 'package:watcher/watcher.dart';
 
 /// Typedef for [DirectoryWatcher.new].
-typedef DirectoryWatcherBuilder = DirectoryWatcher Function(
-  String directory,
-);
+typedef DirectoryWatcherBuilder = DirectoryWatcher Function(String directory);
 
 /// Typedef for [RouteConfiguration] change callbacks.
-typedef RouteConfigurationChanged = void Function(
-  RouteConfiguration routeConfiguration,
-);
+typedef RouteConfigurationChanged =
+    void Function(RouteConfiguration routeConfiguration);
 
 /// Typedef for [RouteConfigurationWatcher.new].
-typedef RouteConfigurationWatcherBuilder = RouteConfigurationWatcher Function({
-  required Logger logger,
-  required io.Directory workingDirectory,
-  required RouteConfigurationChanged onRouteConfigurationChanged,
-});
+typedef RouteConfigurationWatcherBuilder =
+    RouteConfigurationWatcher Function({
+      required Logger logger,
+      required io.Directory workingDirectory,
+      required RouteConfigurationChanged onRouteConfigurationChanged,
+    });
 
 /// Typedef for [buildRouteConfiguration]
-typedef RouteConfigurationBuilder = RouteConfiguration Function(
-  io.Directory directory,
-);
+typedef RouteConfigurationBuilder =
+    RouteConfiguration Function(io.Directory directory);
 
 /// {@template route_configuration_watcher}
 /// Monitors a dart frog project for changes on its route configuration.
@@ -41,9 +38,9 @@ class RouteConfigurationWatcher {
     required this.onRouteConfigurationChanged,
     @visibleForTesting DirectoryWatcherBuilder? directoryWatcher,
     @visibleForTesting RouteConfigurationBuilder? routeConfigurationBuilder,
-  })  : _directoryWatcher = directoryWatcher ?? DirectoryWatcher.new,
-        _routeConfigurationBuilder =
-            routeConfigurationBuilder ?? buildRouteConfiguration;
+  }) : _directoryWatcher = directoryWatcher ?? DirectoryWatcher.new,
+       _routeConfigurationBuilder =
+           routeConfigurationBuilder ?? buildRouteConfiguration;
 
   /// [Logger] instance used to wrap stdout.
   final Logger logger;

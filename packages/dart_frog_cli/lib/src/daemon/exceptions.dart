@@ -25,7 +25,7 @@ class DartFrogDaemonMalformedMessageException
     extends DartFrogDaemonMessageException {
   /// {@macro dart_frog_daemon_malformed_message_exception}
   const DartFrogDaemonMalformedMessageException(String message)
-      : super('Malformed message, $message');
+    : super('Malformed message, $message');
 }
 
 /// {@template dart_frog_daemon_missing_parameter_exception}
@@ -36,5 +36,5 @@ class DartFrogDaemonMissingParameterException
     extends DartFrogDaemonMessageException {
   /// {@macro dart_frog_daemon_malformed_message_exception}
   const DartFrogDaemonMissingParameterException(String message)
-      : super('Missing parameter, $message');
+    : super('Missing parameter, $message');
 }

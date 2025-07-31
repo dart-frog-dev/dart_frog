@@ -36,10 +36,7 @@ bool _isNotEmpty(dynamic data) {
 }
 
 class RunProcessException implements Exception {
-  RunProcessException(
-    this.message, {
-    required this.processResult,
-  });
+  RunProcessException(this.message, {required this.processResult});
 
   final String message;
 

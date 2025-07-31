@@ -39,10 +39,7 @@ void main() {
       });
       expect(
         parsed,
-        const DaemonResponse.success(
-          id: '1',
-          result: {'foo': 'bar'},
-        ),
+        const DaemonResponse.success(id: '1', result: {'foo': 'bar'}),
       );
       expect(
         parsed,
@@ -56,10 +53,7 @@ void main() {
       });
       expect(
         parsedError,
-        const DaemonResponse.error(
-          id: '1',
-          error: {'foo': 'bar'},
-        ),
+        const DaemonResponse.error(id: '1', error: {'foo': 'bar'}),
       );
       expect(
         parsedError,
@@ -68,13 +62,8 @@ void main() {
     });
 
     test('parses event', () {
-      final parsed = DaemonMessage.fromJson(const {
-        'event': 'foo.bar',
-      });
-      expect(
-        parsed,
-        const DaemonEvent(event: 'bar', domain: 'foo'),
-      );
+      final parsed = DaemonMessage.fromJson(const {'event': 'foo.bar'});
+      expect(parsed, const DaemonEvent(event: 'bar', domain: 'foo'));
     });
 
     test('parses event w/ params', () {
@@ -84,41 +73,28 @@ void main() {
       });
       expect(
         parsed,
-        const DaemonEvent(
-          event: 'bar',
-          domain: 'foo',
-          params: {'foo': 'bar'},
-        ),
+        const DaemonEvent(event: 'bar', domain: 'foo', params: {'foo': 'bar'}),
       );
     });
 
     group('malformed request', () {
       test('malformed id', () {
         expect(
-          () => DaemonMessage.fromJson(const {
-            'id': 1,
-            'method': 'foo.bar',
-          }),
+          () => DaemonMessage.fromJson(const {'id': 1, 'method': 'foo.bar'}),
           throwsA(isA<DartFrogDaemonMalformedMessageException>()),
         );
       });
 
       test('malformed method', () {
         expect(
-          () => DaemonMessage.fromJson(const {
-            'id': '1',
-            'method': 12,
-          }),
+          () => DaemonMessage.fromJson(const {'id': '1', 'method': 12}),
           throwsA(isA<DartFrogDaemonMalformedMessageException>()),
         );
       });
 
       test('malformed domain.method', () {
         expect(
-          () => DaemonMessage.fromJson(const {
-            'id': '1',
-            'method': 'foobar',
-          }),
+          () => DaemonMessage.fromJson(const {'id': '1', 'method': 'foobar'}),
           throwsA(isA<DartFrogDaemonMalformedMessageException>()),
         );
       });
@@ -148,10 +124,7 @@ void main() {
 
       test('malformed result', () {
         expect(
-          () => DaemonMessage.fromJson(const {
-            'id': '1',
-            'result': 12,
-          }),
+          () => DaemonMessage.fromJson(const {'id': '1', 'result': 12}),
           throwsA(isA<DartFrogDaemonMalformedMessageException>()),
         );
       });
@@ -171,28 +144,22 @@ void main() {
     group('malformed event', () {
       test('malformed event', () {
         expect(
-          () => DaemonMessage.fromJson(const {
-            'event': 12,
-          }),
+          () => DaemonMessage.fromJson(const {'event': 12}),
           throwsA(isA<DartFrogDaemonMalformedMessageException>()),
         );
       });
 
       test('malformed domain.event', () {
         expect(
-          () => DaemonMessage.fromJson(const {
-            'event': 'foobar',
-          }),
+          () => DaemonMessage.fromJson(const {'event': 'foobar'}),
           throwsA(isA<DartFrogDaemonMalformedMessageException>()),
         );
       });
 
       test('malformed params', () {
         expect(
-          () => DaemonMessage.fromJson(const {
-            'event': 'foo.bar',
-            'params': 12,
-          }),
+          () =>
+              DaemonMessage.fromJson(const {'event': 'foo.bar', 'params': 12}),
           throwsA(isA<DartFrogDaemonMalformedMessageException>()),
         );
       });
@@ -200,9 +167,7 @@ void main() {
 
     test('throws on unknown message type', () {
       expect(
-        () => DaemonMessage.fromJson(const {
-          'foo': 'bar',
-        }),
+        () => DaemonMessage.fromJson(const {'foo': 'bar'}),
         throwsA(isA<DartFrogDaemonMessageException>()),
       );
     });

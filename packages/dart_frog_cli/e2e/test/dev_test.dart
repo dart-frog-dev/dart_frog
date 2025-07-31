@@ -63,41 +63,38 @@ void main() {
       tempDirectory.delete(recursive: true).ignore();
     });
 
-    test(
-      'running two different dart_frog dev command will fail '
-      'when different dart vm port is not set',
-      () async {
-        final process1 = await dartFrogDev(
-          directory: Directory(path.join(tempDirectory.path, projectName1)),
+    test('running two different dart_frog dev command will fail '
+        'when different dart vm port is not set', () async {
+      final process1 = await dartFrogDev(
+        directory: Directory(path.join(tempDirectory.path, projectName1)),
+      );
+      addTearDown(() async {
+        await killDartFrogServer(process1.pid).ignoreErrors();
+      });
+
+      try {
+        final process2 = await dartFrogDev(
+          directory: Directory(path.join(tempDirectory.path, projectName2)),
+          exitOnError: false,
         );
         addTearDown(() async {
-          await killDartFrogServer(process1.pid).ignoreErrors();
+          await killDartFrogServer(process2.pid).ignoreErrors();
         });
 
-        try {
-          final process2 = await dartFrogDev(
-            directory: Directory(path.join(tempDirectory.path, projectName2)),
-            exitOnError: false,
-          );
-          addTearDown(() async {
-            await killDartFrogServer(process2.pid).ignoreErrors();
-          });
+        fail('exception not thrown');
+      } catch (e) {
+        expect(e.toString(), contains('Could not start the VM service:'));
 
-          fail('exception not thrown');
-        } catch (e) {
-          expect(e.toString(), contains('Could not start the VM service:'));
+        expect(
+          e.toString(),
+          contains(
+            'DartDevelopmentServiceException: Failed to create server socket',
+          ),
+        );
 
-          expect(
-            e.toString(),
-            contains(
-              'DartDevelopmentServiceException: Failed to create server socket',
-            ),
-          );
-
-          expect(e.toString(), contains('127.0.0.1:8181'));
-        }
-      },
-    );
+        expect(e.toString(), contains('127.0.0.1:8181'));
+      }
+    });
 
     test(
       'runs two different dart_frog dev servers without any issues',

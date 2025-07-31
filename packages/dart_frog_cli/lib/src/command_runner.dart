@@ -33,12 +33,12 @@ class DartFrogCommandRunner extends CompletionCommandRunner<int> {
     io.ProcessSignal? sigint,
     Exit? exit,
     io.Stdin? stdin,
-  })  : _logger = logger ?? Logger(),
-        _pubUpdater = pubUpdater ?? PubUpdater(),
-        _sigint = sigint ?? io.ProcessSignal.sigint,
-        _exit = exit ?? io.exit,
-        stdin = stdin ?? io.stdin,
-        super(executableName, executableDescription) {
+  }) : _logger = logger ?? Logger(),
+       _pubUpdater = pubUpdater ?? PubUpdater(),
+       _sigint = sigint ?? io.ProcessSignal.sigint,
+       _exit = exit ?? io.exit,
+       stdin = stdin ?? io.stdin,
+       super(executableName, executableDescription) {
     argParser.addFlags();
     addCommand(BuildCommand(logger: _logger));
     addCommand(CreateCommand(logger: _logger));
@@ -116,17 +116,13 @@ class DartFrogCommandRunner extends CompletionCommandRunner<int> {
         );
         _logger
           ..info('')
-          ..info(
-            '''
+          ..info('''
 ${lightYellow.wrap('Update available!')} ${lightCyan.wrap(packageVersion)} \u2192 ${lightCyan.wrap(latestVersion)}
 ${lightYellow.wrap('Changelog:')} $changelogLink
-Run ${lightCyan.wrap('$executableName update')} to update''',
-          );
+Run ${lightCyan.wrap('$executableName update')} to update''');
       }
     } catch (error, stackTrace) {
-      _logger.detail(
-        '[updater] update check error.\n$error\n$stackTrace',
-      );
+      _logger.detail('[updater] update check error.\n$error\n$stackTrace');
     } finally {
       _logger.detail('[updater] update check complete.');
     }
@@ -153,15 +149,7 @@ Run ${lightCyan.wrap('$executableName update')} to update''',
 
 extension on ArgParser {
   void addFlags() {
-    addFlag(
-      'version',
-      negatable: false,
-      help: 'Print the current version.',
-    );
-    addFlag(
-      'verbose',
-      negatable: false,
-      help: 'Output additional logs.',
-    );
+    addFlag('version', negatable: false, help: 'Print the current version.');
+    addFlag('verbose', negatable: false, help: 'Output additional logs.');
   }
 }

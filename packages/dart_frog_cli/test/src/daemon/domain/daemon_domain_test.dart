@@ -20,23 +20,14 @@ void main() {
     });
 
     test('emits initial event', () async {
-      expect(
-        DaemonDomain(
-          daemonServer,
-          processId: 42,
-        ),
-        isNotNull,
-      );
+      expect(DaemonDomain(daemonServer, processId: 42), isNotNull);
 
       verify(
         () => daemonServer.sendEvent(
           const DaemonEvent(
             domain: 'daemon',
             event: 'ready',
-            params: {
-              'version': '1.0.0',
-              'processId': 42,
-            },
+            params: {'version': '1.0.0', 'processId': 42},
           ),
         ),
       ).called(1);
@@ -70,15 +61,12 @@ void main() {
       test('kills the daemon and sends goodbye', () async {
         final domain = DaemonDomain(daemonServer, processId: 42);
 
-        when(() => daemonServer.kill(ExitCode.success))
-            .thenAnswer((_) async {});
+        when(
+          () => daemonServer.kill(ExitCode.success),
+        ).thenAnswer((_) async {});
 
         final response = await domain.handleRequest(
-          const DaemonRequest(
-            id: '12',
-            domain: 'daemon',
-            method: 'kill',
-          ),
+          const DaemonRequest(id: '12', domain: 'daemon', method: 'kill'),
         );
 
         verify(() => daemonServer.kill(ExitCode.success)).called(1);
@@ -88,9 +76,7 @@ void main() {
           equals(
             const DaemonResponse.success(
               id: '12',
-              result: {
-                'message': 'Hogarth. You stay, I go. No following.',
-              },
+              result: {'message': 'Hogarth. You stay, I go. No following.'},
             ),
           ),
         );

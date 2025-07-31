@@ -32,10 +32,7 @@ void main() {
   late String projectWatcherId;
 
   setUpAll(() async {
-    await dartFrogCreate(
-      projectName: projectName,
-      directory: tempDirectory,
-    );
+    await dartFrogCreate(projectName: projectName, directory: tempDirectory);
     daemonProcess = await dartFrogDaemonStart();
 
     daemonStdio = DaemonStdioHelper(daemonProcess);
@@ -54,9 +51,7 @@ void main() {
           id: '${++requestCount}',
           domain: 'route_configuration',
           method: 'watcherStart',
-          params: {
-            'workingDirectory': projectDirectory.path,
-          },
+          params: {'workingDirectory': projectDirectory.path},
         ),
       );
 
@@ -164,9 +159,7 @@ void main() {
           id: '${requestCount++}',
           domain: 'route_configuration',
           method: 'watcherGenerateRouteConfiguration',
-          params: {
-            'watcherId': projectWatcherId,
-          },
+          params: {'watcherId': projectWatcherId},
         ),
       );
 
@@ -208,10 +201,7 @@ void main() {
           containsPair('requestId', '1'),
           containsPair(
             'message',
-            allOf(
-              startsWith('[watcher] add'),
-              endsWith('rogue_route.dart'),
-            ),
+            allOf(startsWith('[watcher] add'), endsWith('rogue_route.dart')),
           ),
         ),
         timeout: const Duration(seconds: 5),
@@ -236,27 +226,21 @@ void main() {
     });
 
     test('staggered-stop watcher', () async {
-      final (response1, response2) =
-          await daemonStdio.sendStaggeredDaemonRequest(
-        (
-          DaemonRequest(
-            id: '${requestCount++}',
-            domain: 'route_configuration',
-            method: 'watcherStop',
-            params: {
-              'watcherId': projectWatcherId,
-            },
-          ),
-          DaemonRequest(
-            id: '${requestCount++}',
-            domain: 'route_configuration',
-            method: 'watcherStop',
-            params: {
-              'watcherId': projectWatcherId,
-            },
-          ),
-        ),
-      );
+      final (response1, response2) = await daemonStdio
+          .sendStaggeredDaemonRequest((
+            DaemonRequest(
+              id: '${requestCount++}',
+              domain: 'route_configuration',
+              method: 'watcherStop',
+              params: {'watcherId': projectWatcherId},
+            ),
+            DaemonRequest(
+              id: '${requestCount++}',
+              domain: 'route_configuration',
+              method: 'watcherStop',
+              params: {'watcherId': projectWatcherId},
+            ),
+          ));
 
       expect(response1.isSuccess, isTrue);
       expect(response1.result?['exitCode'], equals(0));

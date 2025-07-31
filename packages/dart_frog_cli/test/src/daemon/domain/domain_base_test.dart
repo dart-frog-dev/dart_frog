@@ -20,10 +20,7 @@ void main() {
     Future<DaemonResponse> myHandler(DaemonRequest request) async {
       return DaemonResponse.success(
         id: request.id,
-        result: {
-          'foo': 'bar',
-          if (request.params != null) ...request.params!,
-        },
+        result: {'foo': 'bar', if (request.params != null) ...request.params!},
       );
     }
 
@@ -54,11 +51,7 @@ void main() {
       final domain = _TestDomain(_MockDaemonServer())
         ..addHandler('myHandler', myHandler);
       final response = await domain.handleRequest(
-        const DaemonRequest(
-          id: '1',
-          method: 'invalidHandler',
-          domain: 'test',
-        ),
+        const DaemonRequest(id: '1', method: 'invalidHandler', domain: 'test'),
       );
 
       expect(
@@ -81,11 +74,7 @@ void main() {
         ..addHandler('myHandler', myHandler);
 
       final response = await domain.handleRequest(
-        const DaemonRequest(
-          id: '1',
-          method: 'myHandler',
-          domain: 'test',
-        ),
+        const DaemonRequest(id: '1', method: 'myHandler', domain: 'test'),
       );
 
       expect(
@@ -100,10 +89,7 @@ void main() {
     });
 
     test('getId returns as passed', () async {
-      final domain = _TestDomain(
-        _MockDaemonServer(),
-        getId: () => 'id',
-      );
+      final domain = _TestDomain(_MockDaemonServer(), getId: () => 'id');
 
       expect(domain.getId(), equals('id'));
     });
