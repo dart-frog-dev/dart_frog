@@ -9,11 +9,7 @@
 
 A fast, minimalistic backend framework for Dart 🎯
 
-## Acknowledgments
-
-Developed with 💙 by [Very Good Ventures][very_good_ventures_link] 🦄
-
-Originally, Dart Frog was developed by [Very Good Ventures](https://verygood.ventures/) and then transferred to the Dart Frog organization; learn more on ["Dart Frog Has Found a New Pond!"](https://verygood.ventures/blog/dart-frog-has-found-a-new-pond).
+Originally developed by [Very Good Ventures][very_good_ventures_link] 🦄
 
 ## Documentation 📝
 
