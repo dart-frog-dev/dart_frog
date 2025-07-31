@@ -18,12 +18,19 @@ class BuildCommand extends DartFrogCommand {
   })  : _generator = generator ?? MasonGenerator.fromBundle,
         _prodServerBuilderConstructor =
             prodServerBuilderConstructor ?? ProdServerBuilder.new {
-    argParser.addOption(
-      'dart-version',
-      defaultsTo: 'stable',
-      help: 'The Dart SDK version used to build the Dockerfile, defaults to'
-          ' stable.',
-    );
+    argParser
+      ..addOption(
+        'dart-version',
+        defaultsTo: 'stable',
+        help: 'The Dart SDK version used to build the Dockerfile, defaults to'
+            ' stable.',
+      )
+      ..addOption(
+        'port',
+        abbr: 'p',
+        defaultsTo: '8080',
+        help: 'Which port number the server should start on.',
+      );
   }
 
   final GeneratorBuilder _generator;
@@ -38,11 +45,14 @@ class BuildCommand extends DartFrogCommand {
   @override
   Future<int> run() async {
     final dartVersion = results['dart-version'] as String;
+    final port = (results['port'] as String?) ?? '8080';
+
     final generator = await _generator(dartFrogProdServerBundle);
 
     final builder = _prodServerBuilderConstructor(
       logger: logger,
       dartVersion: dartVersion,
+      port: port,
       workingDirectory: cwd,
       prodServerBundleGenerator: generator,
     );
