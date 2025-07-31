@@ -12,7 +12,7 @@
     "type": "git",
     "url": "https://github.com/VeryGoodOpenSource/dart_frog"
   },
-  "homepage": "https://dartfrog.vgv.dev/",
+  "homepage": "https://dart-frog.dev/",
   "license": "MIT",
   "engines": {
     "vscode": "^1.79.0"

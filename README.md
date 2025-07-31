@@ -13,7 +13,7 @@ A fast, minimalistic backend framework for Dart 🎯
 
 ## Documentation 📝
 
-For official documentation, please visit https://dartfrog.vgv.dev.
+For official documentation, please visit https://dart-frog.dev.
 
 ## Packages 📦
 

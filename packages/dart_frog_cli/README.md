@@ -1,4 +1,4 @@
-[<img src="https://raw.githubusercontent.com/VeryGoodOpenSource/dart_frog/main/docs/static/img/dart_frog.png" align="left" height="63.5px" />](https://dartfrog.vgv.dev/)
+[<img src="https://raw.githubusercontent.com/VeryGoodOpenSource/dart_frog/main/docs/static/img/dart_frog.png" align="left" height="63.5px" />](https://dart-frog.dev/)
 
 ### Dart Frog CLI
 
@@ -52,4 +52,4 @@ Learn more about it on the [official docs][docs_link].
 [very_good_analysis_badge]: https://img.shields.io/badge/style-very_good_analysis-B22C89.svg
 [very_good_analysis_link]: https://pub.dev/packages/very_good_analysis
 [very_good_ventures_link]: https://verygood.ventures
-[docs_link]: https://dartfrog.vgv.dev/docs/overview
+[docs_link]: https://dart-frog.dev/getting-started

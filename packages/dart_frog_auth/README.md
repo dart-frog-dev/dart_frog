@@ -1,4 +1,4 @@
-[<img src="https://raw.githubusercontent.com/VeryGoodOpenSource/dart_frog/main/docs/static/img/dart_frog.png" align="left" height="63.5px" />](https://dartfrog.vgv.dev/)
+[<img src="https://raw.githubusercontent.com/VeryGoodOpenSource/dart_frog/main/docs/static/img/dart_frog.png" align="left" height="63.5px" />](https://dart-frog.dev/)
 
 ### Dart Frog Auth
 
@@ -34,4 +34,4 @@ Learn more about it on the [official docs][docs_link].
 [very_good_analysis_link]: https://pub.dev/packages/very_good_analysis
 [very_good_ventures_link]: https://verygood.ventures
 [general_http]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#the_general_http_authentication_framework
-[docs_link]: https://dartfrog.vgv.dev/docs/advanced/authentication
+[docs_link]: https://dart-frog.dev/advanced/authentication
