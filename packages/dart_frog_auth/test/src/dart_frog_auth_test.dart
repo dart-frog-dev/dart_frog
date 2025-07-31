@@ -13,6 +13,8 @@ class _MockRequestContext extends Mock implements RequestContext {}
 
 class _MockRequest extends Mock implements Request {}
 
+class _MockResponse extends Mock implements Response {}
+
 class _User {
   const _User(this.id);
   final String id;
@@ -86,6 +88,60 @@ void main() {
           );
         },
       );
+
+      group('and custom unauthenticated response is provided', () {
+        test(
+          'returns custom response when Authorization header is not present',
+          () async {
+            final response = _MockResponse();
+            final middleware = basicAuthentication<_User>(
+              userFromCredentials: (_, __) async => user,
+              unauthenticatedResponse: (context) => response,
+            );
+            expect(
+              await middleware((_) async => Response())(context),
+              equals(response),
+            );
+          },
+        );
+
+        test(
+          'returns custom response when Authorization header is present but '
+          'invalid',
+          () async {
+            final response = _MockResponse();
+            when(() => request.headers)
+                .thenReturn({'Authorization': 'not valid'});
+            final middleware = basicAuthentication<_User>(
+              userFromCredentials: (_, __) async => user,
+              unauthenticatedResponse: (context) => response,
+            );
+            expect(
+              await middleware((_) async => Response())(context),
+              equals(response),
+            );
+          },
+        );
+
+        test(
+          'returns custom response when Authorization header is present and '
+          'valid but no user is returned',
+          () async {
+            final response = _MockResponse();
+            when(() => request.headers).thenReturn({
+              'Authorization': 'Bearer 1234',
+            });
+            final middleware = basicAuthentication<_User>(
+              userFromCredentials: (_, __) async => null,
+              unauthenticatedResponse: (context) => response,
+            );
+            expect(
+              await middleware((_) async => Response())(context),
+              equals(response),
+            );
+          },
+        );
+      });
 
       test(
         'sets the user when everything is valid',
@@ -189,6 +245,60 @@ void main() {
           );
         },
       );
+
+      group('and custom unauthenticated response is provided', () {
+        test(
+          'returns custom response when Authorization header is not present',
+          () async {
+            final response = _MockResponse();
+            final middleware = basicAuthentication<_User>(
+              authenticator: (_, __, ___) async => user,
+              unauthenticatedResponse: (context) => response,
+            );
+            expect(
+              await middleware((_) async => Response())(context),
+              equals(response),
+            );
+          },
+        );
+
+        test(
+          'returns custom response when Authorization header is present but '
+          'invalid',
+          () async {
+            final response = _MockResponse();
+            when(() => request.headers)
+                .thenReturn({'Authorization': 'not valid'});
+            final middleware = basicAuthentication<_User>(
+              authenticator: (_, __, ___) async => user,
+              unauthenticatedResponse: (context) => response,
+            );
+            expect(
+              await middleware((_) async => Response())(context),
+              equals(response),
+            );
+          },
+        );
+
+        test(
+          'returns custom response when Authorization header is present and '
+          'valid but no user is returned',
+          () async {
+            final response = _MockResponse();
+            when(() => request.headers).thenReturn({
+              'Authorization': 'Basic dXNlcjpwYXNz',
+            });
+            final middleware = basicAuthentication<_User>(
+              authenticator: (_, __, ___) async => null,
+              unauthenticatedResponse: (context) => response,
+            );
+            expect(
+              await middleware((_) async => Response())(context),
+              equals(response),
+            );
+          },
+        );
+      });
 
       test(
         'sets the user when everything is valid',
@@ -307,6 +417,60 @@ void main() {
         },
       );
 
+      group('and custom unauthenticated response is provided', () {
+        test(
+          'returns custom response when Authorization header is not present',
+          () async {
+            final response = _MockResponse();
+            final middleware = bearerAuthentication<_User>(
+              userFromToken: (_) async => user,
+              unauthenticatedResponse: (context) => response,
+            );
+            expect(
+              await middleware((_) async => Response())(context),
+              equals(response),
+            );
+          },
+        );
+
+        test(
+          'returns custom response when Authorization header is present but '
+          'invalid',
+          () async {
+            final response = _MockResponse();
+            when(() => request.headers)
+                .thenReturn({'Authorization': 'not valid'});
+            final middleware = bearerAuthentication<_User>(
+              userFromToken: (_) async => user,
+              unauthenticatedResponse: (context) => response,
+            );
+            expect(
+              await middleware((_) async => Response())(context),
+              equals(response),
+            );
+          },
+        );
+
+        test(
+          'returns custom response when Authorization header is present and '
+          'valid but no user is returned',
+          () async {
+            final response = _MockResponse();
+            when(() => request.headers).thenReturn({
+              'Authorization': 'Bearer 1234',
+            });
+            final middleware = bearerAuthentication<_User>(
+              userFromToken: (_) async => null,
+              unauthenticatedResponse: (context) => response,
+            );
+            expect(
+              await middleware((_) async => Response())(context),
+              equals(response),
+            );
+          },
+        );
+      });
+
       test(
         'sets the user when everything is valid',
         () async {
@@ -410,6 +574,60 @@ void main() {
         },
       );
 
+      group('and custom unauthenticated response is provided', () {
+        test(
+          'returns custom response when Authorization header is not present',
+          () async {
+            final response = _MockResponse();
+            final middleware = bearerAuthentication<_User>(
+              authenticator: (_, __) async => user,
+              unauthenticatedResponse: (context) => response,
+            );
+            expect(
+              await middleware((_) async => Response())(context),
+              equals(response),
+            );
+          },
+        );
+
+        test(
+          'returns custom response when Authorization header is present but '
+          'invalid',
+          () async {
+            final response = _MockResponse();
+            when(() => request.headers)
+                .thenReturn({'Authorization': 'not valid'});
+            final middleware = bearerAuthentication<_User>(
+              authenticator: (_, __) async => user,
+              unauthenticatedResponse: (context) => response,
+            );
+            expect(
+              await middleware((_) async => Response())(context),
+              equals(response),
+            );
+          },
+        );
+
+        test(
+          'returns custom response when Authorization header is present and '
+          'valid but no user is returned',
+          () async {
+            final response = _MockResponse();
+            when(() => request.headers).thenReturn({
+              'Authorization': 'Bearer 1234',
+            });
+            final middleware = bearerAuthentication<_User>(
+              authenticator: (_, __) async => null,
+              unauthenticatedResponse: (context) => response,
+            );
+            expect(
+              await middleware((_) async => Response())(context),
+              equals(response),
+            );
+          },
+        );
+      });
+
       test(
         'sets the user when everything is valid',
         () async {
@@ -503,6 +721,40 @@ void main() {
         );
       },
     );
+
+    group('and custom unauthenticated response is provided', () {
+      test(
+        'returns custom response when Cookie header is not present',
+        () async {
+          final response = _MockResponse();
+          final middleware = cookieAuthentication<_User>(
+            authenticator: (_, __) async => user,
+            unauthenticatedResponse: (context) => response,
+          );
+          expect(
+            await middleware((_) async => Response())(context),
+            equals(response),
+          );
+        },
+      );
+
+      test(
+        'returns custom response when Cookie header is present '
+        'but no user is returned',
+        () async {
+          final response = _MockResponse();
+          when(() => request.headers).thenReturn({'Cookie': 'session=abc123'});
+          final middleware = cookieAuthentication<_User>(
+            authenticator: (_, __) async => null,
+            unauthenticatedResponse: (context) => response,
+          );
+          expect(
+            await middleware((_) async => Response())(context),
+            equals(response),
+          );
+        },
+      );
+    });
 
     test(
       'sets the user when everything is valid',

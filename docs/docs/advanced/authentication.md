@@ -247,6 +247,36 @@ Handler middleware(Handler handler) {
 
 In the above example, only routes that are not `POST` will have authentication checked.
 
+### Custom Authenticated Responses
+
+In some applications, you'll wish to send a custom response when the request is unauthenticated.
+For example, a website will probably send an HTML page explaining to the user they need to log in before accessing the site.
+
+To accomplish this, simply pass a `Handler` to the `unauthenticatedResponse` parameter to your authentication middleware.
+
+```dart
+Handler middleware(Handler handler) {
+  final userRepository = UserRepository();
+
+  return handler
+      .use(requestLogger())
+      .use(provider<UserRepository>((_) => userRepository))
+      .use(
+        basicAuthentication<User>(
+          authenticator: (context, username, password) {
+            final userRepository = context.read<UserRepository>();
+            return userRepository.userFromCredentials(username, password);
+          },
+          unauthenticatedResponse : (RequestContext context) async =>
+            Response(
+              body: '<html><body>You are not logged in :(</body></html>',
+              statusCode: HttpStatus.unauthorized,
+            ),
+        ),
+      );
+}
+```
+
 ### Authentication vs. Authorization
 
 Both Authentication and authorization are related, but are different concepts that are often confused.

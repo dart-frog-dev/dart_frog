@@ -72,6 +72,7 @@ Middleware basicAuthentication<T extends Object>({
     String password,
   )? authenticator,
   Applies applies = _defaultApplies,
+  Handler? unauthenticatedResponse,
 }) {
   assert(
     userFromCredentials != null || authenticator != null,
@@ -102,7 +103,8 @@ Middleware basicAuthentication<T extends Object>({
           }
         }
 
-        return Response(statusCode: HttpStatus.unauthorized);
+        return unauthenticatedResponse?.call(context) ??
+            Response(statusCode: HttpStatus.unauthorized);
       };
 }
 
@@ -134,6 +136,7 @@ Middleware bearerAuthentication<T extends Object>({
   Future<T?> Function(String token)? userFromToken,
   Future<T?> Function(RequestContext context, String token)? authenticator,
   Applies applies = _defaultApplies,
+  Handler? unauthenticatedResponse,
 }) {
   assert(
     userFromToken != null || authenticator != null,
@@ -162,7 +165,8 @@ Middleware bearerAuthentication<T extends Object>({
           }
         }
 
-        return Response(statusCode: HttpStatus.unauthorized);
+        return unauthenticatedResponse?.call(context) ??
+            Response(statusCode: HttpStatus.unauthorized);
       };
 }
 
@@ -195,6 +199,7 @@ Middleware cookieAuthentication<T extends Object>({
     Map<String, String> cookies,
   ) authenticator,
   Applies applies = _defaultApplies,
+  Handler? unauthenticatedResponse,
 }) {
   return (handler) => (context) async {
         if (!await applies(context)) {
@@ -210,6 +215,7 @@ Middleware cookieAuthentication<T extends Object>({
           }
         }
 
-        return Response(statusCode: HttpStatus.unauthorized);
+        return unauthenticatedResponse?.call(context) ??
+            Response(statusCode: HttpStatus.unauthorized);
       };
 }
