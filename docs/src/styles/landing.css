@@ -17,15 +17,15 @@
 }
 
 @media screen and (min-width: 50rem) {
-	[data-has-hero] .hero {
+	[data-has-hero] .hero-html {
 		padding-block: clamp(2.5rem, calc(1rem + 10vmin), 2.5rem);
 	}
 
-	[data-has-hero] .hero > img {
+	[data-has-hero] .hero-html > img {
 		filter: drop-shadow(0 0 2rem #39bcb5);
 	}
 
-	[data-theme='dark'][data-has-hero] .hero > img {
+	[data-theme='dark'][data-has-hero] .hero-html > img {
 		filter: drop-shadow(0 0 2rem #81efe2);
 	}
 }
@@ -49,7 +49,8 @@
 	justify-content: center;
 }
 
-.hero > img {
+.hero-html {
+	order: 2;
 	width: 100%;
 	max-width: 700px;
 }
