@@ -1,3 +1,7 @@
+# 1.2.1
+
+- fix: add default handler for disallowed http methods ([#1727](https://github.com/VeryGoodOpenSource/dart_frog/pull/1727))
+
 # 1.2.0
 
 - chore(deps): bump very_good_analysis from 5.1.0 to 6.0.0 in /packages/dart_frog ([#1432](https://github.com/VeryGoodOpenSource/dart_frog/pull/1432))
