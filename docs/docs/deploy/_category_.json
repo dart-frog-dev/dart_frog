@@ -1,9 +1,0 @@
-{
-  "label": "Deploy",
-  "position": 4,
-  "link": {
-    "title": "Deploy ☁️",
-    "type": "generated-index",
-    "description": "Learn how to build and deploy your Dart Frog server in minutes."
-  }
-}

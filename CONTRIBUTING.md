@@ -114,7 +114,7 @@ The above example will: update the version of `<package>` to `<version>`, update
 [bug_report_link]: https://github.com/VeryGoodOpenSource/dart_frog/issues/new?assignees=&labels=bug&projects=&template=bug_report.md&title=fix%3A+
 [issue_creation_link]: https://github.com/VeryGoodOpenSource/dart_frog/issues/new/choose
 [very_good_ventures_link]: https://verygood.ventures
-[dart_frog_site]: https://dartfrog.vgv.dev/
+[dart_frog_site]: https://dart-frog.dev/
 [dart_frog_cli_link]: https://pub.dev/packages/dart_frog_cli
 [node_js_dowload_link]: https://nodejs.org/pt-br/download
 [mason_install_link]: https://docs.brickhub.dev/installing/

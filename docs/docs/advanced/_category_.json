@@ -1,9 +1,0 @@
-{
-  "label": "Advanced",
-  "position": 5,
-  "link": {
-    "title": "Advanced 🧙",
-    "type": "generated-index",
-    "description": "Learn advanced Dart Frog concepts."
-  }
-}

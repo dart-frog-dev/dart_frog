@@ -2,7 +2,7 @@
  * Defines the protocol used by the Dart Frog daemon "daemon" domain and custom
  * type guards to check if an object is a valid message.
  *
- * @see {@link https://dartfrog.vgv.dev/docs/advanced/daemon#daemon-domain Dart Frog daemon domain}
+ * @see {@link https://dart-frog.dev/advanced/daemon#daemon-domain Dart Frog daemon domain}
  */
 
 import {

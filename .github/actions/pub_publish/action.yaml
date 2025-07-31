@@ -1,0 +1,42 @@
+name: Publish to pub.dev
+description: Publish a package to pub.dev
+
+inputs:
+  working_directory:
+    description: Directory within the repository where the package is located (defaults to root).
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: 📚 Git Checkout
+      uses: actions/checkout@v4
+
+    - name: 🎯 Setup Dart
+      uses: dart-lang/setup-dart@v1
+
+    - name: 🪪 Get Token
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const pub_token = await core.getIDToken('https://pub.dev')
+          core.exportVariable('PUB_TOKEN', pub_token)
+
+    - name: 🔐 Authenticate
+      shell: ${{ inputs.shell }}
+      run: dart pub token add https://pub.dev --env-var PUB_TOKEN
+
+    - name: 📦 Install dependencies
+      shell: ${{ inputs.shell }}
+      run: dart pub get
+      working-directory: ${{ inputs.working_directory }}
+
+    - name: 🌵 Dry Run
+      shell: ${{ inputs.shell }}
+      run: dart pub publish --dry-run
+      working-directory: ${{ inputs.working_directory }}
+
+    - name: 📢 Publish
+      shell: ${{ inputs.shell }}
+      run: dart pub publish -f
+      working-directory: ${{ inputs.working_directory }}

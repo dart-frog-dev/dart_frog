@@ -9,11 +9,11 @@
 
 A fast, minimalistic backend framework for Dart 🎯
 
-Developed with 💙 by [Very Good Ventures][very_good_ventures_link] 🦄
+[Originally developed][credits_link] by [Very Good Ventures][very_good_ventures_link] 🦄
 
 ## Documentation 📝
 
-For official documentation, please visit https://dartfrog.vgv.dev.
+For official documentation, please visit https://dart-frog.dev.
 
 ## Packages 📦
 
@@ -105,3 +105,4 @@ Dart Frog provides a simple core with a small API surface area in order to reduc
 [very_good_analysis_badge]: https://img.shields.io/badge/style-very_good_analysis-B22C89.svg
 [very_good_analysis_link]: https://pub.dev/packages/very_good_analysis
 [very_good_ventures_link]: https://verygood.ventures
+[credits_link]: ./CREDITS.md#acknowledgments

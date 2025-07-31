@@ -1,4 +1,4 @@
-[<img src="https://raw.githubusercontent.com/VeryGoodOpenSource/dart_frog/main/docs/static/img/dart_frog.png" align="left" height="63.5px" />](https://dartfrog.vgv.dev/)
+[<img src="https://raw.githubusercontent.com/VeryGoodOpenSource/dart_frog/main/docs/static/img/dart_frog.png" align="left" height="63.5px" />](https://dart-frog.dev/)
 
 ### Dart Frog Gen
 
