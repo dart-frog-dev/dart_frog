@@ -93,7 +93,7 @@ export default defineConfig({
 				starlightLinksValidator({
 					errorOnFallbackPages: false,
 					errorOnInconsistentLocale: true,
-					exclude: ['http://localhost:8080', 'http://localhost:8080/**'],
+					exclude: ['/blog/**', 'http://localhost:8080', 'http://localhost:8080/**'],
 				}),
 			],
 		}),
