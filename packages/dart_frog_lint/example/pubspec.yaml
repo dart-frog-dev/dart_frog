@@ -1,0 +1,15 @@
+name: dart_frog_lint_example
+version: 0.0.1
+publish_to: "none"
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
+dependencies:
+  dart_frog:
+    path: ../../dart_frog
+
+dev_dependencies:
+  dart_frog_lint:
+    path: ..
+  very_good_analysis: ^4.0.0

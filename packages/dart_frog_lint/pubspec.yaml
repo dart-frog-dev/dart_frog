@@ -1,0 +1,25 @@
+name: dart_frog_lint
+description: Lint rules and refactorings for dart_frog
+version: 0.1.0
+homepage: https://dartfrog.vgv.dev
+repository: https://github.com/VeryGoodOpenSource/dart_frog
+issue_tracker: https://github.com/VeryGoodOpenSource/dart_frog/issues
+documentation: https://dartfrog.vgv.dev/docs/overview
+
+environment:
+  sdk: ">=2.19.0 <3.0.0"
+
+dependencies:
+  analyzer: ^5.2.0
+  analyzer_plugin: ^0.11.2
+  collection: ^1.17.1
+  custom_lint_builder: ^0.2.10
+  glob: ^2.1.1
+  meta: ^1.9.0
+  path: ^1.8.3
+
+dev_dependencies:
+  dart_frog:
+    path: ../dart_frog
+  test: ^1.21.1
+  very_good_analysis: ^4.0.0

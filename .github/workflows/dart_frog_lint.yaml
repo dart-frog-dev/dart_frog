@@ -1,0 +1,53 @@
+name: dart_frog_lint
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/dart_frog_lint.yaml"
+      - "packages/dart_frog_lint/example/**"
+      - "packages/dart_frog_lint/lib/**"
+      - "packages/dart_frog_lint/test/**"
+      - "packages/dart_frog_lint/pubspec.yaml"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/dart_frog_lint.yaml"
+      - "packages/dart_frog_lint/example/**"
+      - "packages/dart_frog_lint/lib/**"
+      - "packages/dart_frog_lint/test/**"
+      - "packages/dart_frog_lint/pubspec.yaml"
+
+jobs:
+  build:
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v1
+    with:
+      working_directory: packages/dart_frog
+
+  custom_lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/dart_frog_lint
+
+    steps:
+      # Bootstrap project
+      - uses: actions/checkout@v3.1.0
+        with:
+          fetch-depth: 2
+      - uses: subosito/flutter-action@v2.7.1
+      - name: Add pub cache bin to PATH
+        run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+      - name: Add pub cache to PATH
+        run: echo "PUB_CACHE="$HOME/.pub-cache"" >> $GITHUB_ENV
+      - name: Install dependencies
+        run: flutter pub get
+
+      # Finally do some checks
+      - name: Run custom_lint
+        run: dart run custom_lint
+
+  pana:
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/pana.yml@v1
+    with:
+      working_directory: packages/dart_frog
