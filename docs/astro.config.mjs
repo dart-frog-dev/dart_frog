@@ -86,7 +86,7 @@ export default defineConfig({
 							name: 'Dart Frog',
 							title: 'Team',
 							picture: '/headshots/dart-frog.svg',
-							url: 'https://dart-frog.dev',
+							url: site,
 						},
 					},
 				}),
