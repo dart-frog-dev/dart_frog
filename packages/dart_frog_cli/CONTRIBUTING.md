@@ -53,18 +53,18 @@ dart test
 
 If some tests do not pass out of the box, please submit an [issue](https://github.com/VeryGoodOpenSource/dart_frog/issues/new/choose).
 
-4. Install your own version of Dart Frog CLI in your local environment:
+4. If you are modifying any [templates](../../bricks), make sure to bundle them locally before activating:
+
+```sh
+# 📦 Bundle templates (from root)
+sh tool/generate_local_bundles.sh
+```
+
+5. Install your own version of Dart Frog CLI in your local environment:
 
 ```sh
 # 🚀 Activate your own local version of Dart Frog CLI (from packages/dart_frog_cli)
 dart pub global activate --source path .
-```
-
-5. If you are modifying any [templates](../../bricks), make sure to bundle them before activating:
-
-```sh
-# 📦 Bundle templates (from root)
-tool/generate_bundles.sh
 ```
 
 ### Creating a Pull Request
