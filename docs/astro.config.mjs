@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import tailwindcss from '@tailwindcss/vite';
+import starlightBlog from 'starlight-blog';
 import starlightLinksValidator from 'starlight-links-validator';
 
 const site = 'https://dart-frog.dev/';
@@ -78,6 +79,17 @@ export default defineConfig({
 				},
 			],
 			plugins: [
+				starlightBlog({
+					metrics: { readingTime: true, words: false },
+					authors: {
+						team: {
+							name: 'Dart Frog',
+							title: 'Team',
+							picture: '/headshots/dart-frog.svg',
+							url: 'https://dart-frog.dev',
+						},
+					},
+				}),
 				starlightLinksValidator({
 					errorOnFallbackPages: false,
 					errorOnInconsistentLocale: true,
