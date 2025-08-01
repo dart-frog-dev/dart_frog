@@ -21,3 +21,7 @@
 	--color-gray-800: #182a2f;
 	--color-gray-900: #121a1c;
 }
+
+figure > img {
+	border-radius: 0.5em;
+}
