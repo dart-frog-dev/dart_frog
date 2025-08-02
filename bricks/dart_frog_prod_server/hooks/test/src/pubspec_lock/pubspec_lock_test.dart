@@ -1,3 +1,4 @@
+// Not required for test files
 // ignore_for_file: prefer_const_constructors
 
 import 'package:dart_frog_prod_server_hooks/src/pubspec_lock/pubspec_lock.dart';
