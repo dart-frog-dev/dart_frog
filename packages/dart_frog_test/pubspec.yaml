@@ -18,4 +18,4 @@ dependencies:
   test: ^1.19.2
 
 dev_dependencies:
-  very_good_analysis: ^5.1.0
+  very_good_analysis: ^9.0.0
