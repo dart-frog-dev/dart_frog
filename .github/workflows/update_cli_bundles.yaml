@@ -25,11 +25,6 @@ jobs:
       - name: Bump templates
         run: tool/generate_bundles.sh
 
-      - name: Config Git User
-        run: |
-          git config user.name "Dart Frog Bot"
-          git config user.email dart-frog-dev@users.noreply.github.com
-
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7.0.8
         with:
@@ -39,5 +34,3 @@ jobs:
           title: "feat(dart_frog_cli): update cli bundles"
           body: Please squash and merge me!
           labels: bot
-          author: Dart Frog Bot <dart-frog-dev@users.noreply.github.com>
-          committer: Dart Frog Bot <dart-frog-dev@users.noreply.github.com>
