@@ -4,6 +4,9 @@
 
 <br clear="left"/>
 
+[![discord][discord_badge]][discord_link]
+[![dart][dart_badge]][dart_link]
+
 [![ci][ci_badge]][ci_link]
 [![coverage][coverage_badge]][ci_link]
 [![pub package][pub_badge]][pub_link]
@@ -66,7 +69,11 @@ View the full documentation [here][docs_link].
 [ci_link]: https://github.com/dart-frog-dev/dart_frog/actions/workflows/dart_frog.yaml
 [coverage_badge]: https://raw.githubusercontent.com/dart-frog-dev/dart_frog/main/packages/dart_frog/coverage_badge.svg
 [credits_link]: https://github.com/dart-frog-dev/dart_frog/blob/main/CREDITS.md#acknowledgments
+[dart_badge]: https://img.shields.io/badge/Dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=5BB4F0&color=1E2833
+[dart_link]: https://dart.dev
 [dart_installation_link]: https://dart.dev/get-dart
+[discord_badge]: https://img.shields.io/discord/1394707782271238184?style=for-the-badge&logo=discord&color=1C2A2E&logoColor=1DF9D2
+[discord_link]: https://discord.gg/dart-frog
 [docs_link]: https://dart-frog.dev
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [license_link]: https://opensource.org/licenses/MIT
