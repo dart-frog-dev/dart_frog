@@ -282,7 +282,7 @@ But if we change the order of the providers it will not work:
 ```dart
 Handler middleware(Handler handler) {
   return handler
-      // This won't work because Dart Frog is bottom top
+      // This won't work because Dart Frog resolves from bottom to top
       .use(wheelMiddlewareProvider())
       .use(carMiddlewareProvider())
 }
