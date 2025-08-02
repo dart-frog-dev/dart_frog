@@ -1,3 +1,9 @@
+# 1.2.6
+
+- refactor: upgrade analysis options ([#1798](https://github.com/dart-frog-dev/dart_frog/pull/1798))
+- docs: update all repository references ([#1791](https://github.com/dart-frog-dev/dart_frog/pull/1791))
+- feat: allow pass through of arguments ([#1630](https://github.com/dart-frog-dev/dart_frog/pull/1630))
+
 # 1.2.5
 
 - fix: update mason version in cli ([#1622](https://github.com/dart-frog-dev/dart_frog/pull/1622))
