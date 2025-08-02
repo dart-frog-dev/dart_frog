@@ -115,6 +115,8 @@ class DevServerDomain extends DomainBase {
           'applicationId': applicationId,
         },
       );
+      // ignoring for backward compatibility
+      // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       return DaemonResponse.error(
         id: request.id,
@@ -149,6 +151,8 @@ class DevServerDomain extends DomainBase {
           'applicationId': applicationId,
         },
       );
+      // ignoring for backward compatibility
+      // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       return DaemonResponse.error(
         id: request.id,
@@ -186,6 +190,8 @@ class DevServerDomain extends DomainBase {
           'exitCode': exitCode.code,
         },
       );
+      // ignoring for backward compatibility
+      // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       if (!runner.isCompleted) {
         _devServerRunners[applicationId] = runner;

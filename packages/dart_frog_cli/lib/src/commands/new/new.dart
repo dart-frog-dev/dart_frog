@@ -62,10 +62,12 @@ class _NewSubCommand extends DartFrogCommand {
 
   @visibleForTesting
   @override
+  // ignoring for testing purposes
   // ignore: invalid_use_of_visible_for_testing_member
   ArgResults? get testArgResults => parent.testArgResults;
 
   @override
+  // ignoring for testing purposes
   // ignore: invalid_use_of_visible_for_testing_member
   String? get testUsage => parent.testUsage;
 

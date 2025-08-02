@@ -1,4 +1,3 @@
-// ignore_for_file: no_adjacent_strings_in_list
 import 'dart:io';
 
 import 'package:args/args.dart';
@@ -31,6 +30,8 @@ class _MockRouteConfiguration extends Mock implements RouteConfiguration {}
 class _MockStdin extends Mock implements Stdin {}
 
 const expectedUsage = [
+  // ignoring for ease of testing usage
+  // ignore: no_adjacent_strings_in_list
   'Lists the routes on a Dart Frog project.\n'
       '\n'
       'Usage: dart_frog list "path/to/project"\n'
@@ -50,6 +51,7 @@ void main() {
     late ArgResults argResults;
     late Logger logger;
     late Progress progress;
+    late PubUpdater updater;
     late ListCommand command;
     late DartFrogCommandRunner commandRunner;
     late RouteConfiguration routeConfiguration;
@@ -58,6 +60,7 @@ void main() {
       argResults = _MockArgResults();
       logger = _MockLogger();
       progress = _MockProgress();
+      updater = _MockPubUpdater();
       routeConfiguration = _MockRouteConfiguration();
       when(() => logger.progress(any())).thenReturn(progress);
       command = ListCommand(
@@ -68,6 +71,9 @@ void main() {
         ..testUsage = 'test usage';
 
       when(() => argResults['plain']).thenReturn(false);
+      when(
+        () => updater.getLatestVersion(any()),
+      ).thenAnswer((_) async => packageVersion);
 
       final sigint = _MockProcessSignal();
 
@@ -75,7 +81,7 @@ void main() {
 
       commandRunner = DartFrogCommandRunner(
         logger: logger,
-        pubUpdater: _MockPubUpdater(),
+        pubUpdater: updater,
         exit: (_) {},
         sigint: sigint,
         stdin: _MockStdin(),

@@ -1,4 +1,3 @@
-// ignore_for_file: no_adjacent_strings_in_list
 import 'dart:async';
 import 'dart:io';
 
@@ -20,6 +19,8 @@ class _MockProcessSignal extends Mock implements ProcessSignal {}
 class _MockStdin extends Mock implements Stdin {}
 
 const expectedUsage = [
+  // ignoring for ease of testing usage
+  // ignore: no_adjacent_strings_in_list
   'A fast, minimalistic backend framework for Dart.\n'
       '\n'
       'Usage: dart_frog <command> [arguments]\n'

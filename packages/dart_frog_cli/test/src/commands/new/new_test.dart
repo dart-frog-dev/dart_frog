@@ -1,4 +1,3 @@
-// ignore_for_file: no_adjacent_strings_in_list
 import 'dart:io';
 
 import 'package:args/args.dart';
@@ -32,6 +31,8 @@ class _FakeDirectoryGeneratorTarget extends Fake
 class _MockStdin extends Mock implements Stdin {}
 
 const expectedUsage = [
+  // ignoring for ease of testing usage
+  // ignore: no_adjacent_strings_in_list
   'Create a new route or middleware for dart_frog\n'
       '\n'
       'Usage: dart_frog new <route|middleware> "path/to/route"\n'
@@ -54,6 +55,7 @@ void main() {
     late Logger logger;
     late Progress progress;
     late MasonGenerator generator;
+    late PubUpdater updater;
     late NewCommand command;
     late DartFrogCommandRunner commandRunner;
 
@@ -61,8 +63,8 @@ void main() {
       argResults = _MockArgResults();
       logger = _MockLogger();
       progress = _MockProgress();
-      when(() => logger.progress(any())).thenReturn(progress);
       generator = _MockMasonGenerator();
+      updater = _MockPubUpdater();
       command = NewCommand(
         logger: logger,
         generator: (_) async {
@@ -74,11 +76,15 @@ void main() {
 
       final sigint = _MockProcessSignal();
 
+      when(() => logger.progress(any())).thenReturn(progress);
       when(sigint.watch).thenAnswer((_) => const Stream.empty());
+      when(
+        () => updater.getLatestVersion(any()),
+      ).thenAnswer((_) async => packageVersion);
 
       commandRunner = DartFrogCommandRunner(
         logger: logger,
-        pubUpdater: _MockPubUpdater(),
+        pubUpdater: updater,
         exit: (_) {},
         sigint: sigint,
         stdin: _MockStdin(),
