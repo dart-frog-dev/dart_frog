@@ -322,6 +322,7 @@ class RouterEntry {
     final params = <String>[];
     var pattern = '';
     for (final m in _parser.allMatches(route)) {
+      // avoiding string_buffers to align with shelf_router
       // ignore: use_string_buffers
       pattern += RegExp.escape(m[1]!);
       if (m[2] != null) {
@@ -418,6 +419,7 @@ class RouterEntry {
       }
 
       if (_handler is Handler || _params.isEmpty) {
+        // ignoring to align with shelf_router
         // ignore: avoid_dynamic_calls
         return await _handler(updatedContext) as Response;
       }
