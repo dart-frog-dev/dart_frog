@@ -1,5 +1,5 @@
 /// Collection of `pubspec.lock` files used as fixtures during testing.
-library pubspec_locks;
+library;
 
 /// An artificially crafted `pubspec.lock` file with:
 ///
