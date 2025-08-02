@@ -115,7 +115,7 @@ class DevServerDomain extends DomainBase {
           'applicationId': applicationId,
         },
       );
-    } catch (e) {
+    } on Exception catch (e) {
       return DaemonResponse.error(
         id: request.id,
         error: {
@@ -149,7 +149,7 @@ class DevServerDomain extends DomainBase {
           'applicationId': applicationId,
         },
       );
-    } catch (e) {
+    } on Exception catch (e) {
       return DaemonResponse.error(
         id: request.id,
         error: {
@@ -186,7 +186,7 @@ class DevServerDomain extends DomainBase {
           'exitCode': exitCode.code,
         },
       );
-    } catch (e) {
+    } on Exception catch (e) {
       if (!runner.isCompleted) {
         _devServerRunners[applicationId] = runner;
       }

@@ -55,7 +55,7 @@ void main() {
     tearDown(() {
       try {
         tempDir.deleteSync(recursive: true);
-      } catch (_) {}
+      } on Exception catch (_) {}
     });
 
     test('throws when a pubspec.yaml does not exist', () {

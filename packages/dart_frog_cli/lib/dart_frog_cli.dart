@@ -7,4 +7,4 @@
 /// # 👀 See usage
 /// dart_frog --help
 /// ```
-library dart_frog_cli;
+library;

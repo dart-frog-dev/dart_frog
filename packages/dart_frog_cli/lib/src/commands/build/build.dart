@@ -49,7 +49,7 @@ class BuildCommand extends DartFrogCommand {
 
     try {
       return (await builder.build()).code;
-    } catch (e) {
+    } on Exception catch (e) {
       logger.err(e.toString());
       return ExitCode.software.code;
     }

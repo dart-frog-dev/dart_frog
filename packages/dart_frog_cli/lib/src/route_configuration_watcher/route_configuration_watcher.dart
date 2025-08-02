@@ -152,7 +152,7 @@ class RouteConfigurationWatcher {
     final projectDirectory = workingDirectory;
     try {
       routeConfiguration = _routeConfigurationBuilder(projectDirectory);
-    } catch (error) {
+    } on Exception catch (error) {
       logger.err('$error');
       return null;
     }
