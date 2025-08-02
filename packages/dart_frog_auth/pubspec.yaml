@@ -1,6 +1,6 @@
 name: dart_frog_auth
 description: Header authentication based middlewares for Dart Frog. Built by Very Good Ventures.
-version: 1.2.0
+version: 1.2.1
 homepage: https://dart-frog.dev
 repository: https://github.com/dart-frog-dev/dart_frog
 issue_tracker: https://github.com/dart-frog-dev/dart_frog/issues
