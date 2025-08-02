@@ -1,3 +1,8 @@
+# 2.0.1
+
+- refactor: upgrade analysis options ([#1798](https://github.com/dart-frog-dev/dart_frog/pull/1798))
+- docs: update all repository references ([#1791](https://github.com/dart-frog-dev/dart_frog/pull/1791))
+
 # 2.0.0
 
 - feat: removing external checking from code gen ([#928](https://github.com/dart-frog-dev/dart_frog/pull/928))
