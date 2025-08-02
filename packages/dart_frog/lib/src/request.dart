@@ -110,7 +110,7 @@ class Request {
 
   Request._(this._request);
 
-  shelf.Request _request;
+  final shelf.Request _request;
 
   /// Connection information for the associated HTTP request.
   HttpConnectionInfo get connectionInfo {
@@ -140,16 +140,12 @@ class Request {
 
   /// Returns a [Future] containing the body as a [String].
   Future<String> body() async {
-    const requestBodyKey = 'dart_frog.request.body';
-    final bodyFromContext =
-        _request.context[requestBodyKey] as Completer<String>?;
-    if (bodyFromContext != null) return bodyFromContext.future;
+    final bodyFromContext = _bodyFutureExpando[_request];
+    if (bodyFromContext != null) return bodyFromContext;
 
     final completer = Completer<String>();
     try {
-      _request = _request.change(
-        context: {..._request.context, requestBodyKey: completer},
-      );
+      _bodyFutureExpando[_request] = completer.future;
       completer.complete(await _request.readAsString());
     } catch (error, stackTrace) {
       completer.completeError(error, stackTrace);
@@ -178,3 +174,5 @@ class Request {
     return Request._(_request.change(headers: headers, path: path, body: body));
   }
 }
+
+final _bodyFutureExpando = Expando<Future<String>>('dart_frog.request.body');
