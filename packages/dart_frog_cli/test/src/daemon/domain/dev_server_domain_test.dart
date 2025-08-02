@@ -35,17 +35,18 @@ void main() {
         daemonServer,
         getId: () => 'id',
         generator: (_) async => generator,
-        devServerRunnerConstructor: ({
-          required logger,
-          required port,
-          required address,
-          required devServerBundleGenerator,
-          required dartVmServicePort,
-          required workingDirectory,
-          void Function()? onHotReloadEnabled,
-        }) {
-          return runner;
-        },
+        devServerRunnerConstructor:
+            ({
+              required logger,
+              required port,
+              required address,
+              required devServerBundleGenerator,
+              required dartVmServicePort,
+              required workingDirectory,
+              void Function()? onHotReloadEnabled,
+            }) {
+              return runner;
+            },
       );
       completer = Completer();
       when(() => runner.start()).thenAnswer((_) async {});
@@ -69,23 +70,24 @@ void main() {
           daemonServer,
           getId: () => 'id',
           generator: (_) async => generator,
-          devServerRunnerConstructor: ({
-            required logger,
-            required port,
-            required address,
-            required devServerBundleGenerator,
-            required dartVmServicePort,
-            required workingDirectory,
-            void Function()? onHotReloadEnabled,
-          }) {
-            passedLogger = logger;
-            passedPort = port;
-            passedAddress = address;
-            passedDevServerBundleGenerator = devServerBundleGenerator;
-            passedDartVmServicePort = dartVmServicePort;
-            passedWorkingDirectory = workingDirectory;
-            return runner;
-          },
+          devServerRunnerConstructor:
+              ({
+                required logger,
+                required port,
+                required address,
+                required devServerBundleGenerator,
+                required dartVmServicePort,
+                required workingDirectory,
+                void Function()? onHotReloadEnabled,
+              }) {
+                passedLogger = logger;
+                passedPort = port;
+                passedAddress = address;
+                passedDevServerBundleGenerator = devServerBundleGenerator;
+                passedDartVmServicePort = dartVmServicePort;
+                passedWorkingDirectory = workingDirectory;
+                return runner;
+              },
         );
 
         expect(
@@ -157,18 +159,13 @@ void main() {
                 id: '12',
                 domain: 'dev_server',
                 method: 'start',
-                params: {
-                  'workingDirectory': '/',
-                  'dartVmServicePort': 3001,
-                },
+                params: {'workingDirectory': '/', 'dartVmServicePort': 3001},
               ),
             ),
             equals(
               const DaemonResponse.error(
                 id: '12',
-                error: {
-                  'message': 'Missing parameter, port not found',
-                },
+                error: {'message': 'Missing parameter, port not found'},
               ),
             ),
           );
@@ -181,10 +178,7 @@ void main() {
                 id: '12',
                 domain: 'dev_server',
                 method: 'start',
-                params: {
-                  'workingDirectory': '/',
-                  'port': 3000,
-                },
+                params: {'workingDirectory': '/', 'port': 3000},
               ),
             ),
             equals(
@@ -228,10 +222,7 @@ void main() {
                 id: '12',
                 domain: 'dev_server',
                 method: 'start',
-                params: {
-                  'workingDirectory': '/',
-                  'port': 'lol',
-                },
+                params: {'workingDirectory': '/', 'port': 'lol'},
               ),
             ),
             equals(
@@ -287,7 +278,8 @@ void main() {
               const DaemonResponse.error(
                 id: '12',
                 error: {
-                  'message': 'Malformed message, invalid hostname "lol": '
+                  'message':
+                      'Malformed message, invalid hostname "lol": '
                       'must be a valid IPv4 or IPv6 address.',
                 },
               ),
@@ -373,9 +365,7 @@ void main() {
             equals(
               const DaemonResponse.error(
                 id: '12',
-                error: {
-                  'message': 'Malformed message, invalid applicationId',
-                },
+                error: {'message': 'Malformed message, invalid applicationId'},
               ),
             ),
           );
@@ -481,10 +471,7 @@ void main() {
           equals(
             const DaemonResponse.success(
               id: '12',
-              result: {
-                'applicationId': 'id',
-                'exitCode': 0,
-              },
+              result: {'applicationId': 'id', 'exitCode': 0},
             ),
           ),
         );
@@ -506,9 +493,7 @@ void main() {
             equals(
               const DaemonResponse.error(
                 id: '12',
-                error: {
-                  'message': 'Malformed message, invalid applicationId',
-                },
+                error: {'message': 'Malformed message, invalid applicationId'},
               ),
             ),
           );
@@ -623,19 +608,20 @@ void main() {
       final domain = DevServerDomain(
         daemonServer,
         generator: (_) async => generator,
-        devServerRunnerConstructor: ({
-          required logger,
-          required port,
-          required address,
-          required devServerBundleGenerator,
-          required dartVmServicePort,
-          required workingDirectory,
-          void Function()? onHotReloadEnabled,
-        }) {
-          final runner = calls == 0 ? runner1 : runner2;
-          calls++;
-          return runner;
-        },
+        devServerRunnerConstructor:
+            ({
+              required logger,
+              required port,
+              required address,
+              required devServerBundleGenerator,
+              required dartVmServicePort,
+              required workingDirectory,
+              void Function()? onHotReloadEnabled,
+            }) {
+              final runner = calls == 0 ? runner1 : runner2;
+              calls++;
+              return runner;
+            },
       );
 
       await domain.handleRequest(

@@ -152,93 +152,87 @@ void main() {
       expect(createdFiles, isEmpty);
     });
 
-    test(
-      'rollback does not remove snapshot '
-      'when there is only one snapshot',
-      () async {
-        const path = './path';
-        final contents = utf8.encode('contents');
-        final createdFiles = <CachedFile>[];
+    test('rollback does not remove snapshot '
+        'when there is only one snapshot', () async {
+      const path = './path';
+      final contents = utf8.encode('contents');
+      final createdFiles = <CachedFile>[];
 
-        generatorTarget = RestorableDirectoryGeneratorTarget(
-          directory,
-          createFile: (path, contents, {logger, overwriteRule}) async {
-            createdFiles.add(CachedFile(path: path, contents: contents));
-            return _FakeGeneratedFile();
-          },
-        );
+      generatorTarget = RestorableDirectoryGeneratorTarget(
+        directory,
+        createFile: (path, contents, {logger, overwriteRule}) async {
+          createdFiles.add(CachedFile(path: path, contents: contents));
+          return _FakeGeneratedFile();
+        },
+      );
 
-        await generatorTarget.createFile(path, contents);
+      await generatorTarget.createFile(path, contents);
 
-        expect(createdFiles.length, equals(1));
+      expect(createdFiles.length, equals(1));
 
-        createdFiles.clear();
+      createdFiles.clear();
 
-        generatorTarget.cacheLatestSnapshot();
-        await generatorTarget.rollback();
+      generatorTarget.cacheLatestSnapshot();
+      await generatorTarget.rollback();
 
-        createdFiles.clear();
+      createdFiles.clear();
 
-        const otherPath = './other/path';
-        await generatorTarget.createFile(otherPath, contents);
+      const otherPath = './other/path';
+      await generatorTarget.createFile(otherPath, contents);
 
-        expect(createdFiles.length, equals(1));
-        expect(createdFiles.first.path, equals(otherPath));
-        expect(createdFiles.first.contents, equals(contents));
+      expect(createdFiles.length, equals(1));
+      expect(createdFiles.first.path, equals(otherPath));
+      expect(createdFiles.first.contents, equals(contents));
 
-        createdFiles.clear();
+      createdFiles.clear();
 
-        await generatorTarget.rollback();
+      await generatorTarget.rollback();
 
-        expect(createdFiles.length, equals(1));
-        expect(createdFiles.first.path, equals(path));
-        expect(createdFiles.first.contents, equals(contents));
-      },
-    );
+      expect(createdFiles.length, equals(1));
+      expect(createdFiles.first.path, equals(path));
+      expect(createdFiles.first.contents, equals(contents));
+    });
 
-    test(
-      'rollback removes latest snapshot '
-      'when there is more than one snapshot',
-      () async {
-        const path = './path';
-        final contents = utf8.encode('contents');
-        final createdFiles = <CachedFile>[];
+    test('rollback removes latest snapshot '
+        'when there is more than one snapshot', () async {
+      const path = './path';
+      final contents = utf8.encode('contents');
+      final createdFiles = <CachedFile>[];
 
-        generatorTarget = RestorableDirectoryGeneratorTarget(
-          directory,
-          createFile: (path, contents, {logger, overwriteRule}) async {
-            createdFiles.add(CachedFile(path: path, contents: contents));
-            return _FakeGeneratedFile();
-          },
-        );
+      generatorTarget = RestorableDirectoryGeneratorTarget(
+        directory,
+        createFile: (path, contents, {logger, overwriteRule}) async {
+          createdFiles.add(CachedFile(path: path, contents: contents));
+          return _FakeGeneratedFile();
+        },
+      );
 
-        await generatorTarget.createFile(path, contents);
+      await generatorTarget.createFile(path, contents);
 
-        expect(createdFiles.length, equals(1));
+      expect(createdFiles.length, equals(1));
 
-        generatorTarget.cacheLatestSnapshot();
+      generatorTarget.cacheLatestSnapshot();
 
-        const otherPath = './other/path';
-        await generatorTarget.createFile(otherPath, contents);
+      const otherPath = './other/path';
+      await generatorTarget.createFile(otherPath, contents);
 
-        generatorTarget.cacheLatestSnapshot();
+      generatorTarget.cacheLatestSnapshot();
 
-        expect(createdFiles.length, equals(2));
-        expect(createdFiles.first.path, equals(path));
-        expect(createdFiles.first.contents, equals(contents));
-        expect(createdFiles.last.path, equals(otherPath));
-        expect(createdFiles.last.contents, equals(contents));
+      expect(createdFiles.length, equals(2));
+      expect(createdFiles.first.path, equals(path));
+      expect(createdFiles.first.contents, equals(contents));
+      expect(createdFiles.last.path, equals(otherPath));
+      expect(createdFiles.last.contents, equals(contents));
 
-        await generatorTarget.rollback();
+      await generatorTarget.rollback();
 
-        createdFiles.clear();
+      createdFiles.clear();
 
-        await generatorTarget.rollback();
+      await generatorTarget.rollback();
 
-        expect(createdFiles.length, equals(1));
-        expect(createdFiles.first.path, equals(path));
-        expect(createdFiles.first.contents, equals(contents));
-      },
-    );
+      expect(createdFiles.length, equals(1));
+      expect(createdFiles.first.path, equals(path));
+      expect(createdFiles.first.contents, equals(contents));
+    });
   });
 }

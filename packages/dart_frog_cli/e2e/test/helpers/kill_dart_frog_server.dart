@@ -4,11 +4,12 @@ import 'helpers.dart';
 
 Future<void> killDartFrogServer(int pid, {int port = 8080}) async {
   if (Platform.isWindows) {
-    await runProcess(
-      'taskkill',
-      ['/F', '/T', '/PID', '$pid'],
-      runInShell: true,
-    );
+    await runProcess('taskkill', [
+      '/F',
+      '/T',
+      '/PID',
+      '$pid',
+    ], runInShell: true);
 
     return;
   }

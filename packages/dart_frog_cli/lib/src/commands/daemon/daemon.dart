@@ -10,10 +10,8 @@ typedef DaemonBuilder = DaemonServer Function();
 /// {@endtemplate}
 class DaemonCommand extends DartFrogCommand {
   /// {@macro daemon_command}
-  DaemonCommand({
-    super.logger,
-    DaemonBuilder? daemonBuilder,
-  }) : _daemonBuilder = daemonBuilder ?? DaemonServer.new;
+  DaemonCommand({super.logger, DaemonBuilder? daemonBuilder})
+    : _daemonBuilder = daemonBuilder ?? DaemonServer.new;
 
   final DaemonBuilder _daemonBuilder;
 

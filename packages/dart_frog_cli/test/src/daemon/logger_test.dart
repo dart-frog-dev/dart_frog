@@ -45,10 +45,7 @@ void main() {
         const DaemonEvent(
           domain: 'test',
           event: 'loggerAlert',
-          params: {
-            'meta-information1': true,
-            'message': 'alert',
-          },
+          params: {'meta-information1': true, 'message': 'alert'},
         ),
       );
     });
@@ -86,10 +83,7 @@ void main() {
         const DaemonEvent(
           domain: 'test',
           event: 'loggerInfo',
-          params: {
-            'meta-information1': true,
-            'message': 'delayed1',
-          },
+          params: {'meta-information1': true, 'message': 'delayed1'},
         ),
       );
 
@@ -98,10 +92,7 @@ void main() {
         const DaemonEvent(
           domain: 'test',
           event: 'loggerInfo',
-          params: {
-            'meta-information1': true,
-            'message': 'delayed2',
-          },
+          params: {'meta-information1': true, 'message': 'delayed2'},
         ),
       );
     });
@@ -115,10 +106,7 @@ void main() {
         const DaemonEvent(
           domain: 'test',
           event: 'loggerDetail',
-          params: {
-            'meta-information1': true,
-            'message': 'detail',
-          },
+          params: {'meta-information1': true, 'message': 'detail'},
         ),
       );
     });
@@ -132,10 +120,7 @@ void main() {
         const DaemonEvent(
           domain: 'test',
           event: 'loggerError',
-          params: {
-            'meta-information1': true,
-            'message': 'err',
-          },
+          params: {'meta-information1': true, 'message': 'err'},
         ),
       );
     });
@@ -149,10 +134,7 @@ void main() {
         const DaemonEvent(
           domain: 'test',
           event: 'loggerInfo',
-          params: {
-            'meta-information1': true,
-            'message': 'info',
-          },
+          params: {'meta-information1': true, 'message': 'info'},
         ),
       );
     });
@@ -180,10 +162,7 @@ void main() {
         const DaemonEvent(
           domain: 'test',
           event: 'loggerSuccess',
-          params: {
-            'meta-information1': true,
-            'message': 'success',
-          },
+          params: {'meta-information1': true, 'message': 'success'},
         ),
       );
     });
@@ -197,10 +176,7 @@ void main() {
         const DaemonEvent(
           domain: 'test',
           event: 'loggerWarning',
-          params: {
-            'meta-information1': true,
-            'message': 'warn',
-          },
+          params: {'meta-information1': true, 'message': 'warn'},
         ),
       );
     });
@@ -214,10 +190,7 @@ void main() {
         const DaemonEvent(
           domain: 'test',
           event: 'loggerWrite',
-          params: {
-            'meta-information1': true,
-            'message': 'write',
-          },
+          params: {'meta-information1': true, 'message': 'write'},
         ),
       );
     });
@@ -236,9 +209,7 @@ void main() {
             .having(
               (e) => e.params,
               'progress params',
-              equals(
-                {'meta-information1': true},
-              ),
+              equals({'meta-information1': true}),
             )
             .having((e) => e.domain, 'progress domain', equals('test'))
             .having((e) => e.id, 'progress id', equals('id')),
