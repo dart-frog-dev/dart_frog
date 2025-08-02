@@ -1,3 +1,8 @@
+# 1.2.2
+
+- refactor: upgrade analysis options ([#1798](https://github.com/dart-frog-dev/dart_frog/pull/1798))
+- docs: update all repository references ([#1791](https://github.com/dart-frog-dev/dart_frog/pull/1791))
+
 # 1.2.1
 
 - fix: add default handler for disallowed http methods ([#1727](https://github.com/dart-frog-dev/dart_frog/pull/1727))
