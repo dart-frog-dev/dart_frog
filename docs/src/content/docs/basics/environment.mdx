@@ -18,7 +18,7 @@ configured with different environments.
 ```dart
 Handler middleware(Handler handler) {
   return handler
-      .use(provider<CardsRepository>((_) {
+      .use(provider<DatabaseClient>((_) {
         return DatabaseClient(
           dbUrl: Platform.environment['DB_URL'],
           dbUser: Platform.environment['DB_USER'],
