@@ -80,7 +80,7 @@ export async function openChangelog(version: string): Promise<void> {
   vscode.commands.executeCommand(
     "vscode.open",
     vscode.Uri.parse(
-      `https://github.com/verygoodopensource/dart_frog/releases/tag/dart_frog_cli-v${version}`
+      `https://github.com/dart-frog-dev/dart_frog/releases/tag/dart_frog_cli-v${version}`
     )
   );
 }

@@ -36,7 +36,7 @@ import {
  * All the logic associated with creating a new route is handled by the
  * `dart_frog new middleware` command, from the Dart Frog CLI.
  *
- * @see [Dart Frog CLI `new` command implementation](https://github.com/VeryGoodOpenSource/dart_frog/tree/main/packages/dart_frog_cli/lib/src/commands/new)
+ * @see [Dart Frog CLI `new` command implementation](https://github.com/dart-frog-dev/dart_frog/tree/main/packages/dart_frog_cli/lib/src/commands/new)
  * @param {Uri | undefined} uri
  */
 export const newMiddleware = async (uri: Uri | undefined): Promise<void> => {

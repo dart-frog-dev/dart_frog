@@ -12,13 +12,13 @@ This is a mono repo, a repository that includes more than one individual project
 
 The contents of the mono repo is divided into the following directories:
 
-- [`tool/`](https://github.com/VeryGoodOpenSource/dart_frog/tree/main/tool): contains internal operation scripts
-- [`assets/`](https://github.com/VeryGoodOpenSource/dart_frog/tree/main/assets): images to embed into READMEs
-- [`docs/`](https://github.com/VeryGoodOpenSource/dart_frog/tree/main/docs): source code for the [docs site][dart_frog_site].
-- [`examples/`](https://github.com/VeryGoodOpenSource/dart_frog/tree/main/examples): example projects of some of the several usages of Dart Frog
-- [`extensions/`](https://github.com/VeryGoodOpenSource/dart_frog/tree/main/extensions): Integrations with IDEs such as VS Code.
-- [`bricks/`](https://github.com/VeryGoodOpenSource/dart_frog/tree/main/bricks): Internal mason bricks used by [dart_frog_cli][dart_frog_cli_link] to perform tasks such as creating new projects, starting a dev server, and building a prod server.
-- [`packages/`](https://github.com/VeryGoodOpenSource/dart_frog/tree/main/packages): The source code of the packages that constitute the Dart Frog suite (`dart_frog_cli`, `dart_frog` and `dart_frog_gen`) as well as companion packages (such as `dart_frog_web_socket`).
+- [`tool/`](https://github.com/dart-frog-dev/dart_frog/tree/main/tool): contains internal operation scripts
+- [`assets/`](https://github.com/dart-frog-dev/dart_frog/tree/main/assets): images to embed into READMEs
+- [`docs/`](https://github.com/dart-frog-dev/dart_frog/tree/main/docs): source code for the [docs site][dart_frog_site].
+- [`examples/`](https://github.com/dart-frog-dev/dart_frog/tree/main/examples): example projects of some of the several usages of Dart Frog
+- [`extensions/`](https://github.com/dart-frog-dev/dart_frog/tree/main/extensions): Integrations with IDEs such as VS Code.
+- [`bricks/`](https://github.com/dart-frog-dev/dart_frog/tree/main/bricks): Internal mason bricks used by [dart_frog_cli][dart_frog_cli_link] to perform tasks such as creating new projects, starting a dev server, and building a prod server.
+- [`packages/`](https://github.com/dart-frog-dev/dart_frog/tree/main/packages): The source code of the packages that constitute the Dart Frog suite (`dart_frog_cli`, `dart_frog` and `dart_frog_gen`) as well as companion packages (such as `dart_frog_web_socket`).
 
 Some of the included projects have more specific instructions on contribution. In these cases, the project root may include a `CONTRIBUTING.md` file with such instructions.
 
@@ -53,7 +53,7 @@ accepted.
 
 Prerequisites:
 
-- Install a valid [Dart SDK](https://dart.dev/get-dart) in your local environment, it should be compatible with the latest version of [Dart Frog CLI](https://github.com/VeryGoodOpenSource/dart_frog/blob/main/packages/dart_frog_cli/pubspec.yaml). If you have Flutter installed, you likely have a valid Dart SDK version already installed.
+- Install a valid [Dart SDK](https://dart.dev/get-dart) in your local environment, it should be compatible with the latest version of [Dart Frog CLI](https://github.com/dart-frog-dev/dart_frog/blob/main/packages/dart_frog_cli/pubspec.yaml). If you have Flutter installed, you likely have a valid Dart SDK version already installed.
 - [Mason CLI][mason_install_link] (to run and test the `bricks`);
 - [Node.js][node_js_dowload_link], for working with the VS Code extension or the documentation website. Refer to their CONTRIBUTING files for further installation requirements.
 - Capability to run shell scripts (for the scripts under `tool/`).
@@ -91,7 +91,7 @@ git fetch
 git status
 ```
 
-2. Ensure the [GitHub pipeline](https://github.com/VeryGoodOpenSource/dart_frog/actions) is green (has passed successfully) for your given package.
+2. Ensure the [GitHub pipeline](https://github.com/dart-frog-dev/dart_frog/actions) is green (has passed successfully) for your given package.
 
 3. Run the script under `tool/release_ready.sh` within the package root repository and the desired new version.
 
@@ -106,13 +106,13 @@ The above example will: update the version of `<package>` to `<version>`, update
 
 5. Commit, push and open a pull request from the new release branch.
 
-6. Once merged, create a [release on GitHub][github_release_link]. The [publish workflow](https://github.com/VeryGoodOpenSource/dart_frog/blob/main/.github/workflows/publish.yaml) should take care of publishing the new version on the appropriate package manager.
+6. Once merged, create a [release on GitHub][github_release_link]. The [publish workflow](https://github.com/dart-frog-dev/dart_frog/blob/main/.github/workflows/publish.yaml) should take care of publishing the new version on the appropriate package manager.
 
 7. Open follow-up pull requests updating this package usage in any other Dart Frog package that depends on this new release.
 
 [conventional_commits_link]: https://www.conventionalcommits.org/en/v1.0.0
-[bug_report_link]: https://github.com/VeryGoodOpenSource/dart_frog/issues/new?assignees=&labels=bug&projects=&template=bug_report.md&title=fix%3A+
-[issue_creation_link]: https://github.com/VeryGoodOpenSource/dart_frog/issues/new/choose
+[bug_report_link]: https://github.com/dart-frog-dev/dart_frog/issues/new?assignees=&labels=bug&projects=&template=bug_report.md&title=fix%3A+
+[issue_creation_link]: https://github.com/dart-frog-dev/dart_frog/issues/new/choose
 [very_good_ventures_link]: https://verygood.ventures
 [dart_frog_site]: https://dart-frog.dev/
 [dart_frog_cli_link]: https://pub.dev/packages/dart_frog_cli
@@ -120,4 +120,4 @@ The above example will: update the version of `<package>` to `<version>`, update
 [mason_install_link]: https://docs.brickhub.dev/installing/
 [dart_standalone_link]: https://dart.dev/get-dart
 [dart_on_flutter_link]: https://docs.flutter.dev/get-started/install
-[github_release_link]: https://github.com/VeryGoodOpenSource/dart_frog/releases
+[github_release_link]: https://github.com/dart-frog-dev/dart_frog/releases

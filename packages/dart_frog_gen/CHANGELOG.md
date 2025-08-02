@@ -1,12 +1,12 @@
 # 2.0.0
 
-- feat: removing external checking from code gen ([#928](https://github.com/VeryGoodOpenSource/dart_frog/pull/928))
-- chore(packages): bump very good analysis ([#983](https://github.com/VeryGoodOpenSource/dart_frog/pull/983))
+- feat: removing external checking from code gen ([#928](https://github.com/dart-frog-dev/dart_frog/pull/928))
+- chore(packages): bump very good analysis ([#983](https://github.com/dart-frog-dev/dart_frog/pull/983))
 
 # 1.1.0
 
-- chore(deps): bump `package:mocktail` and `very_good_analysis` ([#855](https://github.com/VeryGoodOpenSource/dart_frog/pull/855))
-- feat(dart_frog_gen): add `toJson` to `RouteConfig` ([#872](https://github.com/VeryGoodOpenSource/dart_frog/pull/872))
+- chore(deps): bump `package:mocktail` and `very_good_analysis` ([#855](https://github.com/dart-frog-dev/dart_frog/pull/855))
+- feat(dart_frog_gen): add `toJson` to `RouteConfig` ([#872](https://github.com/dart-frog-dev/dart_frog/pull/872))
 
 # 1.0.0
 
@@ -14,24 +14,24 @@
 
 # 0.4.1
 
-- feat: update to Dart 3 and Very Good Analysis 5 ([#681](https://github.com/VeryGoodOpenSource/dart_frog/pull/681))
-- feat: adding wildcard detection to dart frog gen ([#691](https://github.com/VeryGoodOpenSource/dart_frog/pull/691))
+- feat: update to Dart 3 and Very Good Analysis 5 ([#681](https://github.com/dart-frog-dev/dart_frog/pull/681))
+- feat: adding wildcard detection to dart frog gen ([#691](https://github.com/dart-frog-dev/dart_frog/pull/691))
 
 # 0.4.0
 
-- feat!: re-land "add route configuration validation to gen" ([#614](https://github.com/VeryGoodOpenSource/dart_frog/pull/614))
+- feat!: re-land "add route configuration validation to gen" ([#614](https://github.com/dart-frog-dev/dart_frog/pull/614))
 
 # 0.3.4
 
-- fix: revert "add route configuration validation to gen" ([#628](https://github.com/VeryGoodOpenSource/dart_frog/pull/628))
+- fix: revert "add route configuration validation to gen" ([#628](https://github.com/dart-frog-dev/dart_frog/pull/628))
 
 # 0.3.3
 
-- feat: add route configuration validation to gen ([#614](https://github.com/VeryGoodOpenSource/dart_frog/pull/614))
+- feat: add route configuration validation to gen ([#614](https://github.com/dart-frog-dev/dart_frog/pull/614))
 
 # 0.3.2
 
-- feat: detect custom init method ([#564](https://github.com/VeryGoodOpenSource/dart_frog/pull/564))
+- feat: detect custom init method ([#564](https://github.com/dart-frog-dev/dart_frog/pull/564))
 
 # 0.3.1
 

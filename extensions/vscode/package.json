@@ -5,12 +5,12 @@
   "version": "0.2.6",
   "publisher": "VeryGoodVentures",
   "bugs": {
-    "url": "https://github.com/VeryGoodOpenSource/dart_frog/issues",
+    "url": "https://github.com/dart-frog-dev/dart_frog/issues",
     "email": "tools@verygood.ventures"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/VeryGoodOpenSource/dart_frog"
+    "url": "https://github.com/dart-frog-dev/dart_frog"
   },
   "homepage": "https://dart-frog.dev/",
   "license": "MIT",

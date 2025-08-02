@@ -1,4 +1,4 @@
-[<img src="https://raw.githubusercontent.com/VeryGoodOpenSource/dart_frog/main/docs/static/img/dart_frog.png" align="left" height="63.5px" />](https://dart-frog.dev/)
+[<img src="https://raw.githubusercontent.com/dart-frog-dev/dart_frog/main/assets/dart_frog.png" align="left" height="63.5px" />](https://dart-frog.dev/)
 
 ### Dart Frog
 
@@ -12,7 +12,7 @@
 
 A fast, minimalistic backend framework for Dart 🎯
 
-Developed with 💙 by [Very Good Ventures][very_good_ventures_link] 🦄
+[Originally developed][credits_link] by [Very Good Ventures][very_good_ventures_link] 🦄
 
 ## Documentation 📝
 
@@ -60,20 +60,20 @@ dart_frog build
 
 ## Documentation 📝
 
-View the full documentation [here][documentation_link].
+View the full documentation [here][docs_link].
 
-[ci_badge]: https://github.com/VeryGoodOpenSource/dart_frog/actions/workflows/dart_frog.yaml/badge.svg?branch=main
-[ci_link]: https://github.com/VeryGoodOpenSource/dart_frog/actions/workflows/dart_frog.yaml
-[coverage_badge]: https://raw.githubusercontent.com/VeryGoodOpenSource/dart_frog/main/packages/dart_frog/coverage_badge.svg
+[ci_badge]: https://github.com/dart-frog-dev/dart_frog/actions/workflows/dart_frog.yaml/badge.svg?branch=main
+[ci_link]: https://github.com/dart-frog-dev/dart_frog/actions/workflows/dart_frog.yaml
+[coverage_badge]: https://raw.githubusercontent.com/dart-frog-dev/dart_frog/main/packages/dart_frog/coverage_badge.svg
+[credits_link]: https://github.com/dart-frog-dev/dart_frog/blob/main/CREDITS.md#acknowledgments
 [dart_installation_link]: https://dart.dev/get-dart
-[documentation_link]: https://verygoodopensource.github.io/dart_frog
+[docs_link]: https://dart-frog.dev
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [license_link]: https://opensource.org/licenses/MIT
-[logo_black]: https://raw.githubusercontent.com/VeryGoodOpenSource/dart_frog/main/assets/dart_frog_logo_black.png#gh-light-mode-only
-[logo_white]: https://raw.githubusercontent.com/VeryGoodOpenSource/dart_frog/main/assets/dart_frog_logo_white.png#gh-dark-mode-only
+[logo_black]: https://raw.githubusercontent.com/dart-frog-dev/dart_frog/main/assets/dart_frog_logo_black.png#gh-light-mode-only
+[logo_white]: https://raw.githubusercontent.com/dart-frog-dev/dart_frog/main/assets/dart_frog_logo_white.png#gh-dark-mode-only
 [pub_badge]: https://img.shields.io/pub/v/dart_frog.svg
 [pub_link]: https://pub.dartlang.org/packages/dart_frog
 [very_good_analysis_badge]: https://img.shields.io/badge/style-very_good_analysis-B22C89.svg
 [very_good_analysis_link]: https://pub.dev/packages/very_good_analysis
 [very_good_ventures_link]: https://verygood.ventures
-[docs_link]: https://dart-frog.dev

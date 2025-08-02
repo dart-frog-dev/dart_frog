@@ -31,7 +31,7 @@ import { isDartFrogCLIInstalled, suggestInstallingDartFrogCLI } from "../utils";
  * `dart_frog create` command, from the Dart Frog CLI.
  *
  * @param {Uri | undefined} uri
- * @see {@link https://github.com/VeryGoodOpenSource/dart_frog/blob/main/packages/dart_frog_cli/lib/src/commands/create/create.dart Dart Frog CLI `create` command implementation.}
+ * @see {@link https://github.com/dart-frog-dev/dart_frog/blob/main/packages/dart_frog_cli/lib/src/commands/create/create.dart Dart Frog CLI `create` command implementation.}
  */
 export const create = async (uri: Uri | undefined): Promise<void> => {
   if (!isDartFrogCLIInstalled()) {

@@ -47,7 +47,7 @@ final changelogLink = lightCyan.wrap(
   styleUnderlined.wrap(
     link(
       uri: Uri.parse(
-        'https://github.com/verygoodopensource/dart_frog/releases/tag/dart_frog_cli-v$latestVersion',
+        'https://github.com/dart-frog-dev/dart_frog/releases/tag/dart_frog_cli-v$latestVersion',
       ),
     ),
   ),

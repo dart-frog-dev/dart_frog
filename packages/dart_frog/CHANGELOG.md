@@ -1,25 +1,25 @@
 # 1.2.1
 
-- fix: add default handler for disallowed http methods ([#1727](https://github.com/VeryGoodOpenSource/dart_frog/pull/1727))
+- fix: add default handler for disallowed http methods ([#1727](https://github.com/dart-frog-dev/dart_frog/pull/1727))
 
 # 1.2.0
 
-- chore(deps): bump very_good_analysis from 5.1.0 to 6.0.0 in /packages/dart_frog ([#1432](https://github.com/VeryGoodOpenSource/dart_frog/pull/1432))
-- chore(deps): bump mime from 1.0.6 to 2.0.0 in /packages/dart_frog ([#1528](https://github.com/VeryGoodOpenSource/dart_frog/pull/1528))
+- chore(deps): bump very_good_analysis from 5.1.0 to 6.0.0 in /packages/dart_frog ([#1432](https://github.com/dart-frog-dev/dart_frog/pull/1432))
+- chore(deps): bump mime from 1.0.6 to 2.0.0 in /packages/dart_frog ([#1528](https://github.com/dart-frog-dev/dart_frog/pull/1528))
 
 # 1.1.0
 
-- feat: support reuse of nested router ([#393](https://github.com/VeryGoodOpenSource/dart_frog/pull/393))
-- docs: fix bad "request" template ([#1152](https://github.com/VeryGoodOpenSource/dart_frog/pull/1152))
-- feat(dart_frog): allow disabling Response buffer output ([#1261](https://github.com/VeryGoodOpenSource/dart_frog/pull/1261))
+- feat: support reuse of nested router ([#393](https://github.com/dart-frog-dev/dart_frog/pull/393))
+- docs: fix bad "request" template ([#1152](https://github.com/dart-frog-dev/dart_frog/pull/1152))
+- feat(dart_frog): allow disabling Response buffer output ([#1261](https://github.com/dart-frog-dev/dart_frog/pull/1261))
 
 # 1.0.1
 
-- chore: add topics ([#901](https://github.com/VeryGoodOpenSource/dart_frog/pull/901))
-- chore: comply with new analysis rules ([#940](https://github.com/VeryGoodOpenSource/dart_frog/pull/940))
-- docs: corrected serve function documentation typo ([#939](https://github.com/VeryGoodOpenSource/dart_frog/pull/939))
-- feat: add optional shared parameter to serve function ([#908](https://github.com/VeryGoodOpenSource/dart_frog/pull/908))
-- docs: add links to docs on readmes ([#978](https://github.com/VeryGoodOpenSource/dart_frog/pull/978))
+- chore: add topics ([#901](https://github.com/dart-frog-dev/dart_frog/pull/901))
+- chore: comply with new analysis rules ([#940](https://github.com/dart-frog-dev/dart_frog/pull/940))
+- docs: corrected serve function documentation typo ([#939](https://github.com/dart-frog-dev/dart_frog/pull/939))
+- feat: add optional shared parameter to serve function ([#908](https://github.com/dart-frog-dev/dart_frog/pull/908))
+- docs: add links to docs on readmes ([#978](https://github.com/dart-frog-dev/dart_frog/pull/978))
 
 # 1.0.0
 
@@ -37,8 +37,8 @@
 
 # 0.3.6
 
-- fix: `Pipeline` does not maintain `RequestContext` ([#605](https://github.com/VeryGoodOpenSource/dart_frog/pull/605))
-- fix: `Response.json()` overwrites `content-type` header ([#596](https://github.com/VeryGoodOpenSource/dart_frog/pull/596))
+- fix: `Pipeline` does not maintain `RequestContext` ([#605](https://github.com/dart-frog-dev/dart_frog/pull/605))
+- fix: `Response.json()` overwrites `content-type` header ([#596](https://github.com/dart-frog-dev/dart_frog/pull/596))
 
 # 0.3.5
 
@@ -47,7 +47,7 @@
 
 # 0.3.4
 
-- feat: add support for `multipart/form-data` ([#551](https://github.com/VeryGoodOpenSource/dart_frog/pull/551))
+- feat: add support for `multipart/form-data` ([#551](https://github.com/dart-frog-dev/dart_frog/pull/551))
 
 # 0.3.3
 
