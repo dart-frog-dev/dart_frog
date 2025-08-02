@@ -28,7 +28,9 @@ class PubspecLock {
     late final YamlMap yaml;
     try {
       yaml = loadYaml(content) as YamlMap;
-    } on Exception catch (_) {
+      // ignoring for backward compatibility
+      // ignore: avoid_catches_without_on_clauses
+    } catch (_) {
       throw const PubspecLockParseException();
     }
 
@@ -46,7 +48,9 @@ class PubspecLock {
           data: entry.value as YamlMap,
         );
         parsedPackages.add(package);
-      } on Exception catch (_) {
+        // ignoring for backward compatibility
+        // ignore: avoid_catches_without_on_clauses
+      } catch (_) {
         // Ignore those packages that for some reason cannot be parsed.
       }
     }
