@@ -1,6 +1,3 @@
-/// A fast, minimalistic backend framework for Dart 🎯
-library dart_frog;
-
 export 'src/_internal.dart'
     show
         Cascade,

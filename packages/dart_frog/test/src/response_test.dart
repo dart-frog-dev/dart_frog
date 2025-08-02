@@ -110,11 +110,7 @@ void main() {
 
       group('bufferOutput', () {
         test('is omitted by default', () {
-          final response = Response.stream(
-            body: const Stream.empty(),
-            // ignore: avoid_redundant_argument_values
-            bufferOutput: true,
-          );
+          final response = Response.stream(body: const Stream.empty());
 
           expect(
             response.context,
