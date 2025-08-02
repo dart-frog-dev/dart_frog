@@ -29,7 +29,7 @@ Future<void> createBundle({
       '${tempDirectory.path}${path.separator}',
     );
     bundlingProgress.complete();
-  } catch (error) {
+  } on Exception catch (error) {
     bundlingProgress.fail();
     context.logger.err('$error');
     return exit(1);

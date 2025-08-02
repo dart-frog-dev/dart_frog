@@ -83,6 +83,8 @@ class RouteConfigurationDomain extends DomainBase {
           },
         ),
       );
+      // ignoring for backward compatibility
+      // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       return DaemonResponse.error(
         id: request.id,
@@ -183,6 +185,8 @@ class RouteConfigurationDomain extends DomainBase {
           'exitCode': exitCode.code,
         },
       );
+      // ignoring for backward compatibility
+      // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       if (!watcher.isCompleted) {
         _routeConfigurationWatchers[watcherId] = watcher;

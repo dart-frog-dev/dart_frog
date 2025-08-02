@@ -14,7 +14,7 @@ To develop for the Dart Frog Visual Studio Code (VS Code) extension you will nee
 
 ### Setting up your local development environment
 
-1. Install a valid [Dart SDK](https://dart.dev/get-dart) in your local environment, it should be compatible with the latest version of [Dart Frog CLI](https://github.com/VeryGoodOpenSource/dart_frog/blob/main/packages/dart_frog_cli/pubspec.yaml). If you have Flutter installed, you likely have a valid Dart SDK version already installed.
+1. Install a valid [Dart SDK](https://dart.dev/get-dart) in your local environment, it should be compatible with the latest version of [Dart Frog CLI](https://github.com/dart-frog-dev/dart_frog/blob/main/packages/dart_frog_cli/pubspec.yaml). If you have Flutter installed, you likely have a valid Dart SDK version already installed.
 
 2. Install a valid [Node.js](https://nodejs.org) runtime in your local environment, it should be compatible with the [VS Code engine version](./package.json).
 
@@ -39,7 +39,7 @@ npm i
 npm test
 ```
 
-If some tests do not pass out of the box, please submit an [issue](https://github.com/VeryGoodOpenSource/dart_frog/issues/new/choose).
+If some tests do not pass out of the box, please submit an [issue](https://github.com/dart-frog-dev/dart_frog/issues/new/choose).
 
 5. Inside the VS Code editor, press F5. This will compile and run the extension in a new **Extension Development Host** window.
 
@@ -51,7 +51,7 @@ If some tests do not pass out of the box, please submit an [issue](https://githu
 
 Before creating a Pull Request please:
 
-1. [Fork](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) the [GitHub repository](https://github.com/VeryGoodOpenSource/dart_frog) and create your branch from `main`:
+1. [Fork](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) the [GitHub repository](https://github.com/dart-frog-dev/dart_frog) and create your branch from `main`:
 
 ```sh
 # 🪵 Branch from `main`
@@ -79,9 +79,9 @@ npm test
 
 5. Create the Pull Request with a meaningful description, linking to the original issue where possible.
 
-6. Verify that all [status checks](https://github.com/VeryGoodOpenSource/dart_frog/actions/) are passing for your Pull Request once they have been approved to run by a maintainer.
+6. Verify that all [status checks](https://github.com/dart-frog-dev/dart_frog/actions/) are passing for your Pull Request once they have been approved to run by a maintainer.
 
 💡 **Note**: While the prerequisites above must be satisfied prior to having your pull request reviewed, the reviewer(s) may ask you to complete additional work, tests, or other changes before your pull request can be accepted.
 
 [conventional_commits_link]: https://www.conventionalcommits.org/en/v1.0.0
-[bug_report_link]: https://github.com/VeryGoodOpenSource/dart_frog/issues/new?assignees=&labels=bug&template=bug_report.md&title=fix%3A+
+[bug_report_link]: https://github.com/dart-frog-dev/dart_frog/issues/new?assignees=&labels=bug&template=bug_report.md&title=fix%3A+

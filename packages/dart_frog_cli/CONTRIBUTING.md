@@ -51,7 +51,7 @@ dart test
 dart test
 ```
 
-If some tests do not pass out of the box, please submit an [issue](https://github.com/VeryGoodOpenSource/dart_frog/issues/new/choose).
+If some tests do not pass out of the box, please submit an [issue](https://github.com/dart-frog-dev/dart_frog/issues/new/choose).
 
 4. Install your own version of Dart Frog CLI in your local environment:
 
@@ -71,7 +71,7 @@ tool/generate_bundles.sh
 
 Before creating a Pull Request please:
 
-1. [Fork](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) the [GitHub repository](https://github.com/VeryGoodOpenSource/dart_frog) and create your branch from `main`:
+1. [Fork](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) the [GitHub repository](https://github.com/dart-frog-dev/dart_frog) and create your branch from `main`:
 
 ```sh
 # 🪵 Branch from `main`
@@ -124,11 +124,11 @@ dart fix --apply
 
 8. Create the Pull Request with a meaningful description, linking to the original issue where possible.
 
-9. Verify that all [status checks](https://github.com/VeryGoodOpenSource/dart_frog/actions) are passing for your Pull Request once they have been approved to run by a maintainer.
+9. Verify that all [status checks](https://github.com/dart-frog-dev/dart_frog/actions) are passing for your Pull Request once they have been approved to run by a maintainer.
 
 💡 **Note**: While the prerequisites above must be satisfied prior to having your pull request reviewed, the reviewer(s) may ask you to complete additional work, tests, or other changes before your pull request can be accepted.
 
 [conventional_commits_link]: https://www.conventionalcommits.org/en/v1.0.0
-[bug_report_link]: https://github.com/VeryGoodOpenSource/dart_frog/issues/new?assignees=&labels=bug&projects=&template=bug_report.md&title=fix%3A+
+[bug_report_link]: https://github.com/dart-frog-dev/dart_frog/issues/new?assignees=&labels=bug&projects=&template=bug_report.md&title=fix%3A+
 [very_good_core_link]: doc/very_good_core.md
 [very_good_ventures_link]: https://verygood.ventures/?utm_source=github&utm_medium=banner&utm_campaign=CLI

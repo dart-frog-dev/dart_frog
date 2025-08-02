@@ -1,8 +1,11 @@
-[<img src="https://raw.githubusercontent.com/VeryGoodOpenSource/dart_frog/main/docs/static/img/dart_frog.png" align="left" height="63.5px" />](https://dartfrog.vgv.dev/)
+[<img src="https://raw.githubusercontent.com/dart-frog-dev/dart_frog/main/assets/dart_frog.png" align="left" height="63.5px" />](https://dart-frog.dev)
 
 ### Dart Frog Web Socket
 
 <br clear="left"/>
+
+[![discord][discord_badge]][discord_link]
+[![dart][dart_badge]][dart_link]
 
 [![ci][ci_badge]][ci_link]
 [![coverage][coverage_badge]][ci_link]
@@ -12,7 +15,7 @@
 
 WebSocket support for [Dart Frog][dart_frog_link].
 
-Developed with 💙 by [Very Good Ventures][very_good_ventures_link] 🦄
+[Originally developed][credits_link] by [Very Good Ventures][very_good_ventures_link] 🦄
 
 Learn more about it on the [official docs][docs_link].
 
@@ -65,17 +68,22 @@ void main() {
 }
 ```
 
-[ci_badge]: https://github.com/VeryGoodOpenSource/dart_frog/actions/workflows/dart_frog_web_socket.yaml/badge.svg?branch=main
-[ci_link]: https://github.com/VeryGoodOpenSource/dart_frog/actions/workflows/dart_frog_web_socket.yaml
-[coverage_badge]: https://raw.githubusercontent.com/VeryGoodOpenSource/dart_frog/main/packages/dart_frog_web_socket/coverage_badge.svg
-[dart_frog_link]: https://github.com/verygoodopensource/dart_frog
+[ci_badge]: https://github.com/dart-frog-dev/dart_frog/actions/workflows/dart_frog_web_socket.yaml/badge.svg?branch=main
+[ci_link]: https://github.com/dart-frog-dev/dart_frog/actions/workflows/dart_frog_web_socket.yaml
+[coverage_badge]: https://raw.githubusercontent.com/dart-frog-dev/dart_frog/main/packages/dart_frog_web_socket/coverage_badge.svg
+[credits_link]: https://github.com/dart-frog-dev/dart_frog/blob/main/CREDITS.md#acknowledgments
+[dart_badge]: https://img.shields.io/badge/Dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=5BB4F0&color=1E2833
+[dart_link]: https://dart.dev
+[dart_frog_link]: https://github.com/dart-frog-dev/dart_frog
+[discord_badge]: https://img.shields.io/discord/1394707782271238184?style=for-the-badge&logo=discord&color=1C2A2E&logoColor=1DF9D2
+[discord_link]: https://discord.gg/dart-frog
+[docs_link]: https://dart-frog.dev/advanced/web-sockets
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [license_link]: https://opensource.org/licenses/MIT
-[logo_black]: https://raw.githubusercontent.com/VeryGoodOpenSource/dart_frog/main/assets/dart_frog_logo_black.png#gh-light-mode-only
-[logo_white]: https://raw.githubusercontent.com/VeryGoodOpenSource/dart_frog/main/assets/dart_frog_logo_white.png#gh-dark-mode-only
+[logo_black]: https://raw.githubusercontent.com/dart-frog-dev/dart_frog/main/assets/dart_frog_logo_black.png#gh-light-mode-only
+[logo_white]: https://raw.githubusercontent.com/dart-frog-dev/dart_frog/main/assets/dart_frog_logo_white.png#gh-dark-mode-only
 [pub_badge]: https://img.shields.io/pub/v/dart_frog_web_socket.svg
 [pub_link]: https://pub.dartlang.org/packages/dart_frog_web_socket
 [very_good_analysis_badge]: https://img.shields.io/badge/style-very_good_analysis-B22C89.svg
 [very_good_analysis_link]: https://pub.dev/packages/very_good_analysis
 [very_good_ventures_link]: https://verygood.ventures
-[docs_link]: https://dartfrog.vgv.dev/docs/advanced/web_socket

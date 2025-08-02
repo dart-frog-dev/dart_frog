@@ -40,7 +40,7 @@ suite("readDartFrogCLIVersion", () => {
         const dartFrogVersionCommandResult = `1.1.1
 
         Update available! 1.1.1 → 1.1.2
-        Changelog: \u001b]8;;https://github.com/verygoodopensource/dart_frog/releases/tag/dart_frog_cli-v1.1.2\u001b\\https://github.com/verygoodopensource/dart_frog/releases/tag/dart_frog_cli-v1.1.2\u001b]8;;\u001b\\
+        Changelog: \u001b]8;;https://github.com/dart-frog-dev/dart_frog/releases/tag/dart_frog_cli-v1.1.2\u001b\\https://github.com/dart-frog-dev/dart_frog/releases/tag/dart_frog_cli-v1.1.2\u001b]8;;\u001b\\
         Run dart_frog update to update
         `;
         const encodedDartFrogVersionCommandResult = new TextEncoder().encode(
@@ -94,7 +94,7 @@ suite("readLatestDartFrogCLIVersion", () => {
       const dartFrogVersionCommandResult = `1.1.1
 
         Update available! 1.1.1 → 1.1.2
-        Changelog: \u001b]8;;https://github.com/verygoodopensource/dart_frog/releases/tag/dart_frog_cli-v1.1.2\u001b\\https://github.com/verygoodopensource/dart_frog/releases/tag/dart_frog_cli-v1.1.2\u001b]8;;\u001b\\
+        Changelog: \u001b]8;;https://github.com/dart-frog-dev/dart_frog/releases/tag/dart_frog_cli-v1.1.2\u001b\\https://github.com/dart-frog-dev/dart_frog/releases/tag/dart_frog_cli-v1.1.2\u001b]8;;\u001b\\
         Run dart_frog update to update
         `;
       const encodedDartFrogVersionCommandResult = new TextEncoder().encode(

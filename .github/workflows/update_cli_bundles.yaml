@@ -3,8 +3,12 @@ name: update_cli_bundles
 on:
   schedule:
     # weekly on mondays at 8 am utc
-    - cron: '0 8 * * 1'
+    - cron: "0 8 * * 1"
   workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   build:
@@ -20,13 +24,8 @@ jobs:
       - name: Bump templates
         run: tool/generate_bundles.sh
 
-      - name: Config Git User
-        run: |
-          git config user.name VGV Bot
-          git config user.email vgvbot@users.noreply.github.com
-
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7.0.6
+        uses: peter-evans/create-pull-request@v7.0.8
         with:
           base: main
           branch: feat/bump-template-bundles
@@ -34,6 +33,3 @@ jobs:
           title: "feat(dart_frog_cli): update cli bundles"
           body: Please squash and merge me!
           labels: bot
-          author: VGV Bot <vgvbot@users.noreply.github.com>
-          assignees: vgvbot
-          committer: VGV Bot <vgvbot@users.noreply.github.com>

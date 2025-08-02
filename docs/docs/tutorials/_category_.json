@@ -1,9 +1,0 @@
-{
-  "label": "Tutorials",
-  "position": 3,
-  "link": {
-    "title": "Tutorials 🧑‍🎓",
-    "type": "generated-index",
-    "description": "Step-by-step instructions for how to use Dart Frog with common use cases."
-  }
-}

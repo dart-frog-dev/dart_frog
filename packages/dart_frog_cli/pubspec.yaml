@@ -1,14 +1,14 @@
 name: dart_frog_cli
 description: The official command line interface for Dart Frog. Built by Very Good Ventures.
-version: 1.2.5
-homepage: https://dartfrog.vgv.dev
-repository: https://github.com/VeryGoodOpenSource/dart_frog
-issue_tracker: https://github.com/VeryGoodOpenSource/dart_frog/issues
-documentation: https://dartfrog.vgv.dev/docs/overview
+version: 1.2.6
+homepage: https://dart-frog.dev
+repository: https://github.com/dart-frog-dev/dart_frog
+issue_tracker: https://github.com/dart-frog-dev/dart_frog/issues
+documentation: https://dart-frog.dev/getting-started
 topics: [server, backend, shelf, dart-frog, cli]
 
 screenshots:
-  - description: 'Dart Frog logo.'
+  - description: "Dart Frog logo."
     path: assets/logo.png
 
 environment:
@@ -34,7 +34,7 @@ dev_dependencies:
   build_version: ^2.1.1
   mocktail: ^1.0.4
   test: ^1.25.8
-  very_good_analysis: ^6.0.0
+  very_good_analysis: ^9.0.0
 
 executables:
   dart_frog:

@@ -1,6 +1,9 @@
 [![Dart Frog Logo][logo_white]][dart_frog_link_dark]
 [![Dart Frog Logo][logo_black]][dart_frog_link_light]
 
+[![discord][discord_badge]][discord_link]
+[![dart][dart_badge]][dart_link]
+
 [![ci][ci_badge]][ci_link]
 [![coverage][coverage_badge]][ci_link]
 [![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
@@ -9,22 +12,22 @@
 
 A fast, minimalistic backend framework for Dart 🎯
 
-Developed with 💙 by [Very Good Ventures][very_good_ventures_link] 🦄
+[Originally developed][credits_link] by [Very Good Ventures][very_good_ventures_link] 🦄
 
 ## Documentation 📝
 
-For official documentation, please visit https://dartfrog.vgv.dev.
+For official documentation, please visit https://dart-frog.dev.
 
 ## Packages 📦
 
-| Package                                                                                                         | Pub                                                                                                                    |
-| --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| [dart_frog](https://github.com/verygoodopensource/dart_frog/tree/main/packages/dart_frog)                       | [![pub package](https://img.shields.io/pub/v/dart_frog.svg)](https://pub.dev/packages/dart_frog)                       |
-| [dart_frog_gen](https://github.com/verygoodopensource/dart_frog/tree/main/packages/dart_frog_gen)               | [![pub package](https://img.shields.io/pub/v/dart_frog_gen.svg)](https://pub.dev/packages/dart_frog_gen)               |
-| [dart_frog_cli](https://github.com/verygoodopensource/dart_frog/tree/main/packages/dart_frog_cli)               | [![pub package](https://img.shields.io/pub/v/dart_frog_cli.svg)](https://pub.dev/packages/dart_frog_cli)               |
-| [dart_frog_web_socket](https://github.com/verygoodopensource/dart_frog/tree/main/packages/dart_frog_web_socket) | [![pub package](https://img.shields.io/pub/v/dart_frog_web_socket.svg)](https://pub.dev/packages/dart_frog_web_socket) |
-| [dart_frog_auth](https://github.com/verygoodopensource/dart_frog/tree/main/packages/dart_frog_auth)             | [![pub package](https://img.shields.io/pub/v/dart_frog_auth.svg)](https://pub.dev/packages/dart_frog_auth)             |
-
+| Package                                                                                                    | Pub                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| [dart_frog](https://github.com/dart-frog-dev/dart_frog/tree/main/packages/dart_frog)                       | [![pub package](https://img.shields.io/pub/v/dart_frog.svg)](https://pub.dev/packages/dart_frog)                       |
+| [dart_frog_auth](https://github.com/dart-frog-dev/dart_frog/tree/main/packages/dart_frog_auth)             | [![pub package](https://img.shields.io/pub/v/dart_frog_auth.svg)](https://pub.dev/packages/dart_frog_auth)             |
+| [dart_frog_cli](https://github.com/dart-frog-dev/dart_frog/tree/main/packages/dart_frog_cli)               | [![pub package](https://img.shields.io/pub/v/dart_frog_cli.svg)](https://pub.dev/packages/dart_frog_cli)               |
+| [dart_frog_gen](https://github.com/dart-frog-dev/dart_frog/tree/main/packages/dart_frog_gen)               | [![pub package](https://img.shields.io/pub/v/dart_frog_gen.svg)](https://pub.dev/packages/dart_frog_gen)               |
+| [dart_frog_test](https://github.com/dart-frog-dev/dart_frog/tree/main/packages/dart_frog_test)             | [![pub package](https://img.shields.io/pub/v/dart_frog_test.svg)](https://pub.dev/packages/dart_frog_test)             |
+| [dart_frog_web_socket](https://github.com/dart-frog-dev/dart_frog/tree/main/packages/dart_frog_web_socket) | [![pub package](https://img.shields.io/pub/v/dart_frog_web_socket.svg)](https://pub.dev/packages/dart_frog_web_socket) |
 
 ## Quick Start 🚀
 
@@ -92,16 +95,21 @@ Dart Frog provides a simple core with a small API surface area in order to reduc
 
 - [VS Code](https://marketplace.visualstudio.com/items?itemName=VeryGoodVentures.dart-frog): extends VS Code with support for Dart Frog and provides tools for effectively managing Dart Frog projects within VS Code.
 
+[ci_badge]: https://github.com/dart-frog-dev/dart_frog/actions/workflows/main.yaml/badge.svg
+[ci_link]: https://github.com/dart-frog-dev/dart_frog/actions/workflows/main.yaml
+[credits_link]: https://github.com/dart-frog-dev/dart_frog/blob/main/CREDITS.md#acknowledgments
+[coverage_badge]: https://raw.githubusercontent.com/dart-frog-dev/dart_frog/main/packages/dart_frog/coverage_badge.svg
+[dart_badge]: https://img.shields.io/badge/Dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=5BB4F0&color=1E2833
+[dart_link]: https://dart.dev
+[dart_frog_link_dark]: https://github.com/dart-frog-dev/dart_frog#gh-dark-mode-only
+[dart_frog_link_light]: https://github.com/dart-frog-dev/dart_frog#gh-light-mode-only
 [dart_installation_link]: https://dart.dev/get-dart
-[ci_badge]: https://github.com/VeryGoodOpenSource/dart_frog/actions/workflows/main.yaml/badge.svg
-[ci_link]: https://github.com/VeryGoodOpenSource/dart_frog/actions/workflows/main.yaml
-[coverage_badge]: https://raw.githubusercontent.com/VeryGoodOpenSource/dart_frog/main/packages/dart_frog/coverage_badge.svg
-[dart_frog_link_dark]: https://github.com/verygoodopensource/dart_frog#gh-dark-mode-only
-[dart_frog_link_light]: https://github.com/verygoodopensource/dart_frog#gh-light-mode-only
+[discord_badge]: https://img.shields.io/discord/1394707782271238184?style=for-the-badge&logo=discord&color=1C2A2E&logoColor=1DF9D2
+[discord_link]: https://discord.gg/dart-frog
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [license_link]: https://opensource.org/licenses/MIT
-[logo_black]: https://raw.githubusercontent.com/VeryGoodOpenSource/dart_frog/main/assets/dart_frog_logo_black.png#gh-light-mode-only
-[logo_white]: https://raw.githubusercontent.com/VeryGoodOpenSource/dart_frog/main/assets/dart_frog_logo_white.png#gh-dark-mode-only
+[logo_black]: https://raw.githubusercontent.com/dart-frog-dev/dart_frog/main/assets/dart_frog_logo_black.png#gh-light-mode-only
+[logo_white]: https://raw.githubusercontent.com/dart-frog-dev/dart_frog/main/assets/dart_frog_logo_white.png#gh-dark-mode-only
 [very_good_analysis_badge]: https://img.shields.io/badge/style-very_good_analysis-B22C89.svg
 [very_good_analysis_link]: https://pub.dev/packages/very_good_analysis
 [very_good_ventures_link]: https://verygood.ventures

@@ -64,6 +64,8 @@ void main() {
     Response onRequest(RequestContext context) {
       try {
         context.read<Uri>();
+        // ignoring since we need to catch the StateError for testing
+        // ignore: avoid_catches_without_on_clauses
       } catch (e) {
         exception = e;
       }

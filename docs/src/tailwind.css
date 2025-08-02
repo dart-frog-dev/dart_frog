@@ -1,0 +1,27 @@
+@layer base, starlight, theme, components, utilities;
+
+@import '@astrojs/starlight-tailwind';
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+@theme {
+	/* Generated accent color palettes. */
+	--color-accent-200: #a3d6be;
+	--color-accent-600: #007955;
+	--color-accent-900: #003d29;
+	--color-accent-950: #002c1c;
+
+	/* Generated gray color palettes. */
+	--color-gray-100: #f3f7f9;
+	--color-gray-200: #e7eff2;
+	--color-gray-300: #bac4c8;
+	--color-gray-400: #7b8f96;
+	--color-gray-500: #495c62;
+	--color-gray-700: #2a3b41;
+	--color-gray-800: #182a2f;
+	--color-gray-900: #121a1c;
+}
+
+figure > img {
+	border-radius: 0.5em;
+}

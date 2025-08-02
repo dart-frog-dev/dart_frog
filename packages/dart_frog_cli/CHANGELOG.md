@@ -1,66 +1,72 @@
+# 1.2.6
+
+- refactor: upgrade analysis options ([#1798](https://github.com/dart-frog-dev/dart_frog/pull/1798))
+- docs: update all repository references ([#1791](https://github.com/dart-frog-dev/dart_frog/pull/1791))
+- feat: allow pass through of arguments ([#1630](https://github.com/dart-frog-dev/dart_frog/pull/1630))
+
 # 1.2.5
 
-- fix: update mason version in cli ([#1622](https://github.com/VeryGoodOpenSource/dart_frog/pull/1622))
+- fix: update mason version in cli ([#1622](https://github.com/dart-frog-dev/dart_frog/pull/1622))
 
 # 1.2.4
 
-- chore(deps): tighten dependencies ([#1489](https://github.com/VeryGoodOpenSource/dart_frog/pull/1489))
-- chore(deps): bump mason from 0.1.0-dev.58 to 0.1.0-dev.59 in /packages/dart_frog_cli ([#1494](https://github.com/VeryGoodOpenSource/dart_frog/pull/1494))
-- chore(deps): bump pub_updater from 0.4.0 to 0.5.0 in /packages/dart_frog_cli ([#1495](https://github.com/VeryGoodOpenSource/dart_frog/pull/1495))
-- chore(deps): bump mason from 0.1.0-dev.59 to 0.1.0-dev.60 in /packages/dart_frog_cli ([#1504](https://github.com/VeryGoodOpenSource/dart_frog/pull/1504))
-- chore(deps): bump mason from 0.1.0-dev.60 to 0.1.0 in /packages/dart_frog_cli ([#1602](https://github.com/VeryGoodOpenSource/dart_frog/pull/1602))
+- chore(deps): tighten dependencies ([#1489](https://github.com/dart-frog-dev/dart_frog/pull/1489))
+- chore(deps): bump mason from 0.1.0-dev.58 to 0.1.0-dev.59 in /packages/dart_frog_cli ([#1494](https://github.com/dart-frog-dev/dart_frog/pull/1494))
+- chore(deps): bump pub_updater from 0.4.0 to 0.5.0 in /packages/dart_frog_cli ([#1495](https://github.com/dart-frog-dev/dart_frog/pull/1495))
+- chore(deps): bump mason from 0.1.0-dev.59 to 0.1.0-dev.60 in /packages/dart_frog_cli ([#1504](https://github.com/dart-frog-dev/dart_frog/pull/1504))
+- chore(deps): bump mason from 0.1.0-dev.60 to 0.1.0 in /packages/dart_frog_cli ([#1602](https://github.com/dart-frog-dev/dart_frog/pull/1602))
 
 # 1.2.3
 
-- chore: bump cli_completion from 0.4.0 to 0.5.0 in /packages/dart_frog_cli ([#1288](https://github.com/VeryGoodOpenSource/dart_frog/pull/1288))
-- fix: allow `$` in new commands ([#1321](https://github.com/VeryGoodOpenSource/dart_frog/pull/1321))
-- chore: bump mason from 0.1.0-dev.53 to 0.1.0-dev.57 in /packages/dart_frog_cli ([#1351](https://github.com/VeryGoodOpenSource/dart_frog/pull/1351), [#1404](https://github.com/VeryGoodOpenSource/dart_frog/pull/1404))
-- feat: update cli bundles ([#1380](https://github.com/VeryGoodOpenSource/dart_frog/pull/1380))
+- chore: bump cli_completion from 0.4.0 to 0.5.0 in /packages/dart_frog_cli ([#1288](https://github.com/dart-frog-dev/dart_frog/pull/1288))
+- fix: allow `$` in new commands ([#1321](https://github.com/dart-frog-dev/dart_frog/pull/1321))
+- chore: bump mason from 0.1.0-dev.53 to 0.1.0-dev.57 in /packages/dart_frog_cli ([#1351](https://github.com/dart-frog-dev/dart_frog/pull/1351), [#1404](https://github.com/dart-frog-dev/dart_frog/pull/1404))
+- feat: update cli bundles ([#1380](https://github.com/dart-frog-dev/dart_frog/pull/1380))
 
 # 1.2.2
 
-- feat: update cli bundles ([#1278](https://github.com/VeryGoodOpenSource/dart_frog/pull/1278))
-  - refactor(dart_frog_prod_server): define internal PubspecLock ([#1273](https://github.com/VeryGoodOpenSource/dart_frog/pull/1273))
-  - refactor(dart_frog_prod_server): remove pubspec lock dependency ([#1277](https://github.com/VeryGoodOpenSource/dart_frog/pull/1277))
+- feat: update cli bundles ([#1278](https://github.com/dart-frog-dev/dart_frog/pull/1278))
+  - refactor(dart_frog_prod_server): define internal PubspecLock ([#1273](https://github.com/dart-frog-dev/dart_frog/pull/1273))
+  - refactor(dart_frog_prod_server): remove pubspec lock dependency ([#1277](https://github.com/dart-frog-dev/dart_frog/pull/1277))
 
 # 1.2.1
 
-- chore(deps): bump mason from 0.1.0-dev.51 to 0.1.0-dev.52 in /packages/dart_frog_cli ([#1235](https://github.com/VeryGoodOpenSource/dart_frog/pull/1235))
-- feat: update cli bundles ([#1210](https://github.com/VeryGoodOpenSource/dart_frog/pull/1210))
-  - fix(dart_frog_prod_server): stop assuming directory name is package name when bundling ([#1253](https://github.com/VeryGoodOpenSource/dart_frog/pull/1253))
+- chore(deps): bump mason from 0.1.0-dev.51 to 0.1.0-dev.52 in /packages/dart_frog_cli ([#1235](https://github.com/dart-frog-dev/dart_frog/pull/1235))
+- feat: update cli bundles ([#1210](https://github.com/dart-frog-dev/dart_frog/pull/1210))
+  - fix(dart_frog_prod_server): stop assuming directory name is package name when bundling ([#1253](https://github.com/dart-frog-dev/dart_frog/pull/1253))
 
 # 1.2.0
 
-- fix(dart_frog_cli): report daemon missing parameters ([#1050](https://github.com/VeryGoodOpenSource/dart_frog/pull/1050))
-- chore(deps): bump cli_completion from 0.3.0 to 0.4.0 in /packages/dart_frog_cli ([#1060](https://github.com/VeryGoodOpenSource/dart_frog/pull/1060))
-- feat(dart_frog_cli): update cli bundles ([#1115](https://github.com/VeryGoodOpenSource/dart_frog/pull/1115))
-- chore(deps): bump pub_updater from 0.3.1 to 0.4.0 in /packages/dart_frog_cli ([#1061](https://github.com/VeryGoodOpenSource/dart_frog/pull/1061))
-- chore(deps): bump mason from 0.1.0-dev.50 to 0.1.0-dev.51 in /packages/dart_frog_cli ([#1073](https://github.com/VeryGoodOpenSource/dart_frog/pull/1073))
-- feat(dart_frog_cli): add host option to `dev` ([#1114](https://github.com/VeryGoodOpenSource/dart_frog/pull/1114))
-- refactor(dart_frog_cli): move runtime compatibility check to dev server runner ([#1138](https://github.com/VeryGoodOpenSource/dart_frog/pull/1138))
-- feat: add prod server builder ([#1161](https://github.com/VeryGoodOpenSource/dart_frog/pull/1161))
+- fix(dart_frog_cli): report daemon missing parameters ([#1050](https://github.com/dart-frog-dev/dart_frog/pull/1050))
+- chore(deps): bump cli_completion from 0.3.0 to 0.4.0 in /packages/dart_frog_cli ([#1060](https://github.com/dart-frog-dev/dart_frog/pull/1060))
+- feat(dart_frog_cli): update cli bundles ([#1115](https://github.com/dart-frog-dev/dart_frog/pull/1115))
+- chore(deps): bump pub_updater from 0.3.1 to 0.4.0 in /packages/dart_frog_cli ([#1061](https://github.com/dart-frog-dev/dart_frog/pull/1061))
+- chore(deps): bump mason from 0.1.0-dev.50 to 0.1.0-dev.51 in /packages/dart_frog_cli ([#1073](https://github.com/dart-frog-dev/dart_frog/pull/1073))
+- feat(dart_frog_cli): add host option to `dev` ([#1114](https://github.com/dart-frog-dev/dart_frog/pull/1114))
+- refactor(dart_frog_cli): move runtime compatibility check to dev server runner ([#1138](https://github.com/dart-frog-dev/dart_frog/pull/1138))
+- feat: add prod server builder ([#1161](https://github.com/dart-frog-dev/dart_frog/pull/1161))
 
 # 1.1.1
 
-- feat(dart_frog_cli): update cli bundles ([#1005](https://github.com/VeryGoodOpenSource/dart_frog/pull/1005))
-  - chore: update dart_frog_gen on bricks ([#1003](https://github.com/VeryGoodOpenSource/dart_frog/pull/1003))
-  - chore: bump very good analysis ([#984](https://github.com/VeryGoodOpenSource/dart_frog/pull/984))
-- test: fix intermittent e2e test ([#1008](https://github.com/VeryGoodOpenSource/dart_frog/pull/1008))
-- feat(dart_frog_cli): update cli bundles ([#1012](https://github.com/VeryGoodOpenSource/dart_frog/pull/1012))
-  - feat: add dart frog extension as recommended ([#1009](https://github.com/VeryGoodOpenSource/dart_frog/pull/1009))
-- fix(dart_frog_cli): prevent staggered devserver kills ([#1048](https://github.com/VeryGoodOpenSource/dart_frog/pull/1048))
+- feat(dart_frog_cli): update cli bundles ([#1005](https://github.com/dart-frog-dev/dart_frog/pull/1005))
+  - chore: update dart_frog_gen on bricks ([#1003](https://github.com/dart-frog-dev/dart_frog/pull/1003))
+  - chore: bump very good analysis ([#984](https://github.com/dart-frog-dev/dart_frog/pull/984))
+- test: fix intermittent e2e test ([#1008](https://github.com/dart-frog-dev/dart_frog/pull/1008))
+- feat(dart_frog_cli): update cli bundles ([#1012](https://github.com/dart-frog-dev/dart_frog/pull/1012))
+  - feat: add dart frog extension as recommended ([#1009](https://github.com/dart-frog-dev/dart_frog/pull/1009))
+- fix(dart_frog_cli): prevent staggered devserver kills ([#1048](https://github.com/dart-frog-dev/dart_frog/pull/1048))
 
 # 1.1.0
 
-- feat: press R to reload ([#814](https://github.com/VeryGoodOpenSource/dart_frog/pull/814))
-- feat: make daemon command visible ([#871](https://github.com/VeryGoodOpenSource/dart_frog/pull/871))
-- fix: port read from env([#874](https://github.com/VeryGoodOpenSource/dart_frog/pull/874))
-- chore: add topics ([#901](https://github.com/VeryGoodOpenSource/dart_frog/pull/901))
-- chore: add .DS_Store to create_dart_frog gitignore ([#936](https://github.com/VeryGoodOpenSource/dart_frog/pull/936))
-- feat: change production brick to support external dependencies in the Dockerfile ([#926](https://github.com/VeryGoodOpenSource/dart_frog/pull/926))
-- feat(dart_frog_cli): support lowercase r to reload ([#900](https://github.com/VeryGoodOpenSource/dart_frog/pull/900))
-- feat: add route_config domain to daemon ([#965](https://github.com/VeryGoodOpenSource/dart_frog/pull/965))
-- chore: bump uuid from 3.0.7 to 4.0.0 ([#989](https://github.com/VeryGoodOpenSource/dart_frog/pull/989))
+- feat: press R to reload ([#814](https://github.com/dart-frog-dev/dart_frog/pull/814))
+- feat: make daemon command visible ([#871](https://github.com/dart-frog-dev/dart_frog/pull/871))
+- fix: port read from env([#874](https://github.com/dart-frog-dev/dart_frog/pull/874))
+- chore: add topics ([#901](https://github.com/dart-frog-dev/dart_frog/pull/901))
+- chore: add .DS_Store to create_dart_frog gitignore ([#936](https://github.com/dart-frog-dev/dart_frog/pull/936))
+- feat: change production brick to support external dependencies in the Dockerfile ([#926](https://github.com/dart-frog-dev/dart_frog/pull/926))
+- feat(dart_frog_cli): support lowercase r to reload ([#900](https://github.com/dart-frog-dev/dart_frog/pull/900))
+- feat: add route_config domain to daemon ([#965](https://github.com/dart-frog-dev/dart_frog/pull/965))
+- chore: bump uuid from 3.0.7 to 4.0.0 ([#989](https://github.com/dart-frog-dev/dart_frog/pull/989))
 
 # 1.0.0
 
@@ -97,13 +103,13 @@
 
 # 0.3.5
 
-- fix: filter out error messages from killing the server process ([#592](https://github.com/VeryGoodOpenSource/dart_frog/pull/592))
+- fix: filter out error messages from killing the server process ([#592](https://github.com/dart-frog-dev/dart_frog/pull/592))
 
 # 0.3.4
 
-- refactor: remove duplicate `dart:io` import ([#556](https://github.com/VeryGoodOpenSource/dart_frog/pull/556))
-- chore: bump cli_completion from 0.2.0 to 0.3.0 in /packages/dart_frog_cli ([#553](https://github.com/VeryGoodOpenSource/dart_frog/pull/553))
-- feat: support custom init method ([#587](https://github.com/VeryGoodOpenSource/dart_frog/pull/587))
+- refactor: remove duplicate `dart:io` import ([#556](https://github.com/dart-frog-dev/dart_frog/pull/556))
+- chore: bump cli_completion from 0.2.0 to 0.3.0 in /packages/dart_frog_cli ([#553](https://github.com/dart-frog-dev/dart_frog/pull/553))
+- feat: support custom init method ([#587](https://github.com/dart-frog-dev/dart_frog/pull/587))
 
 # 0.3.3
 

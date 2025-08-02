@@ -2,7 +2,7 @@
  * Defines the protocol used by the Dart Frog daemon and custom
  * type guards to check if an object is a valid message.
  *
- * @see {@link https://github.com/VeryGoodOpenSource/dart_frog/blob/main/packages/dart_frog_cli/lib/src/daemon/protocol.dart Dart Frog dart's protocol}
+ * @see {@link https://github.com/dart-frog-dev/dart_frog/blob/main/packages/dart_frog_cli/lib/src/daemon/protocol.dart Dart Frog dart's protocol}
  */
 
 export class DaemonMessage {

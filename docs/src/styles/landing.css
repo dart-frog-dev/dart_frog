@@ -1,0 +1,61 @@
+:root {
+	--green-hsl: 164, 100%, 60%;
+	--overlay-green: hsla(var(--green-hsl), 0.5);
+}
+
+[data-has-hero] header {
+	border-bottom: 1px solid transparent;
+	background-color: transparent;
+	-webkit-backdrop-filter: blur(16px);
+	backdrop-filter: blur(16px);
+}
+
+[data-has-hero] .card {
+	border-radius: 25px;
+	background-color: transparent;
+	border: none;
+}
+
+@media screen and (min-width: 50rem) {
+	[data-has-hero] .hero-html {
+		padding-block: clamp(2.5rem, calc(1rem + 10vmin), 2.5rem);
+	}
+
+	[data-has-hero] .hero-html > img {
+		filter: drop-shadow(0 0 2rem #39bcb5);
+	}
+
+	[data-theme='dark'][data-has-hero] .hero-html > img {
+		filter: drop-shadow(0 0 2rem #81efe2);
+	}
+}
+
+.hero {
+	display: flex;
+	flex-direction: column;
+	gap: 4em;
+}
+
+.hero > .sl-flex .copy {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+.hero > .sl-flex .actions {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.hero-html {
+	order: 2;
+	width: 100%;
+	max-width: 700px;
+}
+
+.hero-html,
+h1 {
+	font-weight: 800;
+}
