@@ -23,10 +23,11 @@ For official documentation, please visit https://dart-frog.dev.
 | Package                                                                                                    | Pub                                                                                                                    |
 | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | [dart_frog](https://github.com/dart-frog-dev/dart_frog/tree/main/packages/dart_frog)                       | [![pub package](https://img.shields.io/pub/v/dart_frog.svg)](https://pub.dev/packages/dart_frog)                       |
-| [dart_frog_gen](https://github.com/dart-frog-dev/dart_frog/tree/main/packages/dart_frog_gen)               | [![pub package](https://img.shields.io/pub/v/dart_frog_gen.svg)](https://pub.dev/packages/dart_frog_gen)               |
-| [dart_frog_cli](https://github.com/dart-frog-dev/dart_frog/tree/main/packages/dart_frog_cli)               | [![pub package](https://img.shields.io/pub/v/dart_frog_cli.svg)](https://pub.dev/packages/dart_frog_cli)               |
-| [dart_frog_web_socket](https://github.com/dart-frog-dev/dart_frog/tree/main/packages/dart_frog_web_socket) | [![pub package](https://img.shields.io/pub/v/dart_frog_web_socket.svg)](https://pub.dev/packages/dart_frog_web_socket) |
 | [dart_frog_auth](https://github.com/dart-frog-dev/dart_frog/tree/main/packages/dart_frog_auth)             | [![pub package](https://img.shields.io/pub/v/dart_frog_auth.svg)](https://pub.dev/packages/dart_frog_auth)             |
+| [dart_frog_cli](https://github.com/dart-frog-dev/dart_frog/tree/main/packages/dart_frog_cli)               | [![pub package](https://img.shields.io/pub/v/dart_frog_cli.svg)](https://pub.dev/packages/dart_frog_cli)               |
+| [dart_frog_gen](https://github.com/dart-frog-dev/dart_frog/tree/main/packages/dart_frog_gen)               | [![pub package](https://img.shields.io/pub/v/dart_frog_gen.svg)](https://pub.dev/packages/dart_frog_gen)               |
+| [dart_frog_test](https://github.com/dart-frog-dev/dart_frog/tree/main/packages/dart_frog_test)             | [![pub package](https://img.shields.io/pub/v/dart_frog_test.svg)](https://pub.dev/packages/dart_frog_test)             |
+| [dart_frog_web_socket](https://github.com/dart-frog-dev/dart_frog/tree/main/packages/dart_frog_web_socket) | [![pub package](https://img.shields.io/pub/v/dart_frog_web_socket.svg)](https://pub.dev/packages/dart_frog_web_socket) |
 
 ## Quick Start 🚀
 
