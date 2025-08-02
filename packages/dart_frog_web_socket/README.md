@@ -4,6 +4,9 @@
 
 <br clear="left"/>
 
+[![discord][discord_badge]][discord_link]
+[![dart][dart_badge]][dart_link]
+
 [![ci][ci_badge]][ci_link]
 [![coverage][coverage_badge]][ci_link]
 [![pub package][pub_badge]][pub_link]
@@ -69,7 +72,12 @@ void main() {
 [ci_link]: https://github.com/dart-frog-dev/dart_frog/actions/workflows/dart_frog_web_socket.yaml
 [coverage_badge]: https://raw.githubusercontent.com/dart-frog-dev/dart_frog/main/packages/dart_frog_web_socket/coverage_badge.svg
 [credits_link]: https://github.com/dart-frog-dev/dart_frog/blob/main/CREDITS.md#acknowledgments
+[dart_badge]: https://img.shields.io/badge/Dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=5BB4F0&color=1E2833
+[dart_link]: https://dart.dev
 [dart_frog_link]: https://github.com/dart-frog-dev/dart_frog
+[discord_badge]: https://img.shields.io/discord/1394707782271238184?style=for-the-badge&logo=discord&color=1C2A2E&logoColor=1DF9D2
+[discord_link]: https://discord.gg/dart-frog
+[docs_link]: https://dart-frog.dev/advanced/web-sockets
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [license_link]: https://opensource.org/licenses/MIT
 [logo_black]: https://raw.githubusercontent.com/dart-frog-dev/dart_frog/main/assets/dart_frog_logo_black.png#gh-light-mode-only
@@ -79,4 +87,3 @@ void main() {
 [very_good_analysis_badge]: https://img.shields.io/badge/style-very_good_analysis-B22C89.svg
 [very_good_analysis_link]: https://pub.dev/packages/very_good_analysis
 [very_good_ventures_link]: https://verygood.ventures
-[docs_link]: https://dart-frog.dev/advanced/web_socket

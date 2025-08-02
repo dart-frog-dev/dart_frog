@@ -1,6 +1,9 @@
 [![Dart Frog Logo][logo_white]][dart_frog_link_dark]
 [![Dart Frog Logo][logo_black]][dart_frog_link_light]
 
+[![discord][discord_badge]][discord_link]
+[![dart][dart_badge]][dart_link]
+
 [![ci][ci_badge]][ci_link]
 [![coverage][coverage_badge]][ci_link]
 [![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
@@ -91,13 +94,17 @@ Dart Frog provides a simple core with a small API surface area in order to reduc
 
 - [VS Code](https://marketplace.visualstudio.com/items?itemName=VeryGoodVentures.dart-frog): extends VS Code with support for Dart Frog and provides tools for effectively managing Dart Frog projects within VS Code.
 
-[dart_installation_link]: https://dart.dev/get-dart
 [ci_badge]: https://github.com/dart-frog-dev/dart_frog/actions/workflows/main.yaml/badge.svg
 [ci_link]: https://github.com/dart-frog-dev/dart_frog/actions/workflows/main.yaml
 [credits_link]: https://github.com/dart-frog-dev/dart_frog/blob/main/CREDITS.md#acknowledgments
 [coverage_badge]: https://raw.githubusercontent.com/dart-frog-dev/dart_frog/main/packages/dart_frog/coverage_badge.svg
+[dart_badge]: https://img.shields.io/badge/Dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=5BB4F0&color=1E2833
+[dart_link]: https://dart.dev
 [dart_frog_link_dark]: https://github.com/dart-frog-dev/dart_frog#gh-dark-mode-only
 [dart_frog_link_light]: https://github.com/dart-frog-dev/dart_frog#gh-light-mode-only
+[dart_installation_link]: https://dart.dev/get-dart
+[discord_badge]: https://img.shields.io/discord/1394707782271238184?style=for-the-badge&logo=discord&color=1C2A2E&logoColor=1DF9D2
+[discord_link]: https://discord.gg/dart-frog
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [license_link]: https://opensource.org/licenses/MIT
 [logo_black]: https://raw.githubusercontent.com/dart-frog-dev/dart_frog/main/assets/dart_frog_logo_black.png#gh-light-mode-only
