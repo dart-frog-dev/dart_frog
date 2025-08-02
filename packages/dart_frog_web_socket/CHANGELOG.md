@@ -2,6 +2,9 @@
 
 - refactor: upgrade analysis options ([#1798](https://github.com/dart-frog-dev/dart_frog/pull/1798))
 - docs: update all repository references ([#1791](https://github.com/dart-frog-dev/dart_frog/pull/1791))
+- docs: update Dart Frog's logo in Readme files ([#1493](https://github.com/dart-frog-dev/dart_frog/pull/1493))
+- fix: e2e tests and lint fixes ([#942](https://github.com/dart-frog-dev/dart_frog/pull/942))
+- chore: add topics ([#901](https://github.com/dart-frog-dev/dart_frog/pull/901))
 
 # 1.0.0
 
