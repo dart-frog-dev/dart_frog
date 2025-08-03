@@ -1,13 +1,24 @@
 version: 2
 updates:
+  # GitHub Actions Dependencies
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
-  - package-ecosystem: "npm"
-    directory: "/docs"
+      interval: "weekly"
+    groups:
+      gh-deps:
+        patterns:
+          - "*"
+  # Dart Dependencies
+  - package-ecosystem: "pub"
+    directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      dart-deps:
+        patterns:
+          - "*"
+  # NPM Dependencies
   - package-ecosystem: "npm"
     directory: "/extensions/vscode"
     schedule:
@@ -16,75 +27,15 @@ updates:
       # Updating @types/vscode requires unnecessarily bumping the VS Code engine version, see:
       # https://github.com/dart-frog-dev/dart_frog/issues/1033
       - dependency-name: "@types/vscode"
-  - package-ecosystem: "pub"
-    directory: "/bricks/create_dart_frog/hooks"
+    groups:
+      npm-deps:
+        patterns:
+          - "*"
+  - package-ecosystem: "npm"
+    directory: "/docs"
     schedule:
-      interval: "daily"
-  - package-ecosystem: "pub"
-    directory: "/bricks/dart_frog_dev_server/hooks"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "pub"
-    directory: "/bricks/dart_frog_new/hooks"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "pub"
-    directory: "/bricks/dart_frog_prod_server/hooks"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "pub"
-    directory: "/examples/echo"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "pub"
-    directory: "/examples/hello_world"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "pub"
-    directory: "/examples/web_socket_counter"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "pub"
-    directory: "/examples/counter"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "pub"
-    directory: "/examples/todos"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "pub"
-    directory: "/examples/todos/packages/todos_data_source"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "pub"
-    directory: "/examples/todos/packages/in_memory_todos_data_source"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "pub"
-    directory: "/examples/kitchen_sink"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "pub"
-    directory: "/packages/dart_frog_cli"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "pub"
-    directory: "/packages/dart_frog_cli/e2e"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "pub"
-    directory: "/packages/dart_frog_gen"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "pub"
-    directory: "/packages/dart_frog"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "pub"
-    directory: "/packages/dart_frog_web_socket"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "pub"
-    directory: "/packages/dart_frog_auth"
-    schedule:
-      interval: "daily"
+      interval: "weekly"
+    groups:
+      npm-deps:
+        patterns:
+          - "*"
