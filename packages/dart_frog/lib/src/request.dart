@@ -135,6 +135,11 @@ class Request {
     );
   }
 
+  /// The url parameters captured by the router.
+  /// Returns an empty map if no parameters are captured.
+  /// The returned map is unmodifiable.
+  Map<String, String> get params => _request.params;
+
   /// Returns a [Stream] representing the body.
   Stream<List<int>> bytes() => _request.read();
 
