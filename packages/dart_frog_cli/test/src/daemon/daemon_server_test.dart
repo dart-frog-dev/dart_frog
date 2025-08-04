@@ -19,10 +19,7 @@ class _TestDomain extends DomainBase {
   Future<DaemonResponse> _something(DaemonRequest request) async {
     return DaemonResponse.success(
       id: request.id,
-      result: {
-        'foo': 'bar',
-        if (request.params != null) ...request.params!,
-      },
+      result: {'foo': 'bar', if (request.params != null) ...request.params!},
     );
   }
 
@@ -44,14 +41,14 @@ void main() {
 
       inputStreamController = StreamController<DaemonMessage>.broadcast();
       outputStreamController = StreamController<DaemonMessage>.broadcast();
-      when(() => connection.inputStream)
-          .thenAnswer((_) => inputStreamController.stream);
-      when(() => connection.outputSink)
-          .thenAnswer((_) => outputStreamController.sink);
+      when(
+        () => connection.inputStream,
+      ).thenAnswer((_) => inputStreamController.stream);
+      when(
+        () => connection.outputSink,
+      ).thenAnswer((_) => outputStreamController.sink);
 
-      daemonServer = DaemonServer(
-        connection: connection,
-      );
+      daemonServer = DaemonServer(connection: connection);
 
       outputMessages = <DaemonMessage>[];
       outputStreamController.stream.listen((event) {
@@ -89,9 +86,7 @@ void main() {
       const event = DaemonEvent(
         domain: 'test',
         event: 'test',
-        params: {
-          'param': 2,
-        },
+        params: {'param': 2},
       );
 
       daemonServer.sendEvent(event);
@@ -109,9 +104,7 @@ void main() {
         const DaemonRequest(
           id: '0',
           method: 'something',
-          params: {
-            'boo': 'far',
-          },
+          params: {'boo': 'far'},
           domain: 'test',
         ),
       );
@@ -121,10 +114,7 @@ void main() {
       expect(outputMessages, [
         const DaemonResponse.success(
           id: '0',
-          result: {
-            'foo': 'bar',
-            'boo': 'far',
-          },
+          result: {'foo': 'bar', 'boo': 'far'},
         ),
       ]);
     });
@@ -134,9 +124,7 @@ void main() {
         const DaemonRequest(
           id: '0',
           method: 'something',
-          params: {
-            'boo': 'far',
-          },
+          params: {'boo': 'far'},
           domain: 'test',
         ),
       );
@@ -146,9 +134,7 @@ void main() {
       expect(outputMessages, [
         const DaemonResponse.error(
           id: '0',
-          error: {
-            'message': 'Invalid domain: test',
-          },
+          error: {'message': 'Invalid domain: test'},
         ),
       ]);
     });
