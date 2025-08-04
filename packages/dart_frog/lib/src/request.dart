@@ -135,8 +135,9 @@ class Request {
     );
   }
 
-  /// The url parameters captured by the router.
+  /// Returns the url parameters captured by the [Router].
   /// Returns an empty map if no parameters are captured.
+  ///
   /// The returned map is unmodifiable.
   Map<String, String> get params => _request.params;
 
