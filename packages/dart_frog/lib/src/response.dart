@@ -110,6 +110,9 @@ class Response {
   /// The HTTP status code of the response.
   int get statusCode => _response.statusCode;
 
+  /// Shelf context that can be used by shelf middleware and shelf handlers.
+  Map<String, Object> get shelfContext => _response.context;
+
   /// The HTTP headers with case-insensitive keys.
   /// The returned map is unmodifiable.
   Map<String, String> get headers => _response.headers;

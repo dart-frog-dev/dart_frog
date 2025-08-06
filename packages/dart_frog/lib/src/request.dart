@@ -117,6 +117,9 @@ class Request {
     return _request.context['shelf.io.connection_info']! as HttpConnectionInfo;
   }
 
+  /// Shelf context that can be used by shelf middleware and shelf handlers.
+  Map<String, Object> get shelfContext => _request.context;
+
   /// The requested url relative to the current handler path.
   Uri get url => _request.url;
 

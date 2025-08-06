@@ -242,5 +242,32 @@ ${HttpMethod.values.map((m) => m.value.toUpperCase()).join(', ')}.'''),
         expect(request.json(), completion(equals(body)));
       });
     });
+
+    group('shelfContext', () {
+      test('allow access of the shelf context ', () async {
+        late Map<String, Object> contextFromShelf;
+        late Map<String, Object> contextFromFrog;
+        final server = await serve(
+          ((RequestContext context) async {
+            contextFromFrog = context.request.shelfContext;
+            return Response();
+          }).use(
+            fromShelfMiddleware((innerHandler) {
+              return (request) async {
+                contextFromShelf = request.context;
+                return innerHandler(request);
+              };
+            }),
+          ),
+          'localhost',
+          3000,
+        );
+        final client = HttpClient();
+        final request = await client.getUrl(Uri.parse('http://localhost:3000'));
+        await request.close();
+        expect(contextFromFrog, equals(contextFromShelf));
+        await server.close();
+      });
+    });
   });
 }
