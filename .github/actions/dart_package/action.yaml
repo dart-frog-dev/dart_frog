@@ -2,9 +2,6 @@ name: Dart Package Workflow
 description: Build and test Dart packages.
 
 inputs:
-  codecov_token:
-    required: true
-    description: The Codecov token used to upload coverage
   collect_coverage:
     required: false
     default: "true"

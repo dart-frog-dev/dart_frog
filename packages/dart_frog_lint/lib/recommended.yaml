@@ -4,6 +4,7 @@ analyzer:
     - build/**
 linter:
   rules:
+    # Route names are derived from the respective file names
     file_names: false
     # Experimental and there are lots of false positives
     specify_nonobvious_property_types: false
