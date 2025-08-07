@@ -85,3 +85,71 @@ npm test
 
 [conventional_commits_link]: https://www.conventionalcommits.org/en/v1.0.0
 [bug_report_link]: https://github.com/dart-frog-dev/dart_frog/issues/new?assignees=&labels=bug&template=bug_report.md&title=fix%3A+
+
+
+## 🐸 Releasing Dart Frog’s extension on [VS Code Marketplace](https://marketplace.visualstudio.com/vscode)
+
+1. Go to the **main** branch and ensure it is up to date with the remote (from extensions/vscode):
+
+```bash
+git checkout main
+git pull
+```
+
+2. Run the script that will generate the CHANGELOG for you (from extensions/vscode): 
+
+```bash
+sh ../../tool/release_ready.sh <new-version>
+```
+
+`<new-version>`: The version of this new extension release, for example: 0.2.1
+
+The [*release_ready*](https://github.com/dart-frog-dev/dart_frog/blob/vscode-v0.2.1/tool/release_ready.sh) script will:
+
+- Create a new branch just for this release and checkout to it.
+- Automatically update the [CHANGELOG](https://github.com/dart-frog-dev/dart_frog/blob/main/extensions/vscode/CHANGELOG.md) file with the associated changes.
+- Prepares the [package.json](https://github.com/dart-frog-dev/dart_frog/blob/vscode-v0.2.1/extensions/vscode/package.json) and [package.lock.json](https://github.com/dart-frog-dev/dart_frog/blob/vscode-v0.2.1/extensions/vscode/package-lock.json)
+3. Manually remove the *(vscode)* scope or others of the conventional commits entries in the CHANGELOG
+4. Add the changes and commit with the commit message that the *release_ready* script outputted.
+5. Raise a Pull Request, the title should be the same as the commit message outputted by the *release_ready* script.
+6. When the Pull Request is merged, tag a new release to the commit. When adding the tag ensure:
+    - The tag is pointing to the commit that you recently merged.
+    - The title of the tag should be vscode-<new-version>
+    - The title of the release should be vscode-<new-version>
+    - The description should be a raw copy of the CHANGELOG’s file version’s body you recently crafted (without the version header). If in doubt, see the other released tags as an example.
+7. After the release is tagged the release will be performed automatically, check the [actions](https://github.com/dart-frog-dev/dart_frog/actions) tab to see the progress. Once released navigate to the VS Code Marketplace publishers’ page to check the status of the release. 
+
+### 🔨 Troubleshooting VS Code releasing Dart Frog’s extension
+
+- How can I release if the action is not working after tagging a release?
+
+If for any reason the action is not working upon tagging a release you may release manually. To release manually you should:
+
+1. Install [VSCE](https://github.com/microsoft/vscode-vsce) (VS Code Extension Manager):
+
+```bash
+npm install --global @vscode/vsce
+```
+
+2. Login to VSCE with our credentials:
+
+```bash
+vsce login <publisher id>
+```
+
+3. Go to the **main** branch and ensure it is up to date with the remote (from extensions/vscode):
+
+```bash
+git checkout main
+git pull
+```
+
+4. Publish the new version manually (from extensions/vscode):
+
+```bash
+vsce publish <new-version>
+```
+
+`<new-version>`: The version of this new extension release, for example: 0.2.1
+
+5. Once released navigate to the VS Code Marketplace publishers’ page to check the status of the release.
