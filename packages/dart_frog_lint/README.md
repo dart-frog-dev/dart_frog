@@ -43,7 +43,7 @@ For official documentation, please visit [dart-frog.dev][docs_link].
 [license_link]: https://opensource.org/licenses/MIT
 [logo_black]: https://raw.githubusercontent.com/dart-frog-dev/dart_frog/main/assets/dart_frog_logo_black.png#gh-light-mode-only
 [logo_white]: https://raw.githubusercontent.com/dart-frog-dev/dart_frog/main/assets/dart_frog_logo_white.png#gh-dark-mode-only
-[pub_badge]: https://img.shields.io/pub/v/dart_frog.svg
-[pub_link]: https://pub.dartlang.org/packages/dart_frog
+[pub_badge]: https://img.shields.io/pub/v/dart_frog_lint.svg
+[pub_link]: https://pub.dartlang.org/packages/dart_frog_lint
 [very_good_analysis_badge]: https://img.shields.io/badge/style-very_good_analysis-B22C89.svg
 [very_good_analysis_link]: https://pub.dev/packages/very_good_analysis
