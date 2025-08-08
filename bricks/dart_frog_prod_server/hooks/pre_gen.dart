@@ -3,8 +3,6 @@ import 'dart:io' as io;
 
 import 'package:dart_frog_gen/dart_frog_gen.dart';
 import 'package:dart_frog_prod_server_hooks/dart_frog_prod_server_hooks.dart';
-import 'package:dart_frog_prod_server_hooks/src/disable_workspace_resolution.dart';
-import 'package:dart_frog_prod_server_hooks/src/uses_workspace_resolution.dart';
 import 'package:io/io.dart' as io_expanded;
 import 'package:mason/mason.dart'
     show HookContext, defaultForeground, lightCyan;
