@@ -79,6 +79,11 @@ ${HttpMethod.values.map((m) => m.value.toUpperCase()).join(', ')}.'''),
       expect(request.headers['foo'], equals(headers['foo']));
     });
 
+    test('has correct params (empty)', () {
+      final request = Request('GET', localhost);
+      expect(request.params, isEmpty);
+    });
+
     test('body can be read multiple times (sync)', () {
       final body = json.encode({'test': 'body'});
       final request = Request('GET', localhost, body: body);
