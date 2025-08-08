@@ -25,6 +25,19 @@ Future<void> preGen(
   Future<void> Function(String from, String to) copyPath = io_expanded.copyPath,
 }) async {
   final projectDirectory = directory ?? io.Directory.current;
+  final usesWorkspaces = usesWorkspaceResolution(
+    context,
+    workingDirectory: projectDirectory.path,
+    exit: exit,
+  );
+
+  if (usesWorkspaces) {
+    disableWorkspaceResolution(
+      context,
+      workingDirectory: projectDirectory.path,
+      exit: exit,
+    );
+  }
 
   // We need to make sure that the pubspec.lock file is up to date
   await dartPubGet(
@@ -64,9 +77,7 @@ Future<void> preGen(
         '''Route conflict detected. ${lightCyan.wrap(originalFilePath)} and ${lightCyan.wrap(conflictingFilePath)} both resolve to ${lightCyan.wrap(conflictingEndpoint)}.''',
       );
     },
-    onViolationEnd: () {
-      exit(1);
-    },
+    onViolationEnd: () => exit(1),
   );
 
   reportRogueRoutes(
@@ -76,9 +87,7 @@ Future<void> preGen(
         '''Rogue route detected.${defaultForeground.wrap(' ')}Rename ${lightCyan.wrap(filePath)} to ${lightCyan.wrap(idealPath)}.''',
       );
     },
-    onViolationEnd: () {
-      exit(1);
-    },
+    onViolationEnd: () => exit(1),
   );
 
   final customDockerFile = io.File(
