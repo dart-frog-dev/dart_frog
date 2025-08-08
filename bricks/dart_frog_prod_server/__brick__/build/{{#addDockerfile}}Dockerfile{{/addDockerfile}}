@@ -19,6 +19,7 @@ COPY ./pubspec_overrides.yaml ./pubspec_overrides.yaml
 {{/hasExternalDependencies}}
 # Resolve app dependencies.
 COPY pubspec.* ./
+COPY pubspec_overrides.yaml* ./
 RUN dart pub get
 
 # Copy app source code and AOT compile it.

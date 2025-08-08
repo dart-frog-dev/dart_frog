@@ -3,6 +3,8 @@ import 'dart:io' as io;
 
 import 'package:dart_frog_gen/dart_frog_gen.dart';
 import 'package:dart_frog_prod_server_hooks/dart_frog_prod_server_hooks.dart';
+import 'package:dart_frog_prod_server_hooks/src/disable_workspace_resolution.dart';
+import 'package:dart_frog_prod_server_hooks/src/uses_workspace_resolution.dart';
 import 'package:io/io.dart' as io_expanded;
 import 'package:mason/mason.dart'
     show HookContext, defaultForeground, lightCyan;
@@ -23,6 +25,19 @@ Future<void> preGen(
   Future<void> Function(String from, String to) copyPath = io_expanded.copyPath,
 }) async {
   final projectDirectory = directory ?? io.Directory.current;
+  final usesWorkspaces = usesWorkspaceResolution(
+    context,
+    workingDirectory: projectDirectory.path,
+    exit: exit,
+  );
+
+  if (usesWorkspaces) {
+    disableWorkspaceResolution(
+      context,
+      workingDirectory: projectDirectory.path,
+      exit: exit,
+    );
+  }
 
   // We need to make sure that the pubspec.lock file is up to date
   await dartPubGet(
@@ -62,9 +77,7 @@ Future<void> preGen(
         '''Route conflict detected. ${lightCyan.wrap(originalFilePath)} and ${lightCyan.wrap(conflictingFilePath)} both resolve to ${lightCyan.wrap(conflictingEndpoint)}.''',
       );
     },
-    onViolationEnd: () {
-      exit(1);
-    },
+    onViolationEnd: () => exit(1),
   );
 
   reportRogueRoutes(
@@ -74,9 +87,7 @@ Future<void> preGen(
         '''Rogue route detected.${defaultForeground.wrap(' ')}Rename ${lightCyan.wrap(filePath)} to ${lightCyan.wrap(idealPath)}.''',
       );
     },
-    onViolationEnd: () {
-      exit(1);
-    },
+    onViolationEnd: () => exit(1),
   );
 
   final customDockerFile = io.File(
