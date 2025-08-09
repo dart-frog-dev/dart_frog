@@ -2,22 +2,17 @@ import 'dart:io' as io;
 
 import 'package:dart_frog_prod_server_hooks/dart_frog_prod_server_hooks.dart';
 import 'package:path/path.dart' as path;
+import 'package:pubspec_parse/pubspec_parse.dart';
 
 Future<List<String>> getInternalPathDependencies(io.Directory directory) async {
-  final pubspecLock = await getPubspecLock(directory.path);
+  final pubspec = await getPubspec(directory.path);
 
-  final internalPathDependencies = pubspecLock.packages.where(
+  final internalPathDependencies = pubspec.dependencies.values.where(
     (dependency) {
-      final pathDescription = dependency.pathDescription;
-      if (pathDescription == null) {
-        return false;
-      }
-
-      return path.isWithin('', pathDescription.path);
+      if (dependency is! PathDependency) return false;
+      return path.isWithin('', dependency.path);
     },
-  );
+  ).cast<PathDependency>();
 
-  return internalPathDependencies
-      .map((dependency) => dependency.pathDescription!.path)
-      .toList();
+  return internalPathDependencies.map((dependency) => dependency.path).toList();
 }
