@@ -28,7 +28,7 @@ void copyWorkspacePubspecLock(
   }
 }
 
-/// Returns the root directory of the nearest Flutter project.
+/// Returns the root directory of the nearest Dart workspace.
 Directory? _getWorkspaceRoot() {
   final file = _findNearestAncestor(
     where: (path) => _getWorkspaceRootPubspecYaml(cwd: Directory(path)),
