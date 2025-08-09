@@ -3,7 +3,9 @@ import 'package:mason/mason.dart';
 import 'package:path/path.dart' as path;
 import 'package:pubspec_parse/pubspec_parse.dart';
 
-/// Opts out of dart workspaces until we can generate per package lockfiles.
+/// Copies the pubspec.lock from the workspace root into the build directory
+/// in order to ensure the production build uses the exact same versions of all
+/// dependencies.
 void copyWorkspacePubspecLock(
   HookContext context, {
   required String buildDirectory,
