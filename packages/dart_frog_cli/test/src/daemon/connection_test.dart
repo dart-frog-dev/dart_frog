@@ -90,7 +90,7 @@ void main() {
         '''
 [{"event":"daemon.protocolError","params":{"message":"Message should be placed within a JSON list"}}]\n''',
         '''
-[{"event":"daemon.protocolError","params":{"message":"Malformed message, Invalid id: 1"}}]\n'''
+[{"event":"daemon.protocolError","params":{"message":"Malformed message, Invalid id: 1"}}]\n''',
       ]);
     });
 
@@ -101,7 +101,7 @@ void main() {
       expect(receivedMessages, isEmpty);
       expect(stdoutLines, <String>[
         '''
-[{"event":"daemon.protocolError","params":{"message":"Unknown error: Exception: catapimbas"}}]\n'''
+[{"event":"daemon.protocolError","params":{"message":"Unknown error: Exception: catapimbas"}}]\n''',
       ]);
     });
 
@@ -117,14 +117,11 @@ void main() {
         await Future<void>.delayed(Duration.zero);
       }
 
-      expect(
-        stdoutLines,
-        <String>[
-          '[{"id":"1","method":"foo.bar"}]\n',
-          '[{"id":"2","result":{}}]\n',
-          '[{"event":"foo.bar","params":{}}]\n',
-        ],
-      );
+      expect(stdoutLines, <String>[
+        '[{"id":"1","method":"foo.bar"}]\n',
+        '[{"id":"2","result":{}}]\n',
+        '[{"event":"foo.bar","params":{}}]\n',
+      ]);
     });
 
     test('dispose frees resources', () async {

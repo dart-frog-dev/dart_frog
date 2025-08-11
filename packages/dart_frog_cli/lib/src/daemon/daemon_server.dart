@@ -22,9 +22,8 @@ const daemonVersion = '0.0.1';
 /// {@endtemplate}
 class DaemonServer {
   /// {@macro daemon}
-  DaemonServer({
-    @visibleForTesting DaemonConnection? connection,
-  }) : _connection = connection ?? DaemonStdioConnection() {
+  DaemonServer({@visibleForTesting DaemonConnection? connection})
+    : _connection = connection ?? DaemonStdioConnection() {
     _connection.inputStream.listen(_handleMessage);
 
     addDomain(DaemonDomain(this));
@@ -77,9 +76,7 @@ class DaemonServer {
       return _sendMessage(
         DaemonResponse.error(
           id: request.id,
-          error: {
-            'message': 'Invalid domain: ${request.domain}',
-          },
+          error: {'message': 'Invalid domain: ${request.domain}'},
         ),
       );
     }

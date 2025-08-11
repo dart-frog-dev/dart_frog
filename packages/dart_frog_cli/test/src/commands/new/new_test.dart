@@ -42,7 +42,7 @@ const expectedUsage = [
       '  middleware   Create a new middleware for dart_frog\n'
       '  route        Create a new route for dart_frog\n'
       '\n'
-      'Run "dart_frog help" to see global options.'
+      'Run "dart_frog help" to see global options.',
 ];
 
 void main() {
@@ -65,14 +65,15 @@ void main() {
       progress = _MockProgress();
       generator = _MockMasonGenerator();
       updater = _MockPubUpdater();
-      command = NewCommand(
-        logger: logger,
-        generator: (_) async {
-          return generator;
-        },
-      )
-        ..testArgResults = argResults
-        ..testUsage = 'test usage';
+      command =
+          NewCommand(
+              logger: logger,
+              generator: (_) async {
+                return generator;
+              },
+            )
+            ..testArgResults = argResults
+            ..testUsage = 'test usage';
 
       final sigint = _MockProcessSignal();
 
@@ -176,9 +177,7 @@ void main() {
 
         Directory('${directory.path}/routes').createSync(recursive: true);
 
-        when(() => argResults.rest).thenReturn(
-          ['user/[id]/🦅'],
-        );
+        when(() => argResults.rest).thenReturn(['user/[id]/🦅']);
 
         command.newRouteCommand.testCwd = directory;
 
@@ -223,9 +222,7 @@ void main() {
 
         Directory('${directory.path}/routes').createSync(recursive: true);
 
-        when(() => argResults.rest).thenReturn(
-          ['/user/[id]//route'],
-        );
+        when(() => argResults.rest).thenReturn(['/user/[id]//route']);
 
         command.newRouteCommand.testCwd = directory;
 
@@ -271,9 +268,7 @@ void main() {
 
       Directory('${directory.path}/routes').createSync(recursive: true);
 
-      when(() => argResults.rest).thenReturn(
-        [''],
-      );
+      when(() => argResults.rest).thenReturn(['']);
 
       command.newRouteCommand.testCwd = directory;
 
@@ -316,9 +311,9 @@ void main() {
         () => generator.generate(any(), vars: any(named: 'vars')),
       ).thenAnswer((_) async => []);
 
-      when(() => argResults.rest).thenReturn(
-        ['user/[id]/posts/[post_id]/comments'],
-      );
+      when(
+        () => argResults.rest,
+      ).thenReturn(['user/[id]/posts/[post_id]/comments']);
 
       command.newRouteCommand.testCwd = directory;
 
@@ -364,9 +359,9 @@ void main() {
 
       Directory('${directory.path}/routes').createSync(recursive: true);
 
-      when(() => argResults.rest).thenReturn(
-        ['user/[id]/posts/[post_id]/comments'],
-      );
+      when(
+        () => argResults.rest,
+      ).thenReturn(['user/[id]/posts/[post_id]/comments']);
 
       command.newRouteCommand.testCwd = directory;
 
@@ -388,8 +383,9 @@ void main() {
             logger: any(named: 'logger'),
           ),
         ).thenAnswer((invocation) async {
-          final onVarsChanged = invocation.namedArguments[#onVarsChanged]
-              as void Function(Map<String, dynamic>);
+          final onVarsChanged =
+              invocation.namedArguments[#onVarsChanged]
+                  as void Function(Map<String, dynamic>);
 
           onVarsChanged({'dir_path': '${directory.path}/routes/something'});
         });
@@ -410,9 +406,9 @@ void main() {
 
         Directory('${directory.path}/routes').createSync(recursive: true);
 
-        when(() => argResults.rest).thenReturn(
-          ['/user/[id]/posts/[post_id]/comments'],
-        );
+        when(
+          () => argResults.rest,
+        ).thenReturn(['/user/[id]/posts/[post_id]/comments']);
 
         command.newRouteCommand.testCwd = directory;
 
@@ -460,8 +456,9 @@ void main() {
             logger: any(named: 'logger'),
           ),
         ).thenAnswer((invocation) async {
-          final onVarsChanged = invocation.namedArguments[#onVarsChanged]
-              as void Function(Map<String, dynamic>);
+          final onVarsChanged =
+              invocation.namedArguments[#onVarsChanged]
+                  as void Function(Map<String, dynamic>);
 
           onVarsChanged({'dir_path': '${directory.path}/routes/something'});
         });
@@ -482,9 +479,9 @@ void main() {
 
         Directory('${directory.path}/routes').createSync(recursive: true);
 
-        when(() => argResults.rest).thenReturn(
-          ['user/[id]/posts/[post_id]/comments'],
-        );
+        when(
+          () => argResults.rest,
+        ).thenReturn(['user/[id]/posts/[post_id]/comments']);
 
         command.newMiddlewareCommand.testCwd = directory;
 

@@ -69,8 +69,8 @@ void main() {
             onVarsChanged: any(named: 'onVarsChanged'),
           ),
         ).thenAnswer((invocation) async {
-          (invocation.namedArguments[const Symbol('onVarsChanged')] as void
-                  Function(Map<String, dynamic>))
+          (invocation.namedArguments[const Symbol('onVarsChanged')]
+                  as void Function(Map<String, dynamic>))
               .call({'dartVersion': 'stable'});
         });
         when(

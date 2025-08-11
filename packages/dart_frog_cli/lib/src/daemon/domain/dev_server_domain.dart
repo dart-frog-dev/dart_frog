@@ -18,9 +18,9 @@ class DevServerDomain extends DomainBase {
     @visibleForTesting super.getId,
     @visibleForTesting GeneratorBuilder? generator,
     @visibleForTesting DevServerRunnerConstructor? devServerRunnerConstructor,
-  })  : _generator = generator ?? MasonGenerator.fromBundle,
-        _devServerRunnerConstructor =
-            devServerRunnerConstructor ?? DevServerRunner.new {
+  }) : _generator = generator ?? MasonGenerator.fromBundle,
+       _devServerRunnerConstructor =
+           devServerRunnerConstructor ?? DevServerRunner.new {
     addHandler('start', _start);
     addHandler('reload', _reload);
     addHandler('stop', _stop);
@@ -50,10 +50,7 @@ class DevServerDomain extends DomainBase {
       DaemonEvent(
         domain: domainName,
         event: 'applicationStarting',
-        params: {
-          'applicationId': applicationId,
-          'requestId': request.id,
-        },
+        params: {'applicationId': applicationId, 'requestId': request.id},
       ),
     );
 
@@ -111,19 +108,14 @@ class DevServerDomain extends DomainBase {
 
       return DaemonResponse.success(
         id: request.id,
-        result: {
-          'applicationId': applicationId,
-        },
+        result: {'applicationId': applicationId},
       );
       // ignoring for backward compatibility
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       return DaemonResponse.error(
         id: request.id,
-        error: {
-          'applicationId': applicationId,
-          'message': e.toString(),
-        },
+        error: {'applicationId': applicationId, 'message': e.toString()},
       );
     }
   }
@@ -147,19 +139,14 @@ class DevServerDomain extends DomainBase {
 
       return DaemonResponse.success(
         id: request.id,
-        result: {
-          'applicationId': applicationId,
-        },
+        result: {'applicationId': applicationId},
       );
       // ignoring for backward compatibility
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       return DaemonResponse.error(
         id: request.id,
-        error: {
-          'applicationId': applicationId,
-          'message': e.toString(),
-        },
+        error: {'applicationId': applicationId, 'message': e.toString()},
       );
     }
   }
@@ -185,10 +172,7 @@ class DevServerDomain extends DomainBase {
 
       return DaemonResponse.success(
         id: request.id,
-        result: {
-          'applicationId': applicationId,
-          'exitCode': exitCode.code,
-        },
+        result: {'applicationId': applicationId, 'exitCode': exitCode.code},
       );
       // ignoring for backward compatibility
       // ignore: avoid_catches_without_on_clauses

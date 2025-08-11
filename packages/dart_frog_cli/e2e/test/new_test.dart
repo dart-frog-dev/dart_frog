@@ -57,15 +57,13 @@ void main() {
     test('Creates nested dynamic route', () async {
       await dartFrogNewRoute('/inn/[id]/route', directory: projectDirectory);
 
-      expect(
-        fileAt('inn/[id]/route.dart', on: routesDirectory),
-        exists,
-      );
+      expect(fileAt('inn/[id]/route.dart', on: routesDirectory), exists);
     });
 
     test('Creates a index route for an existing directory', () async {
-      Directory(path.join(routesDirectory.path, 'nested'))
-          .createSync(recursive: true);
+      Directory(
+        path.join(routesDirectory.path, 'nested'),
+      ).createSync(recursive: true);
 
       await dartFrogNewRoute('/nested', directory: projectDirectory);
 
@@ -106,27 +104,22 @@ void main() {
         exists,
       );
       expect(
-        fileAt(
-          'some_other_route/deep/deep/internal.dart',
-          on: routesDirectory,
-        ),
+        fileAt('some_other_route/deep/deep/internal.dart', on: routesDirectory),
         exists,
       );
     });
 
-    test(
-      'Creates route normally when there is a non-dart file with the same '
-      'route path',
-      () async {
-        File(path.join(routesDirectory.path, 'something.py'))
-            .createSync(recursive: true);
+    test('Creates route normally when there is a non-dart file with the same '
+        'route path', () async {
+      File(
+        path.join(routesDirectory.path, 'something.py'),
+      ).createSync(recursive: true);
 
-        await dartFrogNewRoute('/something', directory: projectDirectory);
+      await dartFrogNewRoute('/something', directory: projectDirectory);
 
-        expect(fileAt('something.dart', on: routesDirectory), exists);
-        expect(fileAt('something.py', on: routesDirectory), exists);
-      },
-    );
+      expect(fileAt('something.dart', on: routesDirectory), exists);
+      expect(fileAt('something.py', on: routesDirectory), exists);
+    });
 
     test('Excuse root route', () async {
       await expectLater(
@@ -173,9 +166,7 @@ void main() {
     test('Excuse route creation of invalid route identifiers', () async {
       await expectLater(
         () async => dartFrogNewRoute('/👯‍', directory: projectDirectory),
-        failsWith(
-          stderr: 'Route path segments must be valid Dart identifiers',
-        ),
+        failsWith(stderr: 'Route path segments must be valid Dart identifiers'),
       );
     });
 
@@ -210,9 +201,7 @@ void main() {
           path.join(testDirectory.path, projectName),
         );
 
-        routesDirectory = Directory(
-          path.join(projectDirectory.path, 'routes'),
-        );
+        routesDirectory = Directory(path.join(projectDirectory.path, 'routes'));
       });
 
       tearDown(() async {
@@ -222,14 +211,16 @@ void main() {
       test('Excuse existing endpoints (existing rogue route)', () async {
         await dartFrogNewRoute('/existing_rogue', directory: projectDirectory);
 
-        Directory(path.join(routesDirectory.path, 'existing_rogue'))
-            .createSync(recursive: true);
+        Directory(
+          path.join(routesDirectory.path, 'existing_rogue'),
+        ).createSync(recursive: true);
 
         await expectLater(
           () =>
               dartFrogNewRoute('/existing_rogue', directory: projectDirectory),
           failsWith(
-            stderr: 'Failed to create route: Rogue route detected. '
+            stderr:
+                'Failed to create route: Rogue route detected. '
                 'Rename routes${slash}existing_rogue.dart to '
                 'routes${slash}existing_rogue${slash}index.dart.',
           ),
@@ -242,8 +233,9 @@ void main() {
           directory: projectDirectory,
         );
 
-        File(path.join(routesDirectory.path, 'conflicting_route/index.dart'))
-            .createSync(recursive: true);
+        File(
+          path.join(routesDirectory.path, 'conflicting_route/index.dart'),
+        ).createSync(recursive: true);
 
         await expectLater(
           () async => dartFrogNewRoute(
@@ -251,7 +243,8 @@ void main() {
             directory: projectDirectory,
           ),
           failsWith(
-            stderr: 'Failed to create route: '
+            stderr:
+                'Failed to create route: '
                 'Route conflict detected. '
                 'routes${slash}conflicting_route.dart and '
                 'routes${slash}conflicting_route${slash}index.dart '
@@ -384,7 +377,8 @@ void main() {
           directory: projectDirectory,
         ),
         failsWith(
-          stderr: 'There is already a middleware at '
+          stderr:
+              'There is already a middleware at '
               'routes${slash}existing_middleware${slash}_middleware.dart',
         ),
       );
@@ -393,9 +387,7 @@ void main() {
     test('Excuse middleware creation of invalid route identifier', () async {
       await expectLater(
         () async => dartFrogNewMiddleware('/👯‍', directory: projectDirectory),
-        failsWith(
-          stderr: 'Route path segments must be valid Dart identifiers',
-        ),
+        failsWith(stderr: 'Route path segments must be valid Dart identifiers'),
       );
     });
 
@@ -406,7 +398,8 @@ void main() {
           directory: projectDirectory,
         ),
         failsWith(
-          stderr: 'Failed to create middleware: '
+          stderr:
+              'Failed to create middleware: '
               'Duplicate parameter name found: id',
         ),
       );
@@ -433,9 +426,7 @@ void main() {
           path.join(testDirectory.path, projectName),
         );
 
-        routesDirectory = Directory(
-          path.join(projectDirectory.path, 'routes'),
-        );
+        routesDirectory = Directory(path.join(projectDirectory.path, 'routes'));
       });
 
       tearDown(() async {
@@ -445,8 +436,9 @@ void main() {
       test('Excuse middleware creation upon existing rogue routes', () async {
         await dartFrogNewRoute('/existing_rogue', directory: projectDirectory);
 
-        Directory(path.join(routesDirectory.path, 'existing_rogue'))
-            .createSync(recursive: true);
+        Directory(
+          path.join(routesDirectory.path, 'existing_rogue'),
+        ).createSync(recursive: true);
 
         await expectLater(
           () async => dartFrogNewMiddleware(
@@ -454,36 +446,41 @@ void main() {
             directory: projectDirectory,
           ),
           failsWith(
-            stderr: 'Failed to create middleware: Rogue route detected. '
+            stderr:
+                'Failed to create middleware: Rogue route detected. '
                 'Rename routes${slash}existing_rogue.dart to '
                 'routes${slash}existing_rogue${slash}index.dart.',
           ),
         );
       });
 
-      test('Excuse middleware creation upon existing route conflicts',
-          () async {
-        await dartFrogNewRoute(
-          '/conflicting_route',
-          directory: projectDirectory,
-        );
-
-        File(path.join(routesDirectory.path, 'conflicting_route/index.dart'))
-            .createSync(recursive: true);
-
-        await expectLater(
-          () async => dartFrogNewMiddleware(
+      test(
+        'Excuse middleware creation upon existing route conflicts',
+        () async {
+          await dartFrogNewRoute(
             '/conflicting_route',
             directory: projectDirectory,
-          ),
-          failsWith(
-            stderr: 'Failed to create middleware: Route conflict detected. '
-                'routes${slash}conflicting_route.dart and '
-                'routes${slash}conflicting_route${slash}index.dart both '
-                'resolve to /conflicting_route.',
-          ),
-        );
-      });
+          );
+
+          File(
+            path.join(routesDirectory.path, 'conflicting_route/index.dart'),
+          ).createSync(recursive: true);
+
+          await expectLater(
+            () async => dartFrogNewMiddleware(
+              '/conflicting_route',
+              directory: projectDirectory,
+            ),
+            failsWith(
+              stderr:
+                  'Failed to create middleware: Route conflict detected. '
+                  'routes${slash}conflicting_route.dart and '
+                  'routes${slash}conflicting_route${slash}index.dart both '
+                  'resolve to /conflicting_route.',
+            ),
+          );
+        },
+      );
     });
   });
 }
