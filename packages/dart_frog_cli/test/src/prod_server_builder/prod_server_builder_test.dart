@@ -64,19 +64,19 @@ void main() {
         final generatorHooks = _MockGeneratorHooks();
         when(
           () => generatorHooks.preGen(
-            vars: {'dartVersion': 'stable'},
+            vars: {'dartVersion': 'stable', 'port': '8080'},
             workingDirectory: any(named: 'workingDirectory'),
             onVarsChanged: any(named: 'onVarsChanged'),
           ),
         ).thenAnswer((invocation) async {
           (invocation.namedArguments[const Symbol('onVarsChanged')] as void
                   Function(Map<String, dynamic>))
-              .call({'dartVersion': 'stable'});
+              .call({'dartVersion': 'stable', 'port': '8080'});
         });
         when(
           () => generator.generate(
             any(),
-            vars: {'dartVersion': 'stable'},
+            vars: {'dartVersion': 'stable', 'port': '8080'},
             fileConflictResolution: FileConflictResolution.overwrite,
           ),
         ).thenAnswer((_) async => []);

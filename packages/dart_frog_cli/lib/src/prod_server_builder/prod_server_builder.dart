@@ -8,6 +8,7 @@ import 'package:meta/meta.dart';
 typedef ProdServerBuilderConstructor = ProdServerBuilder Function({
   required Logger logger,
   required String dartVersion,
+  required String port,
   required io.Directory workingDirectory,
   required MasonGenerator prodServerBundleGenerator,
 });
@@ -28,6 +29,7 @@ class ProdServerBuilder {
     required this.dartVersion,
     required this.workingDirectory,
     required this.prodServerBundleGenerator,
+    this.port = '8080',
     @visibleForTesting
     RuntimeCompatibilityCallback? runtimeCompatibilityCallback,
   }) : _ensureRuntimeCompatibility =
@@ -35,6 +37,9 @@ class ProdServerBuilder {
 
   /// The Dart SDK version used to build the Dockerfile.
   final String dartVersion;
+
+  /// The port number the server should start on.
+  final String port;
 
   /// [Logger] instance used to wrap stdout.
   final Logger logger;
@@ -51,15 +56,16 @@ class ProdServerBuilder {
   Future<ExitCode> build() async {
     _ensureRuntimeCompatibility(workingDirectory);
 
-    var vars = <String, dynamic>{
+    final vars = <String, dynamic>{
       'dartVersion': dartVersion,
+      'port': port,
     };
 
     logger.detail('[codegen] running pre-gen...');
     await prodServerBundleGenerator.hooks.preGen(
       vars: vars,
       workingDirectory: workingDirectory.path,
-      onVarsChanged: (v) => vars = v,
+      onVarsChanged: (v) => vars..addAll(v),
     );
 
     logger.detail('[codegen] running generate...');

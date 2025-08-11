@@ -57,6 +57,7 @@ void main() {
         prodServerBuilderConstructor: ({
           required Logger logger,
           required String dartVersion,
+          required String port,
           required Directory workingDirectory,
           required MasonGenerator prodServerBundleGenerator,
         }) {
@@ -87,6 +88,7 @@ void main() {
         prodServerBuilderConstructor: ({
           required Logger logger,
           required String dartVersion,
+          required String port,
           required Directory workingDirectory,
           required MasonGenerator prodServerBundleGenerator,
         }) =>
