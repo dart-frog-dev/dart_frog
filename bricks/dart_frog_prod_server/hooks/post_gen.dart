@@ -5,7 +5,8 @@ import 'package:dart_frog_prod_server_hooks/dart_frog_prod_server_hooks.dart';
 import 'package:mason/mason.dart' show HookContext, lightCyan;
 import 'package:path/path.dart' as path;
 
-void _defaultExit(int code) => ExitOverrides.current?.exit ?? io.exit;
+void _defaultExit(int code) =>
+    ExitOverrides.current?.exit ?? io.exit; // coverage:ignore-line
 
 Future<void> run(HookContext context) => postGen(context);
 
