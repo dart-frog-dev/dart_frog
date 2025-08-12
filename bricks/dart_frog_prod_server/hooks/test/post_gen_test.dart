@@ -61,7 +61,6 @@ void main() {
 
     test('runs dart pub get and outputs next steps', () async {
       var processRunnerCallCount = 0;
-      final exitCalls = <int>[];
 
       await post_gen.postGen(
         context,
@@ -81,10 +80,8 @@ void main() {
           expect(runInShell, isTrue);
           return processResult;
         },
-        exit: exitCalls.add,
       );
       expect(processRunnerCallCount, equals(1));
-      expect(exitCalls, isEmpty);
       verify(() => logger.success('Created a production build!')).called(1);
       verify(
         () => logger.info('Start the production server by running:'),
