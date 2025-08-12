@@ -5,17 +5,13 @@ import 'package:dart_frog_prod_server_hooks/dart_frog_prod_server_hooks.dart';
 import 'package:mason/mason.dart' show HookContext, lightCyan;
 import 'package:path/path.dart' as path;
 
-// coverage:ignore-start
-void _defaultExit(int code) => ExitOverrides.current?.exit ?? io.exit;
-// coverage:ignore-end
-
 Future<void> run(HookContext context) => postGen(context);
 
 Future<void> postGen(
   HookContext context, {
   io.Directory? directory,
   ProcessRunner runProcess = io.Process.run,
-  void Function(int exitCode) exit = _defaultExit,
+  void Function(int exitCode) exit = defaultExit,
 }) async {
   final projectDirectory = directory ?? io.Directory.current;
   final buildDirectoryPath = path.join(projectDirectory.path, 'build');
