@@ -14,8 +14,15 @@ on:
 
 jobs:
   build:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v1
-    with:
-      working_directory: bricks/dart_frog_prod_server/hooks
-      analyze_directories: .
-      report_on: "pre_gen.dart,post_gen.dart"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v5
+
+      - name: 🎯 Build
+        uses: ./.github/actions/dart_package
+        with:
+          analyze_directories: .
+          report_on: "pre_gen.dart,post_gen.dart"
+          working_directory: bricks/dart_frog_prod_server/hooks
