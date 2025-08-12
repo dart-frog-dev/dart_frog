@@ -12,7 +12,7 @@ void disableWorkspaceResolution(
   try {
     File(
       path.join(buildDirectory, 'pubspec_overrides.yaml'),
-    ).writeAsStringSync('resolution: null\n', mode: FileMode.append);
+    ).writeAsStringSync('\nresolution: null\n', mode: FileMode.append);
   } on Exception catch (e) {
     context.logger.err('$e');
     exit(1);

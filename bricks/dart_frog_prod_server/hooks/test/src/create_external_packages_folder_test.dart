@@ -4,77 +4,66 @@ import 'package:dart_frog_prod_server_hooks/dart_frog_prod_server_hooks.dart';
 import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
 
-import '../pubspec_locks.dart';
+import '../pubspecs.dart';
 
 void main() {
   group('createExternalPackagesFolder', () {
-    test(
-      'bundles external dependencies with external dependencies',
-      () async {
-        final projectDirectory = Directory.systemTemp.createTempSync();
-        File(path.join(projectDirectory.path, 'pubspec.lock'))
-            .writeAsStringSync(fooPath);
-        final copyCalls = <String>[];
+    test('bundles external dependencies with external dependencies', () async {
+      final projectDirectory = Directory.systemTemp.createTempSync();
+      File(path.join(projectDirectory.path, 'pubspec.yaml'))
+          .writeAsStringSync(fooPath);
+      final copyCalls = <String>[];
 
-        await createExternalPackagesFolder(
-          projectDirectory: projectDirectory,
-          buildDirectory: Directory(path.join(projectDirectory.path, 'build')),
-          copyPath: (from, to) {
-            copyCalls.add('$from -> $to');
-            return Future.value();
-          },
-        );
+      await createExternalPackagesFolder(
+        projectDirectory: projectDirectory,
+        buildDirectory: Directory(path.join(projectDirectory.path, 'build')),
+        copyPath: (from, to) async => copyCalls.add('$from -> $to'),
+      );
 
-        final fooPackageDirectory =
-            path.join(projectDirectory.path, '../../foo');
-        final fooPackageDirectoryTarget = path.join(
-          projectDirectory.path,
-          'build',
-          '.dart_frog_path_dependencies',
-          'foo',
-        );
+      final fooPackageDirectory = path.join(projectDirectory.path, '../../foo');
+      final fooPackageDirectoryTarget = path.join(
+        projectDirectory.path,
+        'build',
+        '.dart_frog_path_dependencies',
+        'foo',
+      );
 
-        final secondFooPackageDirectory =
-            path.join(projectDirectory.path, '../../foo2');
-        final secondFooPackageDirectoryTarget = path.join(
-          projectDirectory.path,
-          'build',
-          '.dart_frog_path_dependencies',
-          'second_foo',
-        );
-        expect(copyCalls, [
-          '$fooPackageDirectory -> $fooPackageDirectoryTarget',
-          '$secondFooPackageDirectory -> $secondFooPackageDirectoryTarget',
-        ]);
-      },
-    );
+      final foo2PackageDirectory =
+          path.join(projectDirectory.path, '../../foo2');
+      final foo2PackageDirectoryTarget = path.join(
+        projectDirectory.path,
+        'build',
+        '.dart_frog_path_dependencies',
+        'foo2',
+      );
 
-    test(
-      "don't bundle internal path dependencies",
-      () async {
-        final projectDirectory = Directory.systemTemp.createTempSync();
-        File(path.join(projectDirectory.path, 'pubspec.lock'))
-            .writeAsStringSync(fooPathWithInternalDependency);
-        final copyCalls = <String>[];
+      expect(copyCalls, [
+        '$fooPackageDirectory -> $fooPackageDirectoryTarget',
+        '$foo2PackageDirectory -> $foo2PackageDirectoryTarget',
+      ]);
+    });
 
-        await createExternalPackagesFolder(
-          projectDirectory: projectDirectory,
-          buildDirectory: Directory(path.join(projectDirectory.path, 'build')),
-          copyPath: (from, to) {
-            copyCalls.add('$from -> $to');
-            return Future.value();
-          },
-        );
+    test('does not bundle internal path dependencies', () async {
+      final projectDirectory = Directory.systemTemp.createTempSync();
+      File(
+        path.join(projectDirectory.path, 'pubspec.yaml'),
+      ).writeAsStringSync(fooPathWithInternalDependency);
+      final copyCalls = <String>[];
 
-        final from = path.join(projectDirectory.path, '../../foo');
-        final to = path.join(
-          projectDirectory.path,
-          'build',
-          '.dart_frog_path_dependencies',
-          'foo',
-        );
-        expect(copyCalls, ['$from -> $to']);
-      },
-    );
+      await createExternalPackagesFolder(
+        projectDirectory: projectDirectory,
+        buildDirectory: Directory(path.join(projectDirectory.path, 'build')),
+        copyPath: (from, to) async => copyCalls.add('$from -> $to'),
+      );
+
+      final from = path.join(projectDirectory.path, '../../foo');
+      final to = path.join(
+        projectDirectory.path,
+        'build',
+        '.dart_frog_path_dependencies',
+        'foo',
+      );
+      expect(copyCalls, ['$from -> $to']);
+    });
   });
 }
