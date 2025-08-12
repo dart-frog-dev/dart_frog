@@ -161,49 +161,59 @@ void main() {
       expect(exitCalls, equals([1]));
     });
 
-    test(
-      'works with external dependencies',
-      () async {
-        const configuration = RouteConfiguration(
-          middleware: [],
-          directories: [],
-          routes: [],
-          rogueRoutes: [],
-          endpoints: {},
-        );
+    test('works with workspaces', () async {
+      const configuration = RouteConfiguration(
+        middleware: [],
+        directories: [],
+        routes: [],
+        rogueRoutes: [],
+        endpoints: {},
+      );
 
-        final directory = Directory.systemTemp.createTempSync();
-        File(path.join(directory.path, 'pubspec.yaml')).writeAsStringSync(
-          '''
-name: example
-version: 0.1.0
-environment:
-  sdk: ^2.17.0
-dependencies:
-  mason: any
-  foo:
-    path: ../../foo
-dev_dependencies:
-  test: any
-''',
-        );
-        File(path.join(directory.path, 'pubspec.lock')).writeAsStringSync(
-          fooPath,
-        );
-        final exitCalls = <int>[];
-        await pre_gen.preGen(
-          context,
-          buildConfiguration: (_) => configuration,
-          exit: exitCalls.add,
-          directory: directory,
-          runProcess: successRunProcess,
-          copyPath: (_, __) async {},
-        );
+      final directory = Directory.systemTemp.createTempSync();
+      File(
+        path.join(directory.path, 'pubspec.yaml'),
+      ).writeAsStringSync(workspaceRoot);
+      final exitCalls = <int>[];
+      await pre_gen.preGen(
+        context,
+        buildConfiguration: (_) => configuration,
+        exit: exitCalls.add,
+        directory: directory,
+        runProcess: successRunProcess,
+        copyPath: (_, __) async {},
+      );
 
-        expect(exitCalls, isEmpty);
-        directory.delete(recursive: true).ignore();
-      },
-    );
+      expect(exitCalls, isEmpty);
+      directory.delete(recursive: true).ignore();
+    });
+
+    test('works with external dependencies', () async {
+      const configuration = RouteConfiguration(
+        middleware: [],
+        directories: [],
+        routes: [],
+        rogueRoutes: [],
+        endpoints: {},
+      );
+
+      final directory = Directory.systemTemp.createTempSync();
+      File(
+        path.join(directory.path, 'pubspec.yaml'),
+      ).writeAsStringSync(fooPath);
+      final exitCalls = <int>[];
+      await pre_gen.preGen(
+        context,
+        buildConfiguration: (_) => configuration,
+        exit: exitCalls.add,
+        directory: directory,
+        runProcess: successRunProcess,
+        copyPath: (_, __) async {},
+      );
+
+      expect(exitCalls, isEmpty);
+      directory.delete(recursive: true).ignore();
+    });
 
     test('retains invokeCustomEntrypoint (true)', () async {
       const configuration = RouteConfiguration(

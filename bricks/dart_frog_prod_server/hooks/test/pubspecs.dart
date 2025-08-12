@@ -1,4 +1,4 @@
-/// An artificially crafted `pubspec.lock` file with:
+/// An artificially crafted `pubspec.yaml` file with:
 ///
 /// * A direct main path dependency that is not a child of the project
 /// directory.
@@ -25,7 +25,7 @@ dependency_overrides:
       ref: 72c306a8d8abf306b5d024f95aac29ba5fd96577
 ''';
 
-/// An artificially crafted `pubspec.lock` file with:
+/// An artificially crafted `pubspec.yaml` file with:
 ///
 /// * A direct main path dependency that is not a child of the project
 /// directory.
@@ -44,7 +44,7 @@ dev_dependencies:
   test: ^1.0.0
 ''';
 
-/// An artificially crafted `pubspec.lock` file with:
+/// An artificially crafted `pubspec.yaml` file with:
 ///
 /// * A direct main dependency that is hosted.
 /// * A direct dev main dependency that is hosted.
@@ -54,4 +54,17 @@ dependencies:
   mason: ^0.1.0-dev.50
 dev_dependencies:
   test: ^1.0.0
+''';
+
+/// An artificially crafted `pubspec.yaml` file with:
+///
+/// * A direct main path dependency that is a child of the project directory.
+/// * Dart workspaces enabled
+const workspaceRoot = '''
+name: _
+dependencies:
+  foo:
+    path: packages/foo  
+workspace:
+  - packages/foo
 ''';
