@@ -9,8 +9,7 @@ Future<List<String>> getInternalPathDependencies(io.Directory directory) async {
 
   final internalPathDependencies = pubspec.dependencies.values.where(
     (dependency) {
-      if (dependency is! PathDependency) return false;
-      return path.isWithin('', dependency.path);
+      return dependency is PathDependency && path.isWithin('', dependency.path);
     },
   ).cast<PathDependency>();
 
