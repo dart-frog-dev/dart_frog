@@ -12,8 +12,6 @@ typedef RouteConfigurationBuilder = RouteConfiguration Function(
   io.Directory directory,
 );
 
-void _defaultExit(int code) => ExitOverrides.current?.exit ?? io.exit;
-
 Future<void> run(HookContext context) => preGen(context);
 
 Future<void> preGen(
@@ -21,21 +19,17 @@ Future<void> preGen(
   io.Directory? directory,
   ProcessRunner runProcess = io.Process.run,
   RouteConfigurationBuilder buildConfiguration = buildRouteConfiguration,
-  void Function(int exitCode) exit = _defaultExit,
+  void Function(int exitCode) exit = defaultExit,
   Future<void> Function(String from, String to) copyPath = io_expanded.copyPath,
 }) async {
   final projectDirectory = directory ?? io.Directory.current;
-
-  // We need to make sure that the pubspec.lock file is up to date
-  await dartPubGet(
-    context,
-    workingDirectory: projectDirectory.path,
-    runProcess: runProcess,
-    exit: exit,
-  );
-
   final buildDirectory = io.Directory(
     path.join(projectDirectory.path, 'build'),
+  );
+  final usesWorkspaces = usesWorkspaceResolution(
+    context,
+    workingDirectory: projectDirectory.path,
+    exit: exit,
   );
 
   await createBundle(
@@ -44,6 +38,24 @@ Future<void> preGen(
     buildDirectory: buildDirectory,
     exit: exit,
   );
+
+  if (usesWorkspaces) {
+    // Disable workspace resolution until we can generate per-package lockfiles.
+    // https://github.com/dart-lang/pub/issues/4594
+    disableWorkspaceResolution(
+      context,
+      buildDirectory: buildDirectory.path,
+      exit: exit,
+    );
+    // Copy the pubspec.lock from the workspace root to ensure the same versions
+    // of dependencies are used in the production build.
+    copyWorkspacePubspecLock(
+      context,
+      buildDirectory: buildDirectory.path,
+      workingDirectory: projectDirectory.path,
+      exit: exit,
+    );
+  }
 
   final RouteConfiguration configuration;
   try {
@@ -64,9 +76,7 @@ Future<void> preGen(
         '''Route conflict detected. ${lightCyan.wrap(originalFilePath)} and ${lightCyan.wrap(conflictingFilePath)} both resolve to ${lightCyan.wrap(conflictingEndpoint)}.''',
       );
     },
-    onViolationEnd: () {
-      exit(1);
-    },
+    onViolationEnd: () => exit(1),
   );
 
   reportRogueRoutes(
@@ -76,9 +86,7 @@ Future<void> preGen(
         '''Rogue route detected.${defaultForeground.wrap(' ')}Rename ${lightCyan.wrap(filePath)} to ${lightCyan.wrap(idealPath)}.''',
       );
     },
-    onViolationEnd: () {
-      exit(1);
-    },
+    onViolationEnd: () => exit(1),
   );
 
   final customDockerFile = io.File(
