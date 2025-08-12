@@ -174,12 +174,18 @@ void main() {
       File(
         path.join(directory.path, 'pubspec.yaml'),
       ).writeAsStringSync(workspaceRoot);
+      final server = Directory(
+        path.join(directory.path, 'server'),
+      )..createSync();
+      File(
+        path.join(server.path, 'pubspec.yaml'),
+      ).writeAsStringSync(workspaceChild);
       final exitCalls = <int>[];
       await pre_gen.preGen(
         context,
         buildConfiguration: (_) => configuration,
         exit: exitCalls.add,
-        directory: directory,
+        directory: server,
         runProcess: successRunProcess,
         copyPath: (_, __) async {},
       );

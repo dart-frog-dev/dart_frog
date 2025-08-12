@@ -63,8 +63,16 @@ dev_dependencies:
 const workspaceRoot = '''
 name: _
 dependencies:
-  foo:
-    path: packages/foo  
+  server:
+    path: packages/server  
 workspace:
-  - packages/foo
+  - packages/server
+''';
+
+/// An artificially crafted `pubspec.yaml` file with:
+///
+/// * Dart workspaces enabled
+const workspaceChild = '''
+name: server
+resolution: workspace
 ''';
