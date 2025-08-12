@@ -9,7 +9,7 @@ import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
 
 import '../pre_gen.dart' as pre_gen;
-import 'pubspec_locks.dart';
+import 'pubspecs.dart';
 
 class _FakeHookContext extends Fake implements HookContext {
   _FakeHookContext({Logger? logger}) : _logger = logger ?? _MockLogger();

@@ -12,7 +12,7 @@ void copyWorkspacePubspecLock(
   required String workingDirectory,
   required void Function(int exitCode) exit,
 }) {
-  final workspaceRoot = _getWorkspaceRoot();
+  final workspaceRoot = _getWorkspaceRoot(workingDirectory);
   if (workspaceRoot == null) {
     context.logger.err(
       'Unable to determine workspace root for $workingDirectory',
@@ -31,9 +31,10 @@ void copyWorkspacePubspecLock(
 }
 
 /// Returns the root directory of the nearest Dart workspace.
-Directory? _getWorkspaceRoot() {
+Directory? _getWorkspaceRoot(String workingDirectory) {
   final file = _findNearestAncestor(
     where: (path) => _getWorkspaceRootPubspecYaml(cwd: Directory(path)),
+    cwd: Directory(workingDirectory),
   );
   if (file == null || !file.existsSync()) return null;
   return Directory(path.dirname(file.path));
@@ -56,10 +57,10 @@ File? _getWorkspaceRootPubspecYaml({required Directory cwd}) {
 /// relative to the [cwd] that satisfies [where].
 File? _findNearestAncestor({
   required File? Function(String path) where,
-  Directory? cwd,
+  required Directory cwd,
 }) {
   Directory? prev;
-  var dir = cwd ?? Directory.current;
+  var dir = cwd;
   while (prev?.path != dir.path) {
     final file = where(dir.path);
     if (file?.existsSync() ?? false) return file;
