@@ -3,3 +3,5 @@ dependency_overrides:
     path: ../../packages/dart_frog
   dart_frog_auth:
     path: ../../packages/dart_frog_auth
+  dart_frog_lint:
+    path: ../../packages/dart_frog_lint

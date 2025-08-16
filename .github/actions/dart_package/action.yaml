@@ -1,0 +1,100 @@
+name: Dart Package Workflow
+description: Build and test Dart packages.
+
+inputs:
+  collect_coverage:
+    required: false
+    default: "true"
+    description: Whether to collect code coverage
+  collect_score:
+    required: false
+    default: "true"
+    description: Whether to collect the pana score
+  concurrency:
+    required: false
+    default: "4"
+    description: The value of the concurrency flag (-j) used when running tests
+  coverage_excludes:
+    required: false
+    default: ""
+    description: Globs to exclude from coverage
+  dart_sdk:
+    required: false
+    default: "stable"
+    description: "The dart sdk version to use"
+  working_directory:
+    required: false
+    default: "."
+    description: The working directory for this workflow
+  min_coverage:
+    required: false
+    default: "100"
+    description: The minimum coverage percentage value
+  min_score:
+    required: false
+    default: "120"
+    description: The minimum pana score value
+  analyze_directories:
+    required: false
+    default: "lib test"
+    description: Directories to analyze
+  report_on:
+    required: false
+    default: "lib"
+    description: Directories to report on when collecting coverage
+  run_tests:
+    required: false
+    default: "true"
+    description: Whether to run tests for the package.
+
+runs:
+  using: "composite"
+  steps:
+    - name: 🎯 Setup Dart
+      uses: dart-lang/setup-dart@v1
+      with:
+        sdk: ${{inputs.dart_sdk}}
+
+    - name: 📦 Install Dependencies
+      working-directory: ${{ inputs.working_directory }}
+      shell: ${{ inputs.shell }}
+      run: dart pub get
+
+    - name: ✨ Format
+      working-directory: ${{ inputs.working_directory }}
+      shell: ${{ inputs.shell }}
+      run: dart format --set-exit-if-changed .
+
+    - name: 🔍 Analyze
+      working-directory: ${{ inputs.working_directory }}
+      shell: ${{ inputs.shell }}
+      run: dart analyze --fatal-warnings ${{inputs.analyze_directories}}
+
+    - name: 🧪 Test
+      if: inputs.run_tests == 'true'
+      working-directory: ${{ inputs.working_directory }}
+      shell: ${{ inputs.shell }}
+      run: |
+        dart pub global activate coverage
+        dart test -j ${{inputs.concurrency}} --coverage=coverage && dart pub global run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --packages=.dart_tool/package_config.json --report-on=${{inputs.report_on}} --check-ignore
+
+    - name: 📊 Verify Coverage
+      if: inputs.run_tests == 'true' && inputs.collect_coverage == 'true'
+      uses: VeryGoodOpenSource/very_good_coverage@v3
+      with:
+        path: ${{inputs.working_directory}}/coverage/lcov.info
+        exclude: ${{inputs.coverage_excludes}}
+        min_coverage: ${{inputs.min_coverage}}
+
+    - name: 💯 Verify Pub Score
+      if: inputs.collect_score == 'true'
+      working-directory: ${{ inputs.working_directory }}
+      shell: ${{ inputs.shell }}
+      run: |
+        dart pub global activate pana 0.22.21
+        sudo apt-get install webp
+        PANA=$(pana . --no-warning); PANA_SCORE=$(echo $PANA | sed -n "s/.*Points: \([0-9]*\)\/\([0-9]*\)./\1\/\2/p")
+        echo "score: $PANA_SCORE"
+        IFS='/'; read -a SCORE_ARR <<< "$PANA_SCORE"; SCORE=SCORE_ARR[0]; TOTAL=SCORE_ARR[1]
+        if [ -z "$1" ]; then MINIMUM_SCORE=TOTAL; else MINIMUM_SCORE=$1; fi
+        if (( $SCORE < $MINIMUM_SCORE )); then echo "minimum score $MINIMUM_SCORE was not met!"; exit 1; fi

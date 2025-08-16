@@ -14,6 +14,6 @@ dependencies:
   meta: ^1.9.1
 
 dev_dependencies:
+  dart_frog_lint: ^0.1.0
   mocktail: ^1.0.0
   test: ^1.19.2
-  very_good_analysis: ^9.0.0

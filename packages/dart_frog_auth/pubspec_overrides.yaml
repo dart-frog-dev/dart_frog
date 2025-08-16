@@ -1,0 +1,3 @@
+dependency_overrides:
+  dart_frog:
+    path: ../dart_frog

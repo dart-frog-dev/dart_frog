@@ -1,9 +1,9 @@
-name: publish/dart_frog_gen
+name: publish/dart_frog_lint
 
 on:
   push:
     tags:
-      - "dart_frog_gen-v[0-9]+.[0-9]+.[0-9]+*"
+      - "dart_frog_lint-v[0-9]+.[0-9]+.[0-9]+*"
 
 jobs:
   publish:
@@ -19,4 +19,4 @@ jobs:
       - name: 📦 Publish
         uses: ./.github/actions/pub_publish
         with:
-          working_directory: packages/dart_frog_gen
+          working_directory: packages/dart_frog_lint
