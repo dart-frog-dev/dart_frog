@@ -16,6 +16,7 @@
 @TestOn('vm')
 library;
 
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
@@ -295,7 +296,10 @@ void main() {
     final context = _MockRequestContext();
     final app = Router()
       ..get('/hello', (RequestContext context) {
-        expect(context.request.params, isEmpty);
+        expect(
+          context.request.params,
+          equals(UnmodifiableMapView<String, String>(const {})),
+        );
         return Response(body: 'hello world');
       });
 
@@ -317,7 +321,10 @@ void main() {
     final context = _MockRequestContext();
     final app = Router()
       ..get('/users/<id>/greet', (RequestContext context, String id) {
-        expect(context.request.params['id'], equals(id));
+        expect(
+          context.request.params,
+          equals(UnmodifiableMapView<String, String>({'id': id})),
+        );
         return Response(body: 'hello $id');
       });
 
@@ -338,10 +345,15 @@ void main() {
   test('request exposes captured params (multiple)', () async {
     final context = _MockRequestContext();
     final app = Router()
-      ..get('/users/<id>/greet/<name>',
-          (RequestContext context, String id, String name) {
-        expect(context.request.params['id'], equals(id));
-        expect(context.request.params['name'], equals(name));
+      ..get('/users/<id>/greet/<name>', (
+        RequestContext context,
+        String id,
+        String name,
+      ) {
+        expect(
+          context.request.params,
+          equals(UnmodifiableMapView<String, String>({'id': id, 'name': name})),
+        );
         return Response(body: 'hello $name ($id)');
       });
 
