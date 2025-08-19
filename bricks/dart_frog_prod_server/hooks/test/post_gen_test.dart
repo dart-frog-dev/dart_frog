@@ -54,7 +54,6 @@ void main() {
       expect(
         ExitOverrides.runZoned(
           () => post_gen.run(_FakeHookContext(logger: logger)),
-          exit: (_) {},
         ),
         completes,
       );
