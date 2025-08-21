@@ -1,3 +1,4 @@
+include: packages/dart_frog_lint/lib/recommended.yaml
 analyzer:
   exclude:
     - bricks/**/__brick__/**

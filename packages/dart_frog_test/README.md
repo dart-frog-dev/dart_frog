@@ -7,7 +7,7 @@
 [![discord][discord_badge]][discord_link]
 [![dart][dart_badge]][dart_link]
 
-[![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
+[![style: dart frog lint][dart_frog_lint_badge]][dart_frog_lint_link]
 [![Powered by Mason](https://img.shields.io/endpoint?url=https%3A%2F%2Ftinyurl.com%2Fmason-badge)](https://github.com/felangel/mason)
 [![License: MIT][license_badge]][license_link]
 
@@ -110,6 +110,8 @@ await expectNotAllowedMethods(
 
 [dart_badge]: https://img.shields.io/badge/Dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=5BB4F0&color=1E2833
 [dart_install_link]: https://dart.dev/get-dart
+[dart_frog_lint_badge]: https://img.shields.io/badge/style-dart_frog_lint-1DF9D2.svg
+[dart_frog_lint_link]: https://pub.dev/packages/dart_frog_lint
 [dart_link]: https://dart.dev
 [discord_badge]: https://img.shields.io/discord/1394707782271238184?style=for-the-badge&logo=discord&color=1C2A2E&logoColor=1DF9D2
 [discord_link]: https://discord.gg/dart-frog
@@ -117,5 +119,3 @@ await expectNotAllowedMethods(
 [license_link]: https://opensource.org/licenses/MIT
 [logo_black]: https://raw.githubusercontent.com/VGVentures/very_good_brand/main/styles/README/vgv_logo_black.png#gh-light-mode-only
 [logo_white]: https://raw.githubusercontent.com/VGVentures/very_good_brand/main/styles/README/vgv_logo_white.png#gh-dark-mode-only
-[very_good_analysis_badge]: https://img.shields.io/badge/style-very_good_analysis-B22C89.svg
-[very_good_analysis_link]: https://pub.dev/packages/very_good_analysis
