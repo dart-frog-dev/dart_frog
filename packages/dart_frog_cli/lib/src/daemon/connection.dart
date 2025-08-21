@@ -35,8 +35,8 @@ class DaemonStdioConnection implements DaemonConnection {
   DaemonStdioConnection({
     @visibleForTesting StreamSink<List<int>>? testStdout,
     @visibleForTesting Stream<List<int>>? testStdin,
-  })  : _stdout = testStdout ?? stdout,
-        _stdin = testStdin ?? stdin {
+  }) : _stdout = testStdout ?? stdout,
+       _stdin = testStdin ?? stdin {
     _outputStreamController.stream.listen((message) {
       final json = jsonEncode(message.toJson());
       _stdout.add(utf8.encode('[$json]\n'));

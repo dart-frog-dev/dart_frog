@@ -81,9 +81,9 @@ void main() {
       directoryWatcher: (_) => directoryWatcher,
       generatorTarget: (_, {createFile, logger}) => generatorTarget,
       isWindows: isWindows,
-      startProcess: (_, __, {runInShell = false}) async => process,
+      startProcess: (_, _, {runInShell = false}) async => process,
       sigint: sigint,
-      runProcess: (_, __) async => processResult,
+      runProcess: (_, _) async => processResult,
       runtimeCompatibilityCallback: (_) {},
     );
 
@@ -99,8 +99,8 @@ void main() {
         onVarsChanged: any(named: 'onVarsChanged'),
       ),
     ).thenAnswer((invocation) async {
-      (invocation.namedArguments[const Symbol('onVarsChanged')] as void
-              Function(Map<String, dynamic> vars))
+      (invocation.namedArguments[const Symbol('onVarsChanged')]
+              as void Function(Map<String, dynamic> vars))
           .call(<String, dynamic>{});
     });
 
@@ -171,9 +171,9 @@ void main() {
           directoryWatcher: (_) => directoryWatcher,
           generatorTarget: (_, {createFile, logger}) => generatorTarget,
           isWindows: isWindows,
-          startProcess: (_, __, {runInShell = false}) async => process,
+          startProcess: (_, _, {runInShell = false}) async => process,
           sigint: sigint,
-          runProcess: (_, __) async => processResult,
+          runProcess: (_, _) async => processResult,
           runtimeCompatibilityCallback: (_) {
             throw const DartFrogCompatibilityException('oops');
           },
@@ -236,16 +236,17 @@ void main() {
           directoryWatcher: (_) => directoryWatcher,
           generatorTarget: (_, {createFile, logger}) => generatorTarget,
           isWindows: isWindows,
-          startProcess: (
-            String executable,
-            List<String> arguments, {
-            bool runInShell = false,
-          }) async {
-            receivedArgs = arguments;
-            return process;
-          },
+          startProcess:
+              (
+                String executable,
+                List<String> arguments, {
+                bool runInShell = false,
+              }) async {
+                receivedArgs = arguments;
+                return process;
+              },
           sigint: sigint,
-          runProcess: (_, __) async => processResult,
+          runProcess: (_, _) async => processResult,
           runtimeCompatibilityCallback: (_) => true,
         );
 
@@ -289,16 +290,17 @@ void main() {
           directoryWatcher: (_) => directoryWatcher,
           generatorTarget: (_, {createFile, logger}) => generatorTarget,
           isWindows: isWindows,
-          startProcess: (
-            String executable,
-            List<String> arguments, {
-            bool runInShell = false,
-          }) async {
-            receivedArgs = arguments;
-            return process;
-          },
+          startProcess:
+              (
+                String executable,
+                List<String> arguments, {
+                bool runInShell = false,
+              }) async {
+                receivedArgs = arguments;
+                return process;
+              },
           sigint: sigint,
-          runProcess: (_, __) async => processResult,
+          runProcess: (_, _) async => processResult,
           runtimeCompatibilityCallback: (_) => true,
         );
 
@@ -353,7 +355,7 @@ void main() {
             workingDirectory: Directory.current,
             directoryWatcher: (_) => directoryWatcher,
             isWindows: true,
-            startProcess: (_, __, {runInShell = false}) async => process,
+            startProcess: (_, _, {runInShell = false}) async => process,
             sigint: sigint,
             runProcess: (String executable, List<String> arguments) async {
               processRunCalls.add([executable, ...arguments]);
@@ -476,8 +478,8 @@ void main() {
             onVarsChanged: any(named: 'onVarsChanged'),
           ),
         ).thenAnswer((invocation) async {
-          (invocation.namedArguments[const Symbol('onVarsChanged')] as void
-                  Function(Map<String, dynamic> vars))
+          (invocation.namedArguments[const Symbol('onVarsChanged')]
+                  as void Function(Map<String, dynamic> vars))
               .call(<String, dynamic>{});
         });
         when(
@@ -505,23 +507,24 @@ void main() {
           dartVmServicePort: '4343',
           workingDirectory: Directory.current,
           directoryWatcher: (_) => directoryWatcher,
-          generatorTarget: (
-            _, {
-            CreateFile? createFile,
-            Logger? logger,
-          }) =>
-              generatorTarget,
+          generatorTarget:
+              (
+                _, {
+                CreateFile? createFile,
+                Logger? logger,
+              }) => generatorTarget,
           isWindows: isWindows,
-          startProcess: (
-            String executable,
-            List<String> arguments, {
-            bool runInShell = false,
-          }) async {
-            receivedArgs = arguments;
-            return process;
-          },
+          startProcess:
+              (
+                String executable,
+                List<String> arguments, {
+                bool runInShell = false,
+              }) async {
+                receivedArgs = arguments;
+                return process;
+              },
           sigint: sigint,
-          runProcess: (_, __) async => processResult,
+          runProcess: (_, _) async => processResult,
           runtimeCompatibilityCallback: (_) => true,
         );
         await expectLater(devServerRunner.start(), completes);
@@ -844,7 +847,7 @@ runs codegen with debounce when changes are made to the public or routes directo
             workingDirectory: Directory.current,
             directoryWatcher: (_) => directoryWatcher,
             isWindows: true,
-            startProcess: (_, __, {runInShell = false}) async => process,
+            startProcess: (_, _, {runInShell = false}) async => process,
             sigint: sigint,
             runProcess: (String executable, List<String> arguments) async {
               processRunCalls.add([executable, ...arguments]);
@@ -948,7 +951,7 @@ runs codegen with debounce when changes are made to the public or routes directo
             dartVmServicePort: dartVmServicePort,
             workingDirectory: Directory.current,
             directoryWatcher: (_) => directoryWatcher,
-            startProcess: (_, __, {runInShell = false}) async => process,
+            startProcess: (_, _, {runInShell = false}) async => process,
             sigint: sigint,
             runProcess: (String executable, List<String> arguments) async {
               processRunCalls.add([executable, ...arguments]);
@@ -990,7 +993,7 @@ lib/my_model.g.dart:53:20: Warning: Operand of null-aware operation '!' has type
             dartVmServicePort: dartVmServicePort,
             workingDirectory: Directory.current,
             directoryWatcher: (_) => directoryWatcher,
-            startProcess: (_, __, {runInShell = false}) async => process,
+            startProcess: (_, _, {runInShell = false}) async => process,
             sigint: sigint,
             runtimeCompatibilityCallback: (_) => true,
           );
@@ -1033,7 +1036,7 @@ Could not start the VM service: localhost:8181 is already in use.''';
             dartVmServicePort: dartVmServicePort,
             workingDirectory: Directory.current,
             directoryWatcher: (_) => directoryWatcher,
-            startProcess: (_, __, {runInShell = false}) async => process,
+            startProcess: (_, _, {runInShell = false}) async => process,
             sigint: sigint,
             runProcess: (String executable, List<String> arguments) async {
               processRunCalls.add([executable, ...arguments]);

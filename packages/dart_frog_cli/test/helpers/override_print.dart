@@ -5,7 +5,7 @@ void Function() overridePrint(void Function(List<String>) fn) {
 
   return () {
     final spec = ZoneSpecification(
-      print: (_, __, ___, String msg) {
+      print: (_, _, _, String msg) {
         printLogs.add(msg);
       },
     );
