@@ -87,8 +87,9 @@ class _NewSubCommand extends DartFrogCommand {
       );
     }
 
-    final segments =
-        routeName.split('/').skipWhile((element) => element.isEmpty);
+    final segments = routeName
+        .split('/')
+        .skipWhile((element) => element.isEmpty);
 
     for (final segment in segments) {
       if (segment.isEmpty) {
