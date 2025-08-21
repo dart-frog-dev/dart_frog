@@ -10,8 +10,8 @@ dependencies:
   dart_frog: ^1.0.0
 
 dev_dependencies:
+  dart_frog_lint: ^0.1.0
   dart_frog_test:
     path: ../
   mocktail: ^1.0.0
   test: ^1.19.2
-  very_good_analysis: ^5.1.0
