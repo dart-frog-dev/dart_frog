@@ -181,8 +181,8 @@ void main() {
 
       await routeConfigurationWatcher.start();
 
-      final result = routeConfigurationWatcher
-          .forceRouteConfigurationRegeneration();
+      final result =
+          routeConfigurationWatcher.forceRouteConfigurationRegeneration();
 
       expect(result, same(routeConfiguration));
     });
@@ -200,8 +200,8 @@ void main() {
 
       await routeConfigurationWatcher.start();
 
-      final result = routeConfigurationWatcher
-          .forceRouteConfigurationRegeneration();
+      final result =
+          routeConfigurationWatcher.forceRouteConfigurationRegeneration();
 
       expect(result, isNull);
     });
@@ -220,8 +220,8 @@ void main() {
       await routeConfigurationWatcher.start();
       await routeConfigurationWatcher.stop();
 
-      final result = routeConfigurationWatcher
-          .forceRouteConfigurationRegeneration();
+      final result =
+          routeConfigurationWatcher.forceRouteConfigurationRegeneration();
 
       expect(result, isNull);
     });

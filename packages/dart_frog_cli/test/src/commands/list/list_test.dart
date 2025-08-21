@@ -63,13 +63,12 @@ void main() {
       updater = _MockPubUpdater();
       routeConfiguration = _MockRouteConfiguration();
       when(() => logger.progress(any())).thenReturn(progress);
-      command =
-          ListCommand(
-              logger: logger,
-              buildConfiguration: (_) => routeConfiguration,
-            )
-            ..testArgResults = argResults
-            ..testUsage = 'test usage';
+      command = ListCommand(
+        logger: logger,
+        buildConfiguration: (_) => routeConfiguration,
+      )
+        ..testArgResults = argResults
+        ..testUsage = 'test usage';
 
       when(() => argResults['plain']).thenReturn(false);
       when(

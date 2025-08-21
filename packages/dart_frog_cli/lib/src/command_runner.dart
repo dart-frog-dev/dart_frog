@@ -33,12 +33,12 @@ class DartFrogCommandRunner extends CompletionCommandRunner<int> {
     io.ProcessSignal? sigint,
     Exit? exit,
     io.Stdin? stdin,
-  }) : _logger = logger ?? Logger(),
-       _pubUpdater = pubUpdater ?? PubUpdater(),
-       _sigint = sigint ?? io.ProcessSignal.sigint,
-       _exit = exit ?? io.exit,
-       stdin = stdin ?? io.stdin,
-       super(executableName, executableDescription) {
+  })  : _logger = logger ?? Logger(),
+        _pubUpdater = pubUpdater ?? PubUpdater(),
+        _sigint = sigint ?? io.ProcessSignal.sigint,
+        _exit = exit ?? io.exit,
+        stdin = stdin ?? io.stdin,
+        super(executableName, executableDescription) {
     argParser.addFlags();
     addCommand(BuildCommand(logger: _logger));
     addCommand(CreateCommand(logger: _logger));

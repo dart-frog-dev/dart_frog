@@ -5,13 +5,12 @@ import 'package:mason/mason.dart';
 import 'package:meta/meta.dart';
 
 /// Typedef for [ProdServerBuilder.new].
-typedef ProdServerBuilderConstructor =
-    ProdServerBuilder Function({
-      required Logger logger,
-      required String dartVersion,
-      required io.Directory workingDirectory,
-      required MasonGenerator prodServerBundleGenerator,
-    });
+typedef ProdServerBuilderConstructor = ProdServerBuilder Function({
+  required Logger logger,
+  required String dartVersion,
+  required io.Directory workingDirectory,
+  required MasonGenerator prodServerBundleGenerator,
+});
 
 /// {@template prod_server_builder}
 /// A class that builds the production server runtime code.
@@ -32,7 +31,7 @@ class ProdServerBuilder {
     @visibleForTesting
     RuntimeCompatibilityCallback? runtimeCompatibilityCallback,
   }) : _ensureRuntimeCompatibility =
-           runtimeCompatibilityCallback ?? ensureRuntimeCompatibility;
+            runtimeCompatibilityCallback ?? ensureRuntimeCompatibility;
 
   /// The Dart SDK version used to build the Dockerfile.
   final String dartVersion;

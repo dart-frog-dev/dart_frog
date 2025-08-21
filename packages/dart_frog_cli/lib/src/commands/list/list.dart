@@ -7,10 +7,9 @@ import 'package:mason/mason.dart';
 
 /// Definition for a function that builds a [RouteConfiguration] from a
 /// [Directory].
-typedef RouteConfigurationBuilder =
-    RouteConfiguration Function(
-      Directory directory,
-    );
+typedef RouteConfigurationBuilder = RouteConfiguration Function(
+  Directory directory,
+);
 
 /// {@template list_command}
 /// `dart_frog list "path/to/project"`
@@ -26,8 +25,7 @@ class ListCommand extends DartFrogCommand {
     argParser.addFlag(
       'plain',
       abbr: 'p',
-      help:
-          'Return the output in a plain format, printing each route on a new '
+      help: 'Return the output in a plain format, printing each route on a new '
           'line.',
       negatable: false,
     );

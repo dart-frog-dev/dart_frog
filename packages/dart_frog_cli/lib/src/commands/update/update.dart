@@ -14,8 +14,8 @@ class UpdateCommand extends DartFrogCommand {
   UpdateCommand({
     required Logger logger,
     PubUpdater? pubUpdater,
-  }) : _logger = logger,
-       _pubUpdater = pubUpdater ?? PubUpdater() {
+  })  : _logger = logger,
+        _pubUpdater = pubUpdater ?? PubUpdater() {
     argParser.addFlag(
       'verify-only',
       help: 'Check if an update is available, without committing to update.',

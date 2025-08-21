@@ -75,7 +75,8 @@ void main() {
       );
     });
 
-    test('throws when the pubspec.yaml does '
+    test(
+        'throws when the pubspec.yaml does '
         'not contain a dart_frog dependency', () {
       const expected =
           'Expected to find a dependency on "dart_frog" in the pubspec.yaml';

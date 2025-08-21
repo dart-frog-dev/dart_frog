@@ -17,7 +17,7 @@ class RouteConfigurationDomain extends DomainBase {
     @visibleForTesting
     RouteConfigurationWatcherBuilder? routeConfigurationWatcherBuilder,
   }) : _routeConfigWatcherBuilder =
-           routeConfigurationWatcherBuilder ?? RouteConfigurationWatcher.new {
+            routeConfigurationWatcherBuilder ?? RouteConfigurationWatcher.new {
     addHandler('watcherStart', _watcherStart);
     addHandler(
       'watcherGenerateRouteConfiguration',

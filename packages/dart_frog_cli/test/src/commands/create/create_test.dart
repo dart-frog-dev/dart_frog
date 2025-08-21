@@ -38,13 +38,12 @@ void main() {
       progress = _MockProgress();
       when(() => logger.progress(any())).thenReturn(progress);
       generator = _MockMasonGenerator();
-      command =
-          CreateCommand(
-              logger: logger,
-              generator: (_) async => generator,
-            )
-            ..testArgResults = argResults
-            ..testUsage = 'test usage';
+      command = CreateCommand(
+        logger: logger,
+        generator: (_) async => generator,
+      )
+        ..testArgResults = argResults
+        ..testUsage = 'test usage';
     });
 
     test('throws UsageException when args is empty.', () async {
