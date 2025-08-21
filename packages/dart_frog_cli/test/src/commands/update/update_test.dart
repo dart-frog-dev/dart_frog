@@ -33,7 +33,7 @@ const expectedUsage = [
       '    --verify-only    Check if an update is available, without '
       'committing to update.\n'
       '\n'
-      'Run "dart_frog help" to see global options.'
+      'Run "dart_frog help" to see global options.',
 ];
 
 void main() {

@@ -99,8 +99,8 @@ void main() {
         onVarsChanged: any(named: 'onVarsChanged'),
       ),
     ).thenAnswer((invocation) async {
-      (invocation.namedArguments[const Symbol('onVarsChanged')] as void
-              Function(Map<String, dynamic> vars))
+      (invocation.namedArguments[const Symbol('onVarsChanged')]
+              as void Function(Map<String, dynamic> vars))
           .call(<String, dynamic>{});
     });
 
@@ -152,9 +152,11 @@ void main() {
         ).called(1);
 
         verify(() {
-          progress.complete('Running on ${link(
-            uri: Uri.parse('http://localhost:8080'),
-          )}');
+          progress.complete(
+            'Running on ${link(
+              uri: Uri.parse('http://localhost:8080'),
+            )}',
+          );
         }).called(1);
       });
 
@@ -234,14 +236,15 @@ void main() {
           directoryWatcher: (_) => directoryWatcher,
           generatorTarget: (_, {createFile, logger}) => generatorTarget,
           isWindows: isWindows,
-          startProcess: (
-            String executable,
-            List<String> arguments, {
-            bool runInShell = false,
-          }) async {
-            receivedArgs = arguments;
-            return process;
-          },
+          startProcess:
+              (
+                String executable,
+                List<String> arguments, {
+                bool runInShell = false,
+              }) async {
+                receivedArgs = arguments;
+                return process;
+              },
           sigint: sigint,
           runProcess: (_, __) async => processResult,
           runtimeCompatibilityCallback: (_) => true,
@@ -266,9 +269,11 @@ void main() {
         ).called(1);
 
         verify(() {
-          progress.complete('Running on ${link(
-            uri: Uri.parse('http://localhost:4242'),
-          )}');
+          progress.complete(
+            'Running on ${link(
+              uri: Uri.parse('http://localhost:4242'),
+            )}',
+          );
         }).called(1);
       });
 
@@ -285,14 +290,15 @@ void main() {
           directoryWatcher: (_) => directoryWatcher,
           generatorTarget: (_, {createFile, logger}) => generatorTarget,
           isWindows: isWindows,
-          startProcess: (
-            String executable,
-            List<String> arguments, {
-            bool runInShell = false,
-          }) async {
-            receivedArgs = arguments;
-            return process;
-          },
+          startProcess:
+              (
+                String executable,
+                List<String> arguments, {
+                bool runInShell = false,
+              }) async {
+                receivedArgs = arguments;
+                return process;
+              },
           sigint: sigint,
           runProcess: (_, __) async => processResult,
           runtimeCompatibilityCallback: (_) => true,
@@ -320,9 +326,11 @@ void main() {
         ).called(1);
 
         verify(() {
-          progress.complete('Running on ${link(
-            uri: Uri.parse('http://192.162.1.2:4242'),
-          )}');
+          progress.complete(
+            'Running on ${link(
+              uri: Uri.parse('http://192.162.1.2:4242'),
+            )}',
+          );
         }).called(1);
       });
 
@@ -470,8 +478,8 @@ void main() {
             onVarsChanged: any(named: 'onVarsChanged'),
           ),
         ).thenAnswer((invocation) async {
-          (invocation.namedArguments[const Symbol('onVarsChanged')] as void
-                  Function(Map<String, dynamic> vars))
+          (invocation.namedArguments[const Symbol('onVarsChanged')]
+                  as void Function(Map<String, dynamic> vars))
               .call(<String, dynamic>{});
         });
         when(
@@ -499,21 +507,22 @@ void main() {
           dartVmServicePort: '4343',
           workingDirectory: Directory.current,
           directoryWatcher: (_) => directoryWatcher,
-          generatorTarget: (
-            _, {
-            CreateFile? createFile,
-            Logger? logger,
-          }) =>
-              generatorTarget,
+          generatorTarget:
+              (
+                _, {
+                CreateFile? createFile,
+                Logger? logger,
+              }) => generatorTarget,
           isWindows: isWindows,
-          startProcess: (
-            String executable,
-            List<String> arguments, {
-            bool runInShell = false,
-          }) async {
-            receivedArgs = arguments;
-            return process;
-          },
+          startProcess:
+              (
+                String executable,
+                List<String> arguments, {
+                bool runInShell = false,
+              }) async {
+                receivedArgs = arguments;
+                return process;
+              },
           sigint: sigint,
           runProcess: (_, __) async => processResult,
           runtimeCompatibilityCallback: (_) => true,
@@ -565,8 +574,9 @@ void main() {
         when(() => process.stdout).thenAnswer(
           (_) => Stream.value(utf8.encode('[hotreload] hot reload enabled.')),
         );
-        when(() => directoryWatcher.events)
-            .thenAnswer((_) => controller.stream);
+        when(
+          () => directoryWatcher.events,
+        ).thenAnswer((_) => controller.stream);
         await expectLater(devServerRunner.start(), completes);
 
         expect(devServerRunner.isWatching, isTrue);
@@ -592,8 +602,9 @@ void main() {
             utf8.encode('[hotreload] hot reload enabled.'),
           ),
         );
-        when(() => directoryWatcher.events)
-            .thenAnswer((_) => controller.stream);
+        when(
+          () => directoryWatcher.events,
+        ).thenAnswer((_) => controller.stream);
         await expectLater(devServerRunner.start(), completes);
 
         expect(devServerRunner.isWatching, isTrue);
@@ -620,8 +631,9 @@ runs codegen with debounce when changes are made to the public or routes directo
           when(() => process.stdout).thenAnswer(
             (_) => Stream.value(utf8.encode('[hotreload] hot reload enabled.')),
           );
-          when(() => directoryWatcher.events)
-              .thenAnswer((_) => controller.stream);
+          when(
+            () => directoryWatcher.events,
+          ).thenAnswer((_) => controller.stream);
 
           await expectLater(devServerRunner.start(), completes);
 
@@ -699,8 +711,9 @@ runs codegen with debounce when changes are made to the public or routes directo
         when(() => process.stdout).thenAnswer(
           (_) => Stream.value(utf8.encode('[hotreload] hot reload enabled.')),
         );
-        when(() => directoryWatcher.events)
-            .thenAnswer((_) => controller.stream);
+        when(
+          () => directoryWatcher.events,
+        ).thenAnswer((_) => controller.stream);
 
         await expectLater(devServerRunner.start(), completes);
 
@@ -737,8 +750,9 @@ runs codegen with debounce when changes are made to the public or routes directo
           (_) => Stream.value(utf8.encode('[hotreload] hot reload enabled.')),
         );
 
-        when(() => directoryWatcher.events)
-            .thenAnswer((_) => controller.stream);
+        when(
+          () => directoryWatcher.events,
+        ).thenAnswer((_) => controller.stream);
 
         await expectLater(devServerRunner.start(), completes);
 
@@ -865,8 +879,9 @@ runs codegen with debounce when changes are made to the public or routes directo
           when(() => process.exitCode).thenAnswer((_) => completer.future);
 
           final controller = StreamController<WatchEvent>();
-          when(() => directoryWatcher.events)
-              .thenAnswer((_) => controller.stream);
+          when(
+            () => directoryWatcher.events,
+          ).thenAnswer((_) => controller.stream);
 
           await expectLater(devServerRunner.start(), completes);
 
@@ -891,8 +906,9 @@ runs codegen with debounce when changes are made to the public or routes directo
           when(() => process.exitCode).thenAnswer((_) => completer.future);
 
           final controller = StreamController<WatchEvent>();
-          when(() => directoryWatcher.events)
-              .thenAnswer((_) => controller.stream);
+          when(
+            () => directoryWatcher.events,
+          ).thenAnswer((_) => controller.stream);
 
           await expectLater(devServerRunner.start(), completes);
           await controller.close();

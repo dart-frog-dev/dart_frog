@@ -44,10 +44,12 @@ void main() {
 
       inputStreamController = StreamController<DaemonMessage>.broadcast();
       outputStreamController = StreamController<DaemonMessage>.broadcast();
-      when(() => connection.inputStream)
-          .thenAnswer((_) => inputStreamController.stream);
-      when(() => connection.outputSink)
-          .thenAnswer((_) => outputStreamController.sink);
+      when(
+        () => connection.inputStream,
+      ).thenAnswer((_) => inputStreamController.stream);
+      when(
+        () => connection.outputSink,
+      ).thenAnswer((_) => outputStreamController.sink);
 
       daemonServer = DaemonServer(
         connection: connection,

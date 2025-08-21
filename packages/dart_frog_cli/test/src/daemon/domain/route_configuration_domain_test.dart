@@ -69,13 +69,14 @@ void main() {
       domain = RouteConfigurationDomain(
         daemonServer,
         getId: () => 'id',
-        routeConfigurationWatcherBuilder: ({
-          required Logger logger,
-          required Directory workingDirectory,
-          required RouteConfigurationChanged onRouteConfigurationChanged,
-        }) {
-          return watcher;
-        },
+        routeConfigurationWatcherBuilder:
+            ({
+              required Logger logger,
+              required Directory workingDirectory,
+              required RouteConfigurationChanged onRouteConfigurationChanged,
+            }) {
+              return watcher;
+            },
       );
 
       when(() => watcher.start()).thenAnswer((_) async {});
@@ -96,16 +97,17 @@ void main() {
         domain = RouteConfigurationDomain(
           daemonServer,
           getId: () => 'id',
-          routeConfigurationWatcherBuilder: ({
-            required Logger logger,
-            required Directory workingDirectory,
-            required RouteConfigurationChanged onRouteConfigurationChanged,
-          }) {
-            passedLogger = logger;
-            passedWorkingDirectory = workingDirectory;
-            passedOnRouteConfigurationChanged = onRouteConfigurationChanged;
-            return watcher;
-          },
+          routeConfigurationWatcherBuilder:
+              ({
+                required Logger logger,
+                required Directory workingDirectory,
+                required RouteConfigurationChanged onRouteConfigurationChanged,
+              }) {
+                passedLogger = logger;
+                passedWorkingDirectory = workingDirectory;
+                passedOnRouteConfigurationChanged = onRouteConfigurationChanged;
+                return watcher;
+              },
         );
 
         expect(
@@ -380,8 +382,9 @@ void main() {
 
     group('watcherGenerateRouteConfiguration', () {
       setUp(() async {
-        when(() => watcher.forceRouteConfigurationRegeneration())
-            .thenReturn(_configuration);
+        when(
+          () => watcher.forceRouteConfigurationRegeneration(),
+        ).thenReturn(_configuration);
 
         await domain.handleRequest(
           const DaemonRequest(
@@ -491,8 +494,9 @@ void main() {
       });
 
       test('when cannot generate route config', () async {
-        when(() => watcher.forceRouteConfigurationRegeneration())
-            .thenReturn(null);
+        when(
+          () => watcher.forceRouteConfigurationRegeneration(),
+        ).thenReturn(null);
 
         expect(
           await domain.handleRequest(
@@ -531,15 +535,16 @@ void main() {
 
         domain = RouteConfigurationDomain(
           daemonServer,
-          routeConfigurationWatcherBuilder: ({
-            required Logger logger,
-            required Directory workingDirectory,
-            required RouteConfigurationChanged onRouteConfigurationChanged,
-          }) {
-            final watcher = calls == 0 ? watcher1 : watcher2;
-            calls++;
-            return watcher;
-          },
+          routeConfigurationWatcherBuilder:
+              ({
+                required Logger logger,
+                required Directory workingDirectory,
+                required RouteConfigurationChanged onRouteConfigurationChanged,
+              }) {
+                final watcher = calls == 0 ? watcher1 : watcher2;
+                calls++;
+                return watcher;
+              },
         );
 
         await domain.handleRequest(

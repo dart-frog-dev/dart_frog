@@ -29,7 +29,7 @@ const expectedUsage = [
       'Usage: dart_frog daemon [arguments]\n'
       '-h, --help    Print this usage information.\n'
       '\n'
-      'Run "dart_frog help" to see global options.'
+      'Run "dart_frog help" to see global options.',
 ];
 
 void main() {

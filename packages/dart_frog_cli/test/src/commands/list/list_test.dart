@@ -39,7 +39,7 @@ const expectedUsage = [
       '-p, --plain    Return the output in a plain format, printing each route '
       'on a new line.\n'
       '\n'
-      'Run "dart_frog help" to see global options.'
+      'Run "dart_frog help" to see global options.',
 ];
 
 void main() {
@@ -63,12 +63,13 @@ void main() {
       updater = _MockPubUpdater();
       routeConfiguration = _MockRouteConfiguration();
       when(() => logger.progress(any())).thenReturn(progress);
-      command = ListCommand(
-        logger: logger,
-        buildConfiguration: (_) => routeConfiguration,
-      )
-        ..testArgResults = argResults
-        ..testUsage = 'test usage';
+      command =
+          ListCommand(
+              logger: logger,
+              buildConfiguration: (_) => routeConfiguration,
+            )
+            ..testArgResults = argResults
+            ..testUsage = 'test usage';
 
       when(() => argResults['plain']).thenReturn(false);
       when(

@@ -90,7 +90,7 @@ void main() {
         '''
 [{"event":"daemon.protocolError","params":{"message":"Message should be placed within a JSON list"}}]\n''',
         '''
-[{"event":"daemon.protocolError","params":{"message":"Malformed message, Invalid id: 1"}}]\n'''
+[{"event":"daemon.protocolError","params":{"message":"Malformed message, Invalid id: 1"}}]\n''',
       ]);
     });
 
@@ -101,7 +101,7 @@ void main() {
       expect(receivedMessages, isEmpty);
       expect(stdoutLines, <String>[
         '''
-[{"event":"daemon.protocolError","params":{"message":"Unknown error: Exception: catapimbas"}}]\n'''
+[{"event":"daemon.protocolError","params":{"message":"Unknown error: Exception: catapimbas"}}]\n''',
       ]);
     });
 

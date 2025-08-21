@@ -42,7 +42,7 @@ const expectedUsage = [
       '  middleware   Create a new middleware for dart_frog\n'
       '  route        Create a new route for dart_frog\n'
       '\n'
-      'Run "dart_frog help" to see global options.'
+      'Run "dart_frog help" to see global options.',
 ];
 
 void main() {
@@ -65,14 +65,15 @@ void main() {
       progress = _MockProgress();
       generator = _MockMasonGenerator();
       updater = _MockPubUpdater();
-      command = NewCommand(
-        logger: logger,
-        generator: (_) async {
-          return generator;
-        },
-      )
-        ..testArgResults = argResults
-        ..testUsage = 'test usage';
+      command =
+          NewCommand(
+              logger: logger,
+              generator: (_) async {
+                return generator;
+              },
+            )
+            ..testArgResults = argResults
+            ..testUsage = 'test usage';
 
       final sigint = _MockProcessSignal();
 
@@ -388,8 +389,9 @@ void main() {
             logger: any(named: 'logger'),
           ),
         ).thenAnswer((invocation) async {
-          final onVarsChanged = invocation.namedArguments[#onVarsChanged]
-              as void Function(Map<String, dynamic>);
+          final onVarsChanged =
+              invocation.namedArguments[#onVarsChanged]
+                  as void Function(Map<String, dynamic>);
 
           onVarsChanged({'dir_path': '${directory.path}/routes/something'});
         });
@@ -460,8 +462,9 @@ void main() {
             logger: any(named: 'logger'),
           ),
         ).thenAnswer((invocation) async {
-          final onVarsChanged = invocation.namedArguments[#onVarsChanged]
-              as void Function(Map<String, dynamic>);
+          final onVarsChanged =
+              invocation.namedArguments[#onVarsChanged]
+                  as void Function(Map<String, dynamic>);
 
           onVarsChanged({'dir_path': '${directory.path}/routes/something'});
         });
