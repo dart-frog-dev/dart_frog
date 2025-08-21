@@ -12,8 +12,6 @@ typedef RouteConfigurationBuilder = RouteConfiguration Function(
   io.Directory directory,
 );
 
-void _defaultExit(int code) => ExitOverrides.current?.exit ?? io.exit;
-
 Future<void> run(HookContext context) => preGen(context);
 
 Future<void> preGen(
@@ -21,7 +19,7 @@ Future<void> preGen(
   io.Directory? directory,
   ProcessRunner runProcess = io.Process.run,
   RouteConfigurationBuilder buildConfiguration = buildRouteConfiguration,
-  void Function(int exitCode) exit = _defaultExit,
+  void Function(int exitCode) exit = defaultExit,
   Future<void> Function(String from, String to) copyPath = io_expanded.copyPath,
 }) async {
   final projectDirectory = directory ?? io.Directory.current;

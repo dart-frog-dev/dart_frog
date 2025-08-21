@@ -3,6 +3,8 @@ import 'dart:io' as io;
 
 const _asyncRunZoned = runZoned;
 
+void defaultExit(int code) => ExitOverrides.current?.exit ?? io.exit;
+
 abstract class ExitOverrides {
   static final _token = Object();
 
