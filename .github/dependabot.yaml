@@ -32,74 +32,19 @@ updates:
           - "*"
   # Dart Dependencies
   - package-ecosystem: pub
-    directory: /packages/dart_frog
+    directories:
+      - /packages/dart_frog
+      - /packages/dart_frog_auth
+      - /packages/dart_frog_cli/e2e
+      - /packages/dart_frog_cli
+      - /packages/dart_frog_gen
+      - /packages/dart_frog_lint
+      - /packages/dart_frog_test/example
+      - /packages/dart_frog_test
+      - /packages/dart_frog_web_socket
     schedule:
       interval: monthly
     groups:
-      packages-dart-frog-pub:
-        patterns:
-          - "*"
-  - package-ecosystem: pub
-    directory: /packages/dart_frog_auth
-    schedule:
-      interval: monthly
-    groups:
-      packages-dart-frog-auth-pub:
-        patterns:
-          - "*"
-  - package-ecosystem: pub
-    directory: /packages/dart_frog_cli/e2e
-    schedule:
-      interval: monthly
-    groups:
-      packages-dart-frog-cli-e2e-pub:
-        patterns:
-          - "*"
-  - package-ecosystem: pub
-    directory: /packages/dart_frog_cli
-    schedule:
-      interval: monthly
-    groups:
-      packages-dart-frog-cli-pub:
-        patterns:
-          - "*"
-  - package-ecosystem: pub
-    directory: /packages/dart_frog_gen
-    schedule:
-      interval: monthly
-    groups:
-      packages-dart-frog-gen-pub:
-        patterns:
-          - "*"
-  - package-ecosystem: pub
-    directory: /packages/dart_frog_lint
-    schedule:
-      interval: monthly
-    groups:
-      packages-dart-frog-lint-pub:
-        patterns:
-          - "*"
-  - package-ecosystem: pub
-    directory: /packages/dart_frog_test/example
-    schedule:
-      interval: monthly
-    groups:
-      packages-dart-frog-test-example-pub:
-        patterns:
-          - "*"
-  - package-ecosystem: pub
-    directory: /packages/dart_frog_test
-    schedule:
-      interval: monthly
-    groups:
-      packages-dart-frog-test-pub:
-        patterns:
-          - "*"
-  - package-ecosystem: pub
-    directory: /packages/dart_frog_web_socket
-    schedule:
-      interval: monthly
-    groups:
-      packages-dart-frog-web-socket-pub:
+      dart-deps:
         patterns:
           - "*"
