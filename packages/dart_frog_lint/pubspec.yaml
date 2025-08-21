@@ -1,6 +1,6 @@
 name: dart_frog_lint
 description: A collection of lint rules built specifically for the Dart Frog backend framework.
-version: 0.1.0
+version: 0.1.1
 homepage: https://dart-frog.dev
 repository: https://github.com/dart-frog-dev/dart_frog
 issue_tracker: https://github.com/dart-frog-dev/dart_frog/issues
@@ -13,6 +13,3 @@ screenshots:
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
-
-dependencies:
-  very_good_analysis: ^9.0.0
