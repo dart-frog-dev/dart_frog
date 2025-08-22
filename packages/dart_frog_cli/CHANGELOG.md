@@ -1,3 +1,9 @@
+# 1.2.7
+
+- deps: upgrade minimum dart sdk constraint ([#1844](https://github.com/dart-frog-dev/dart_frog/pull/1844))
+- refactor: standardize project-wide analysis options ([#1842](https://github.com/dart-frog-dev/dart_frog/pull/1842))
+- feat: `create` uses `dart_frog_lint` ([#1837](https://github.com/dart-frog-dev/dart_frog/pull/1837))
+
 # 1.2.6
 
 - refactor: upgrade analysis options ([#1798](https://github.com/dart-frog-dev/dart_frog/pull/1798))
