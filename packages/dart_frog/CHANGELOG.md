@@ -1,3 +1,8 @@
+# 1.2.3
+
+- refactor: standardize project-wide analysis options ([#1842](https://github.com/dart-frog-dev/dart_frog/pull/1842))
+- feat: expose captured request params ([#1818](https://github.com/dart-frog-dev/dart_frog/pull/1818))
+
 # 1.2.2
 
 - refactor: upgrade analysis options ([#1798](https://github.com/dart-frog-dev/dart_frog/pull/1798))

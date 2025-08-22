@@ -1,6 +1,6 @@
 name: dart_frog
 description: A fast, minimalistic backend framework for Dart built by Very Good Ventures.
-version: 1.2.2
+version: 1.2.3
 homepage: https://dart-frog.dev
 repository: https://github.com/dart-frog-dev/dart_frog
 issue_tracker: https://github.com/dart-frog-dev/dart_frog/issues
