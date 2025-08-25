@@ -69,8 +69,11 @@ class DaemonStdioHelper {
     Duration timeout = _defaultTimeout,
     Matcher? withParamsThat,
   }) async {
-    var wrappedMatcher = isA<DaemonEvent>()
-        .having((e) => '${e.domain}.${e.event}', 'is $methodKey', methodKey);
+    var wrappedMatcher = isA<DaemonEvent>().having(
+      (e) => '${e.domain}.${e.event}',
+      'is $methodKey',
+      methodKey,
+    );
 
     if (withParamsThat != null) {
       wrappedMatcher = wrappedMatcher.having(
@@ -237,7 +240,7 @@ class DaemonStdioHelper {
 /// A matcher that matches a [DaemonMessage] to a daemon stdout line.
 class _MatchMessageToStdoutLine extends CustomMatcher {
   _MatchMessageToStdoutLine(Matcher matcher)
-      : super('Message to stdout line', 'message', matcher);
+    : super('Message to stdout line', 'message', matcher);
 
   @override
   Object? featureValueOf(dynamic actual) {
