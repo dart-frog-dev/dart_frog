@@ -38,10 +38,15 @@ void main() {
         final buildDirectoryContents = buildDirectory.listSync();
         expect(buildDirectoryContents, hasLength(1));
         final pubspecOverrides = buildDirectoryContents.first as File;
-        expect(pubspecOverrides.readAsStringSync(), equals('''
+        expect(
+          pubspecOverrides.readAsStringSync(),
+          equals(
+            '''
 
 resolution: null
-'''));
+''',
+          ),
+        );
       });
     });
 
@@ -65,10 +70,15 @@ dependency_overrides:
         final buildDirectoryContents = buildDirectory.listSync();
         expect(buildDirectoryContents, hasLength(1));
         final pubspecOverrides = buildDirectoryContents.first as File;
-        expect(pubspecOverrides.readAsStringSync(), equals('''
+        expect(
+          pubspecOverrides.readAsStringSync(),
+          equals(
+            '''
 $originalPubspecOverridesContent
 resolution: null
-'''));
+''',
+          ),
+        );
       });
     });
 
