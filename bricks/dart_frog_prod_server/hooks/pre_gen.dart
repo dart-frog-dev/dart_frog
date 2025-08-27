@@ -32,6 +32,14 @@ Future<void> preGen(
     exit: exit,
   );
 
+  // We need to make sure that the pubspec.lock file is up to date
+  await dartPubGet(
+    context,
+    workingDirectory: projectDirectory.path,
+    runProcess: runProcess,
+    exit: exit,
+  );
+
   await createBundle(
     context: context,
     projectDirectory: projectDirectory,

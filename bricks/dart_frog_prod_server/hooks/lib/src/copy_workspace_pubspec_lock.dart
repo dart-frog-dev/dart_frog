@@ -19,6 +19,7 @@ void copyWorkspacePubspecLock(
     );
     return exit(1);
   }
+
   final pubspecLockFile = File(path.join(workspaceRoot.path, 'pubspec.lock'));
   if (!pubspecLockFile.existsSync()) return;
 
