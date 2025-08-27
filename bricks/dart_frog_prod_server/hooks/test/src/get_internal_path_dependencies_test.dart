@@ -8,12 +8,25 @@ void main() {
   group('getPathDependencies', () {
     test('returns nothing when there are no path dependencies', () {
       final directory = Directory.systemTemp.createTempSync();
-      File(path.join(directory.path, 'pubspec.yaml')).writeAsStringSync(
+      File(path.join(directory.path, 'pubspec.lock')).writeAsStringSync(
         '''
-name: _
-dependencies:
-  test: ^1.0.0
-  mason: ^0.1.0
+packages:
+  test:
+    dependency: transitive
+    description:
+      name: analyzer
+      sha256: f85566ec7b3d25cbea60f7dd4f157c5025f2f19233ca4feeed33b616c78a26a3
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.0"
+  mason:
+    dependency: transitive
+    description:
+      name: analyzer
+      sha256: f85566ec7b3d25cbea60f7dd4f157c5025f2f19233ca4feeed33b616c78a26a3
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.0"
 ''',
       );
       expect(getInternalPathDependencies(directory), completion(isEmpty));
@@ -22,14 +35,23 @@ dependencies:
 
     test('returns correct path dependencies', () {
       final directory = Directory.systemTemp.createTempSync();
-      File(path.join(directory.path, 'pubspec.yaml')).writeAsStringSync(
+      File(path.join(directory.path, 'pubspec.lock')).writeAsStringSync(
         '''
-name: _
-dependencies:
+packages:
   dart_frog:
-    path: path/to/dart_frog
+    dependency: "direct main"
+    description:
+      path: "path/to/dart_frog"
+      relative: true
+    source: path
+    version: "0.0.0"
   dart_frog_gen:
-    path: path/to/dart_frog_gen
+    dependency: "direct main"
+    description:
+      path: "path/to/dart_frog_gen"
+      relative: true
+    source: path
+    version: "0.0.0"
 ''',
       );
       expect(

@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:dart_frog_prod_server_hooks/dart_frog_prod_server_hooks.dart';
 import 'package:io/io.dart' as io;
 import 'package:path/path.dart' as path;
-import 'package:pubspec_parse/pubspec_parse.dart';
 
 /// Signature of [io.copyPath].
 typedef CopyPath = Future<void> Function(String from, String to);
@@ -14,27 +13,34 @@ Future<List<String>> createExternalPackagesFolder({
   CopyPath copyPath = io.copyPath,
 }) async {
   final pathResolver = path.context;
-  final pubspec = await getPubspec(
+  final pubspecLock = await getPubspecLock(
     projectDirectory.path,
     pathContext: path.context,
   );
 
-  final externalPathDependencies = pubspec.dependencies.values
+  final externalPathDependencies = pubspecLock.packages
       .map(
         (dependency) {
-          if (dependency is! PathDependency) return null;
-          if (pathResolver.isWithin('', dependency.path)) return null;
+          final pathDescription = dependency.pathDescription;
+          if (pathDescription == null) {
+            return null;
+          }
+
+          final isExternal = !pathResolver.isWithin('', pathDescription.path);
+          if (!isExternal) return null;
 
           return _ExternalPathDependency(
-            name: path.basenameWithoutExtension(dependency.path),
-            path: path.join(projectDirectory.path, dependency.path),
+            name: dependency.name,
+            path: path.join(projectDirectory.path, pathDescription.path),
           );
         },
       )
       .whereType<_ExternalPathDependency>()
       .toList();
 
-  if (externalPathDependencies.isEmpty) return [];
+  if (externalPathDependencies.isEmpty) {
+    return [];
+  }
 
   final packagesDirectory = Directory(
     pathResolver.join(
@@ -62,20 +68,17 @@ Future<List<String>> createExternalPackagesFolder({
       buildDirectory.path,
       'pubspec_overrides.yaml',
     ),
-  ).writeAsString(
-    '''
+  ).writeAsString('''
 dependency_overrides:
 ${copiedExternalPathDependencies.map(
-      (dependency) {
-        final name = dependency.name;
-        final path =
-            pathResolver.relative(dependency.path, from: buildDirectory.path);
-        return '  $name:\n    path: $path';
-      },
-    ).join('\n')}
-''',
-    mode: FileMode.append,
-  );
+    (dependency) {
+      final name = dependency.name;
+      final path =
+          pathResolver.relative(dependency.path, from: buildDirectory.path);
+      return '  $name:\n    path: $path';
+    },
+  ).join('\n')}
+''');
 
   return copiedExternalPathDependencies
       .map((dependency) => dependency.path)

@@ -5,5 +5,5 @@ export 'src/dart_pub_get.dart';
 export 'src/disable_workspace_resolution.dart';
 export 'src/exit_overrides.dart';
 export 'src/get_internal_path_dependencies.dart';
-export 'src/get_pubspec.dart';
+export 'src/get_pubspec_lock.dart';
 export 'src/uses_workspace_resolution.dart';
