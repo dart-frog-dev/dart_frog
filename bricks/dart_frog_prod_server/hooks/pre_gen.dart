@@ -23,9 +23,6 @@ Future<void> preGen(
   Future<void> Function(String from, String to) copyPath = io_expanded.copyPath,
 }) async {
   final projectDirectory = directory ?? io.Directory.current;
-  final buildDirectory = io.Directory(
-    path.join(projectDirectory.path, 'build'),
-  );
   final usesWorkspaces = usesWorkspaceResolution(
     context,
     workingDirectory: projectDirectory.path,
@@ -38,6 +35,10 @@ Future<void> preGen(
     workingDirectory: projectDirectory.path,
     runProcess: runProcess,
     exit: exit,
+  );
+
+  final buildDirectory = io.Directory(
+    path.join(projectDirectory.path, 'build'),
   );
 
   await createBundle(
