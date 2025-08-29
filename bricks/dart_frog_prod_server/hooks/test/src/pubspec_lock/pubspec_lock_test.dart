@@ -307,12 +307,10 @@ packages:
     not_dependency: "bad"
 sdks:
   dart: ">=3.1.0 <4.0.0"
-
 ''';
 
 /// A valid pubspec lock file with no packages.
 const _emptyPubspecLockContent = '''
 sdks:
   dart: ">=3.1.0 <4.0.0"
-
 ''';

@@ -23,6 +23,11 @@ Future<void> preGen(
   Future<void> Function(String from, String to) copyPath = io_expanded.copyPath,
 }) async {
   final projectDirectory = directory ?? io.Directory.current;
+  final usesWorkspaces = usesWorkspaceResolution(
+    context,
+    workingDirectory: projectDirectory.path,
+    exit: exit,
+  );
 
   // We need to make sure that the pubspec.lock file is up to date
   await dartPubGet(
@@ -40,6 +45,38 @@ Future<void> preGen(
     context: context,
     projectDirectory: projectDirectory,
     buildDirectory: buildDirectory,
+    exit: exit,
+  );
+
+  if (usesWorkspaces) {
+    // Disable workspace resolution until we can generate per-package lockfiles.
+    // https://github.com/dart-lang/pub/issues/4594
+    disableWorkspaceResolution(
+      context,
+      buildDirectory: buildDirectory.path,
+      exit: exit,
+    );
+    // Copy the pubspec.lock from the workspace root to ensure the same versions
+    // of dependencies are used in the production build.
+    copyWorkspacePubspecLock(
+      context,
+      buildDirectory: buildDirectory.path,
+      workingDirectory: projectDirectory.path,
+      exit: exit,
+    );
+    // Adjust all relative pubspec.yaml imports.
+    adjustRelativePubspecImports(
+      context,
+      buildDirectory: buildDirectory.path,
+      exit: exit,
+    );
+  }
+
+  // We need to make sure that the pubspec.lock file is up to date
+  await dartPubGet(
+    context,
+    workingDirectory: buildDirectory.path,
+    runProcess: runProcess,
     exit: exit,
   );
 
@@ -62,9 +99,7 @@ Future<void> preGen(
         '''Route conflict detected. ${lightCyan.wrap(originalFilePath)} and ${lightCyan.wrap(conflictingFilePath)} both resolve to ${lightCyan.wrap(conflictingEndpoint)}.''',
       );
     },
-    onViolationEnd: () {
-      exit(1);
-    },
+    onViolationEnd: () => exit(1),
   );
 
   reportRogueRoutes(
@@ -74,17 +109,11 @@ Future<void> preGen(
         '''Rogue route detected.${defaultForeground.wrap(' ')}Rename ${lightCyan.wrap(filePath)} to ${lightCyan.wrap(idealPath)}.''',
       );
     },
-    onViolationEnd: () {
-      exit(1);
-    },
-  );
-
-  final customDockerFile = io.File(
-    path.join(projectDirectory.path, 'Dockerfile'),
+    onViolationEnd: () => exit(1),
   );
 
   final internalPathDependencies = await getInternalPathDependencies(
-    projectDirectory,
+    buildDirectory,
   );
 
   final externalDependencies = await createExternalPackagesFolder(
@@ -93,6 +122,9 @@ Future<void> preGen(
     copyPath: copyPath,
   );
 
+  final customDockerFile = io.File(
+    path.join(buildDirectory.path, 'Dockerfile'),
+  );
   final addDockerfile = !customDockerFile.existsSync();
 
   context.vars = {
