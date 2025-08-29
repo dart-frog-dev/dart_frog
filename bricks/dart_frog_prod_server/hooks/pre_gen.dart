@@ -64,7 +64,21 @@ Future<void> preGen(
       workingDirectory: projectDirectory.path,
       exit: exit,
     );
+    // Adjust all relative pubspec.yaml imports.
+    adjustRelativePubspecImports(
+      context,
+      buildDirectory: buildDirectory.path,
+      exit: exit,
+    );
   }
+
+  // We need to make sure that the pubspec.lock file is up to date
+  await dartPubGet(
+    context,
+    workingDirectory: buildDirectory.path,
+    runProcess: runProcess,
+    exit: exit,
+  );
 
   final RouteConfiguration configuration;
   try {
@@ -98,12 +112,8 @@ Future<void> preGen(
     onViolationEnd: () => exit(1),
   );
 
-  final customDockerFile = io.File(
-    path.join(projectDirectory.path, 'Dockerfile'),
-  );
-
   final internalPathDependencies = await getInternalPathDependencies(
-    projectDirectory,
+    buildDirectory,
   );
 
   final externalDependencies = await createExternalPackagesFolder(
@@ -112,6 +122,9 @@ Future<void> preGen(
     copyPath: copyPath,
   );
 
+  final customDockerFile = io.File(
+    path.join(buildDirectory.path, 'Dockerfile'),
+  );
   final addDockerfile = !customDockerFile.existsSync();
 
   context.vars = {

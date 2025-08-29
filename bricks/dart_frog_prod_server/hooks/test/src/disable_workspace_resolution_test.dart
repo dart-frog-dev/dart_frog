@@ -40,12 +40,7 @@ void main() {
         final pubspecOverrides = buildDirectoryContents.first as File;
         expect(
           pubspecOverrides.readAsStringSync(),
-          equals(
-            '''
-
-resolution: null
-''',
-          ),
+          equals('resolution: null'),
         );
       });
     });

@@ -10,11 +10,26 @@ void disableWorkspaceResolution(
   required void Function(int exitCode) exit,
 }) {
   try {
-    File(
-      path.join(buildDirectory, 'pubspec_overrides.yaml'),
-    ).writeAsStringSync('\nresolution: null\n', mode: FileMode.append);
+    overrideResolutionInPubspecOverrides(buildDirectory);
   } on Exception catch (e) {
     context.logger.err('$e');
     exit(1);
   }
+}
+
+void overrideResolutionInPubspecOverrides(String directory) {
+  final pubspecOverrides = File(
+    path.join(directory, 'pubspec_overrides.yaml'),
+  );
+
+  if (pubspecOverrides.existsSync()) {
+    return pubspecOverrides.writeAsStringSync(
+      '\nresolution: null\n',
+      mode: FileMode.append,
+    );
+  }
+
+  pubspecOverrides
+    ..createSync(recursive: true)
+    ..writeAsStringSync('resolution: null');
 }
