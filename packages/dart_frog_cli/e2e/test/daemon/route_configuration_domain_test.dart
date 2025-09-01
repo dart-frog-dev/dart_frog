@@ -236,27 +236,27 @@ void main() {
     });
 
     test('staggered-stop watcher', () async {
-      final (response1, response2) =
-          await daemonStdio.sendStaggeredDaemonRequest(
-        (
-          DaemonRequest(
-            id: '${requestCount++}',
-            domain: 'route_configuration',
-            method: 'watcherStop',
-            params: {
-              'watcherId': projectWatcherId,
-            },
-          ),
-          DaemonRequest(
-            id: '${requestCount++}',
-            domain: 'route_configuration',
-            method: 'watcherStop',
-            params: {
-              'watcherId': projectWatcherId,
-            },
-          ),
-        ),
-      );
+      final (response1, response2) = await daemonStdio
+          .sendStaggeredDaemonRequest(
+            (
+              DaemonRequest(
+                id: '${requestCount++}',
+                domain: 'route_configuration',
+                method: 'watcherStop',
+                params: {
+                  'watcherId': projectWatcherId,
+                },
+              ),
+              DaemonRequest(
+                id: '${requestCount++}',
+                domain: 'route_configuration',
+                method: 'watcherStop',
+                params: {
+                  'watcherId': projectWatcherId,
+                },
+              ),
+            ),
+          );
 
       expect(response1.isSuccess, isTrue);
       expect(response1.result?['exitCode'], equals(0));

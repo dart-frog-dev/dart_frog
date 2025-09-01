@@ -5,9 +5,10 @@ import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
 
 /// Type definition for a daemon method which handles a [DaemonRequest].
-typedef DomainRequestHandler = Future<DaemonResponse> Function(
-  DaemonRequest request,
-);
+typedef DomainRequestHandler =
+    Future<DaemonResponse> Function(
+      DaemonRequest request,
+    );
 
 const Uuid _uuidGenerator = Uuid();
 
