@@ -14,7 +14,7 @@
   "dependencies": {
     "@astrojs/check": "^0.9.4",
     "@astrojs/starlight": "^0.35.2",
-    "astro": "^5.13.2",
+    "astro": "^5.13.5",
     "sharp": "^0.34.3",
     "starlight-blog": "^0.24.1"
   },
@@ -24,6 +24,6 @@
     "prettier": "^3.6.2",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.6.14",
-    "starlight-links-validator": "^0.17.1"
+    "starlight-links-validator": "^0.17.2"
   }
 }
