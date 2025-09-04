@@ -70,8 +70,9 @@ dependency_overrides:
           pubspecOverrides.readAsStringSync(),
           equals(
             '''
+$originalPubspecOverridesContent
 resolution: null
-$originalPubspecOverridesContent''',
+''',
           ),
         );
       });

@@ -2,9 +2,12 @@ import 'dart:io';
 import 'package:mason/mason.dart';
 import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
+import 'package:yaml_edit/yaml_edit.dart';
 
 /// A void callback function (e.g. `void Function()`).
 typedef VoidCallback = void Function();
+
+void _noop() {}
 
 /// Opts out of dart workspaces until we can generate per package lockfiles.
 /// https://github.com/dart-lang/pub/issues/4594
@@ -18,7 +21,7 @@ VoidCallback disableWorkspaceResolution(
   } on Exception catch (e) {
     context.logger.err('$e');
     exit(1);
-    return () {};
+    return _noop;
   }
 }
 
@@ -35,12 +38,15 @@ void Function() overrideResolutionInPubspecOverrides(String projectDirectory) {
   final contents = pubspecOverridesFile.readAsStringSync();
   final pubspecOverrides = loadYaml(contents) as YamlMap?;
 
-  if (pubspecOverrides?['resolution'] == 'null') return () {};
-  pubspecOverridesFile.writeAsStringSync(
-    '''
-resolution: null
-$contents''',
-  );
+  if (pubspecOverrides == null) {
+    pubspecOverridesFile.writeAsStringSync('resolution: null');
+    return () => pubspecOverridesFile.writeAsStringSync(contents);
+  }
+
+  if (pubspecOverrides['resolution'] == 'null') return _noop;
+
+  final editor = YamlEditor(contents)..update(['resolution'], null);
+  pubspecOverridesFile.writeAsStringSync(editor.toString());
 
   return () => pubspecOverridesFile.writeAsStringSync(contents);
 }
