@@ -47,10 +47,11 @@ void main() {
     });
 
     group('when pubspec.yaml is malformed', () {
+      late File pubspecFile;
       setUp(() {
-        File(
+        pubspecFile = File(
           path.join(workingDirectory.path, 'pubspec.yaml'),
-        ).writeAsStringSync('invalid pubspec.yaml');
+        )..writeAsStringSync('invalid pubspec.yaml');
       });
 
       test('returns false', () {
@@ -63,7 +64,11 @@ void main() {
           isFalse,
         );
         expect(exitCalls, equals([1]));
-        verify(() => logger.err(any(that: contains('ParsedYamlException'))));
+        verify(
+          () => logger.err(
+            any(that: contains('Unable to parse ${pubspecFile.path}')),
+          ),
+        );
       });
     });
 

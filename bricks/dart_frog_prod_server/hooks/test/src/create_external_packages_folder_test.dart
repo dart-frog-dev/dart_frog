@@ -17,9 +17,11 @@ void main() {
       await createExternalPackagesFolder(
         projectDirectory: projectDirectory,
         buildDirectory: Directory(path.join(projectDirectory.path, 'build')),
-        copyPath: (from, to) {
+        copyPath: (from, to) async {
           copyCalls.add('$from -> $to');
-          return Future.value();
+          File(
+            path.join(to, 'pubspec_overrides.yaml'),
+          ).createSync(recursive: true);
         },
       );
 
@@ -56,9 +58,11 @@ void main() {
       await createExternalPackagesFolder(
         projectDirectory: projectDirectory,
         buildDirectory: Directory(path.join(projectDirectory.path, 'build')),
-        copyPath: (from, to) {
+        copyPath: (from, to) async {
           copyCalls.add('$from -> $to');
-          return Future.value();
+          File(
+            path.join(to, 'pubspec_overrides.yaml'),
+          ).createSync(recursive: true);
         },
       );
 

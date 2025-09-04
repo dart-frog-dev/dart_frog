@@ -230,7 +230,11 @@ packages:
         exit: exitCalls.add,
         directory: directory,
         runProcess: successRunProcess,
-        copyPath: (_, __) async {},
+        copyPath: (from, to) async {
+          File(
+            path.join(to, 'pubspec_overrides.yaml'),
+          ).createSync(recursive: true);
+        },
       );
 
       expect(exitCalls, isEmpty);

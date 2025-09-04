@@ -29,10 +29,12 @@ Future<void> preGen(
     exit: exit,
   );
 
+  VoidCallback? restoreWorkspaceResolution;
+
   if (usesWorkspaces) {
     // Disable workspace resolution until we can generate per-package lockfiles.
     // https://github.com/dart-lang/pub/issues/4594
-    disableWorkspaceResolution(
+    restoreWorkspaceResolution = disableWorkspaceResolution(
       context,
       projectDirectory: projectDirectory.path,
       exit: exit,
@@ -57,6 +59,8 @@ Future<void> preGen(
     buildDirectory: buildDirectory,
     exit: exit,
   );
+
+  restoreWorkspaceResolution?.call();
 
   final RouteConfiguration configuration;
   try {

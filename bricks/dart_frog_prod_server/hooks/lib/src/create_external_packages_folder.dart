@@ -67,7 +67,7 @@ Future<List<String>> createExternalPackagesFolder({
     pathResolver.join(buildDirectory.path, 'pubspec_overrides.yaml'),
   ).writeAsStringSync(
     '''
-
+resolution: null
 dependency_overrides:
 ${copiedExternalPathDependencies.map(
       (dependency) {
@@ -78,7 +78,6 @@ ${copiedExternalPathDependencies.map(
       },
     ).join('\n')}
 ''',
-    mode: FileMode.append,
   );
 
   return copiedExternalPathDependencies

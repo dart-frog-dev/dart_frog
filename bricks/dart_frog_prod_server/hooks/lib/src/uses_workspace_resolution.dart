@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:mason/mason.dart';
 import 'package:path/path.dart' as path;
-import 'package:pubspec_parse/pubspec_parse.dart';
+import 'package:yaml/yaml.dart';
 
 /// Determines whether the project in the provided [workingDirectory]
 /// is configured to use `resolution: workspace`.
@@ -13,14 +13,18 @@ bool usesWorkspaceResolution(
   final pubspecFile = File(path.join(workingDirectory, 'pubspec.yaml'));
   if (!pubspecFile.existsSync()) return false;
 
-  final Pubspec pubspec;
+  final YamlMap pubspec;
   try {
-    pubspec = Pubspec.parse(pubspecFile.readAsStringSync());
+    final yaml = loadYaml(pubspecFile.readAsStringSync());
+    if (yaml is! YamlMap) {
+      throw Exception('Unable to parse ${pubspecFile.path}');
+    }
+    pubspec = yaml;
   } on Exception catch (e) {
     context.logger.err('$e');
     exit(1);
     return false;
   }
 
-  return pubspec.resolution == 'workspace';
+  return pubspec['resolution'] == 'workspace';
 }
