@@ -1,3 +1,8 @@
+# 1.0.2
+
+- refactor: standardize project-wide analysis options ([#1842](https://github.com/dart-frog-dev/dart_frog/pull/1842))
+- deps: upgrade to `shelf_web_socket: ">=1.0.3 <4.0.0"` ([#1691](https://github.com/dart-frog-dev/dart_frog/pull/1691))
+
 # 1.0.1
 
 - refactor: upgrade analysis options ([#1798](https://github.com/dart-frog-dev/dart_frog/pull/1798))
