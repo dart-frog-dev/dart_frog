@@ -15,29 +15,29 @@ void main() {
     late List<int> exitCalls;
     late HookContext context;
     late Logger logger;
-    late Directory buildDirectory;
+    late Directory projectDirectory;
 
     setUp(() {
       exitCalls = [];
       context = _MockHookContext();
       logger = _MockLogger();
-      buildDirectory = Directory.systemTemp.createTempSync('build');
+      projectDirectory = Directory.systemTemp.createTempSync('project');
 
       when(() => context.logger).thenReturn(logger);
 
-      addTearDown(() => buildDirectory.delete().ignore());
+      addTearDown(() => projectDirectory.delete().ignore());
     });
 
     group('when pubspec_overrides.yaml does not exist', () {
       test('adds resolution: null', () {
         disableWorkspaceResolution(
           context,
-          buildDirectory: buildDirectory.path,
+          projectDirectory: projectDirectory.path,
           exit: exitCalls.add,
         );
-        final buildDirectoryContents = buildDirectory.listSync();
-        expect(buildDirectoryContents, hasLength(1));
-        final pubspecOverrides = buildDirectoryContents.first as File;
+        final contents = projectDirectory.listSync();
+        expect(contents, hasLength(1));
+        final pubspecOverrides = contents.first as File;
         expect(
           pubspecOverrides.readAsStringSync(),
           equals('resolution: null'),
@@ -52,19 +52,20 @@ dependency_overrides:
     path: ./path/to/foo''';
 
       setUp(() {
-        File(path.join(buildDirectory.path, 'pubspec_overrides.yaml'))
-            .writeAsStringSync(originalPubspecOverridesContent);
+        File(
+          path.join(projectDirectory.path, 'pubspec_overrides.yaml'),
+        ).writeAsStringSync(originalPubspecOverridesContent);
       });
 
       test('adds resolution: null', () {
         disableWorkspaceResolution(
           context,
-          buildDirectory: buildDirectory.path,
+          projectDirectory: projectDirectory.path,
           exit: exitCalls.add,
         );
-        final buildDirectoryContents = buildDirectory.listSync();
-        expect(buildDirectoryContents, hasLength(1));
-        final pubspecOverrides = buildDirectoryContents.first as File;
+        final contents = projectDirectory.listSync();
+        expect(contents, hasLength(1));
+        final pubspecOverrides = contents.first as File;
         expect(
           pubspecOverrides.readAsStringSync(),
           equals(
@@ -80,7 +81,7 @@ resolution: null
     group('when unable to read pubspec_overrides', () {
       setUp(() {
         final pubspecOverrides = File(
-          path.join(buildDirectory.path, 'pubspec_overrides.yaml'),
+          path.join(projectDirectory.path, 'pubspec_overrides.yaml'),
         )..createSync();
         Process.runSync('chmod', ['000', pubspecOverrides.path]);
       });
@@ -88,11 +89,11 @@ resolution: null
       test('exits with error', () {
         disableWorkspaceResolution(
           context,
-          buildDirectory: buildDirectory.path,
+          projectDirectory: projectDirectory.path,
           exit: exitCalls.add,
         );
-        final buildDirectoryContents = buildDirectory.listSync();
-        expect(buildDirectoryContents, hasLength(1));
+        final contents = projectDirectory.listSync();
+        expect(contents, hasLength(1));
         expect(exitCalls, equals([1]));
         verify(
           () => logger.err(any(that: contains('Permission denied'))),

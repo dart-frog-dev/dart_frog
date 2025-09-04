@@ -6,20 +6,20 @@ import 'package:path/path.dart' as path;
 /// https://github.com/dart-lang/pub/issues/4594
 void disableWorkspaceResolution(
   HookContext context, {
-  required String buildDirectory,
+  required String projectDirectory,
   required void Function(int exitCode) exit,
 }) {
   try {
-    overrideResolutionInPubspecOverrides(buildDirectory);
+    overrideResolutionInPubspecOverrides(projectDirectory);
   } on Exception catch (e) {
     context.logger.err('$e');
     exit(1);
   }
 }
 
-void overrideResolutionInPubspecOverrides(String directory) {
+void overrideResolutionInPubspecOverrides(String projectDirectory) {
   final pubspecOverrides = File(
-    path.join(directory, 'pubspec_overrides.yaml'),
+    path.join(projectDirectory, 'pubspec_overrides.yaml'),
   );
 
   if (pubspecOverrides.existsSync()) {

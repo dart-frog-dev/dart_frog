@@ -14,7 +14,7 @@ Future<List<String>> createExternalPackagesFolder({
 }) async {
   final pathResolver = path.context;
   final pubspecLock = await getPubspecLock(
-    buildDirectory.path,
+    projectDirectory.path,
     pathContext: path.context,
   );
 
@@ -29,7 +29,7 @@ Future<List<String>> createExternalPackagesFolder({
 
           return _ExternalPathDependency(
             name: dependency.name,
-            path: path.join(buildDirectory.path, pathDescription.path),
+            path: path.join(projectDirectory.path, pathDescription.path),
           );
         },
       )

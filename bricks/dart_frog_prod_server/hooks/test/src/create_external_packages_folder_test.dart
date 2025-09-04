@@ -10,9 +10,8 @@ void main() {
   group('createExternalPackagesFolder', () {
     test('bundles external dependencies with external dependencies', () async {
       final projectDirectory = Directory.systemTemp.createTempSync();
-      File(path.join(projectDirectory.path, 'build', 'pubspec.lock'))
-        ..createSync(recursive: true)
-        ..writeAsStringSync(fooPath);
+      File(path.join(projectDirectory.path, 'pubspec.lock'))
+          .writeAsStringSync(fooPath);
       final copyCalls = <String>[];
 
       await createExternalPackagesFolder(
@@ -24,8 +23,7 @@ void main() {
         },
       );
 
-      final fooPackageDirectory =
-          path.join(projectDirectory.path, 'build', '../../foo');
+      final fooPackageDirectory = path.join(projectDirectory.path, '../../foo');
       final fooPackageDirectoryTarget = path.join(
         projectDirectory.path,
         'build',
@@ -33,8 +31,10 @@ void main() {
         'foo',
       );
 
-      final secondFooPackageDirectory =
-          path.join(projectDirectory.path, 'build', '../../foo2');
+      final secondFooPackageDirectory = path.join(
+        projectDirectory.path,
+        '../../foo2',
+      );
       final secondFooPackageDirectoryTarget = path.join(
         projectDirectory.path,
         'build',
@@ -49,9 +49,8 @@ void main() {
 
     test("doesn't bundle internal path dependencies", () async {
       final projectDirectory = Directory.systemTemp.createTempSync();
-      File(path.join(projectDirectory.path, 'build', 'pubspec.lock'))
-        ..createSync(recursive: true)
-        ..writeAsStringSync(fooPathWithInternalDependency);
+      File(path.join(projectDirectory.path, 'pubspec.lock'))
+          .writeAsStringSync(fooPathWithInternalDependency);
       final copyCalls = <String>[];
 
       await createExternalPackagesFolder(
@@ -63,7 +62,7 @@ void main() {
         },
       );
 
-      final from = path.join(projectDirectory.path, 'build', '../../foo');
+      final from = path.join(projectDirectory.path, '../../foo');
       final to = path.join(
         projectDirectory.path,
         'build',

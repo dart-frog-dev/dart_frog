@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:dart_frog_prod_server_hooks/dart_frog_prod_server_hooks.dart';
-import 'package:mason/mason.dart' show HookContext, Logger, Progress, lightCyan;
+import 'package:mason/mason.dart'
+    show ExitCode, HookContext, Logger, Progress, lightCyan;
 import 'package:mocktail/mocktail.dart';
+import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
 
 import '../post_gen.dart' as post_gen;
@@ -31,6 +35,14 @@ void main() {
     late HookContext context;
     late Logger logger;
 
+    const processId = 42;
+    final processResult = ProcessResult(
+      processId,
+      ExitCode.success.code,
+      '',
+      '',
+    );
+
     setUp(() {
       logger = _MockLogger();
       context = _FakeHookContext(logger: logger);
@@ -47,8 +59,32 @@ void main() {
       );
     });
 
-    test('outputs next steps', () async {
-      await post_gen.postGen(context);
+    test('runs dart pub get and outputs next steps', () async {
+      var processRunnerCallCount = 0;
+      final exitCalls = <int>[];
+
+      await post_gen.postGen(
+        context,
+        runProcess: (
+          executable,
+          args, {
+          String? workingDirectory,
+          bool? runInShell,
+        }) async {
+          processRunnerCallCount++;
+          expect(executable, equals('dart'));
+          expect(args, equals(['pub', 'get']));
+          expect(
+            workingDirectory,
+            equals(path.join(Directory.current.path, 'build')),
+          );
+          expect(runInShell, isTrue);
+          return processResult;
+        },
+        exit: exitCalls.add,
+      );
+      expect(processRunnerCallCount, equals(1));
+      expect(exitCalls, isEmpty);
       verify(() => logger.success('Created a production build!')).called(1);
       verify(
         () => logger.info('Start the production server by running:'),

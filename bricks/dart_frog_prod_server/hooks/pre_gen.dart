@@ -29,6 +29,16 @@ Future<void> preGen(
     exit: exit,
   );
 
+  if (usesWorkspaces) {
+    // Disable workspace resolution until we can generate per-package lockfiles.
+    // https://github.com/dart-lang/pub/issues/4594
+    disableWorkspaceResolution(
+      context,
+      projectDirectory: projectDirectory.path,
+      exit: exit,
+    );
+  }
+
   // We need to make sure that the pubspec.lock file is up to date
   await dartPubGet(
     context,
@@ -45,38 +55,6 @@ Future<void> preGen(
     context: context,
     projectDirectory: projectDirectory,
     buildDirectory: buildDirectory,
-    exit: exit,
-  );
-
-  if (usesWorkspaces) {
-    // Disable workspace resolution until we can generate per-package lockfiles.
-    // https://github.com/dart-lang/pub/issues/4594
-    disableWorkspaceResolution(
-      context,
-      buildDirectory: buildDirectory.path,
-      exit: exit,
-    );
-    // Copy the pubspec.lock from the workspace root to ensure the same versions
-    // of dependencies are used in the production build.
-    copyWorkspacePubspecLock(
-      context,
-      buildDirectory: buildDirectory.path,
-      workingDirectory: projectDirectory.path,
-      exit: exit,
-    );
-    // Adjust all relative pubspec.yaml imports.
-    adjustRelativePubspecImports(
-      context,
-      buildDirectory: buildDirectory.path,
-      exit: exit,
-    );
-  }
-
-  // We need to make sure that the pubspec.lock file is up to date
-  await dartPubGet(
-    context,
-    workingDirectory: buildDirectory.path,
-    runProcess: runProcess,
     exit: exit,
   );
 
@@ -112,8 +90,12 @@ Future<void> preGen(
     onViolationEnd: () => exit(1),
   );
 
+  final customDockerFile = io.File(
+    path.join(projectDirectory.path, 'Dockerfile'),
+  );
+
   final internalPathDependencies = await getInternalPathDependencies(
-    buildDirectory,
+    projectDirectory,
   );
 
   final externalDependencies = await createExternalPackagesFolder(
@@ -122,9 +104,6 @@ Future<void> preGen(
     copyPath: copyPath,
   );
 
-  final customDockerFile = io.File(
-    path.join(buildDirectory.path, 'Dockerfile'),
-  );
   final addDockerfile = !customDockerFile.existsSync();
 
   context.vars = {
