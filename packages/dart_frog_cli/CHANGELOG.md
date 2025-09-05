@@ -1,3 +1,7 @@
+# 1.2.8
+
+- feat: support for Dart workspaces ([#1825](https://github.com/dart-frog-dev/dart_frog/pull/1825))
+
 # 1.2.7
 
 - deps: upgrade minimum dart sdk constraint ([#1844](https://github.com/dart-frog-dev/dart_frog/pull/1844))
