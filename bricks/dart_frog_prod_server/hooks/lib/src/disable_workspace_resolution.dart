@@ -1,11 +1,9 @@
 import 'dart:io';
+import 'package:dart_frog_prod_server_hooks/dart_frog_prod_server_hooks.dart';
 import 'package:mason/mason.dart';
 import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
 import 'package:yaml_edit/yaml_edit.dart';
-
-/// A void callback function (e.g. `void Function()`).
-typedef VoidCallback = void Function();
 
 /// Opts out of dart workspaces until we can generate per package lockfiles.
 /// https://github.com/dart-lang/pub/issues/4594

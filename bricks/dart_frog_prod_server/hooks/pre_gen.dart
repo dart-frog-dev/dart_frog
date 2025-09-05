@@ -30,11 +30,19 @@ Future<void> preGen(
   );
 
   VoidCallback? restoreWorkspaceResolution;
+  VoidCallback? revertPubspecLock;
 
   if (usesWorkspaces) {
     // Disable workspace resolution until we can generate per-package lockfiles.
     // https://github.com/dart-lang/pub/issues/4594
     restoreWorkspaceResolution = disableWorkspaceResolution(
+      context,
+      projectDirectory: projectDirectory.path,
+      exit: exit,
+    );
+    // Copy the pubspec.lock from the workspace root to ensure the same versions
+    // of dependencies are used in the production build.
+    revertPubspecLock = copyWorkspacePubspecLock(
       context,
       projectDirectory: projectDirectory.path,
       exit: exit,
@@ -94,10 +102,6 @@ Future<void> preGen(
     onViolationEnd: () => exit(1),
   );
 
-  final customDockerFile = io.File(
-    path.join(projectDirectory.path, 'Dockerfile'),
-  );
-
   final internalPathDependencies = await getInternalPathDependencies(
     projectDirectory,
   );
@@ -108,6 +112,11 @@ Future<void> preGen(
     copyPath: copyPath,
   );
 
+  revertPubspecLock?.call();
+
+  final customDockerFile = io.File(
+    path.join(projectDirectory.path, 'Dockerfile'),
+  );
   final addDockerfile = !customDockerFile.existsSync();
 
   context.vars = {
