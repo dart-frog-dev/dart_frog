@@ -39,6 +39,13 @@ Future<void> preGen(
       projectDirectory: projectDirectory.path,
       exit: exit,
     );
+    // Copy the pubspec.lock from the workspace root to ensure the same versions
+    // of dependencies are used in the production build.
+    copyWorkspacePubspecLock(
+      context,
+      projectDirectory: projectDirectory.path,
+      exit: exit,
+    );
   }
 
   // We need to make sure that the pubspec.lock file is up to date

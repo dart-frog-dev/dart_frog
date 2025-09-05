@@ -1,3 +1,4 @@
+export 'src/copy_workspace_pubspec_lock.dart';
 export 'src/create_bundle.dart';
 export 'src/create_external_packages_folder.dart';
 export 'src/dart_pub_get.dart';
