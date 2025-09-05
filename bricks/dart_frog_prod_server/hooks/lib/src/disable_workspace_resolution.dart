@@ -23,7 +23,7 @@ VoidCallback disableWorkspaceResolution(
   }
 }
 
-void Function() overrideResolutionInPubspecOverrides(String projectDirectory) {
+VoidCallback overrideResolutionInPubspecOverrides(String projectDirectory) {
   final pubspecOverridesFile = File(
     path.join(projectDirectory, 'pubspec_overrides.yaml'),
   );
