@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:dart_frog_prod_server_hooks/dart_frog_prod_server_hooks.dart';
 import 'package:mason/mason.dart';
 import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
@@ -6,7 +7,7 @@ import 'package:yaml/yaml.dart';
 /// Copies the pubspec.lock from the workspace root into the project directory
 /// in order to ensure the production build uses the exact same versions of all
 /// dependencies.
-void copyWorkspacePubspecLock(
+VoidCallback copyWorkspacePubspecLock(
   HookContext context, {
   required String projectDirectory,
   required void Function(int exitCode) exit,
@@ -16,17 +17,22 @@ void copyWorkspacePubspecLock(
     context.logger.err(
       'Unable to determine workspace root for $projectDirectory',
     );
-    return exit(1);
+    exit(1);
+    return () {};
   }
 
   final pubspecLockFile = File(path.join(workspaceRoot.path, 'pubspec.lock'));
-  if (!pubspecLockFile.existsSync()) return;
+  if (!pubspecLockFile.existsSync()) return () {};
 
   try {
     pubspecLockFile.copySync(path.join(projectDirectory, 'pubspec.lock'));
+    return () {
+      File(path.join(projectDirectory, 'pubspec.lock')).delete().ignore();
+    };
   } on Exception catch (error) {
     context.logger.err('$error');
-    return exit(1);
+    exit(1);
+    return () {};
   }
 }
 

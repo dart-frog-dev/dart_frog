@@ -7,3 +7,6 @@ export 'src/exit_overrides.dart';
 export 'src/get_internal_path_dependencies.dart';
 export 'src/get_pubspec_lock.dart';
 export 'src/uses_workspace_resolution.dart';
+
+/// A void callback function (e.g. `void Function()`).
+typedef VoidCallback = void Function();
