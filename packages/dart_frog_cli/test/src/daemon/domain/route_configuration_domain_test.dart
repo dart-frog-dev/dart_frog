@@ -69,13 +69,14 @@ void main() {
       domain = RouteConfigurationDomain(
         daemonServer,
         getId: () => 'id',
-        routeConfigurationWatcherBuilder: ({
-          required Logger logger,
-          required Directory workingDirectory,
-          required RouteConfigurationChanged onRouteConfigurationChanged,
-        }) {
-          return watcher;
-        },
+        routeConfigurationWatcherBuilder:
+            ({
+              required Logger logger,
+              required Directory workingDirectory,
+              required RouteConfigurationChanged onRouteConfigurationChanged,
+            }) {
+              return watcher;
+            },
       );
 
       when(() => watcher.start()).thenAnswer((_) async {});
@@ -96,16 +97,17 @@ void main() {
         domain = RouteConfigurationDomain(
           daemonServer,
           getId: () => 'id',
-          routeConfigurationWatcherBuilder: ({
-            required Logger logger,
-            required Directory workingDirectory,
-            required RouteConfigurationChanged onRouteConfigurationChanged,
-          }) {
-            passedLogger = logger;
-            passedWorkingDirectory = workingDirectory;
-            passedOnRouteConfigurationChanged = onRouteConfigurationChanged;
-            return watcher;
-          },
+          routeConfigurationWatcherBuilder:
+              ({
+                required Logger logger,
+                required Directory workingDirectory,
+                required RouteConfigurationChanged onRouteConfigurationChanged,
+              }) {
+                passedLogger = logger;
+                passedWorkingDirectory = workingDirectory;
+                passedOnRouteConfigurationChanged = onRouteConfigurationChanged;
+                return watcher;
+              },
         );
 
         expect(
@@ -533,15 +535,16 @@ void main() {
 
         domain = RouteConfigurationDomain(
           daemonServer,
-          routeConfigurationWatcherBuilder: ({
-            required Logger logger,
-            required Directory workingDirectory,
-            required RouteConfigurationChanged onRouteConfigurationChanged,
-          }) {
-            final watcher = calls == 0 ? watcher1 : watcher2;
-            calls++;
-            return watcher;
-          },
+          routeConfigurationWatcherBuilder:
+              ({
+                required Logger logger,
+                required Directory workingDirectory,
+                required RouteConfigurationChanged onRouteConfigurationChanged,
+              }) {
+                final watcher = calls == 0 ? watcher1 : watcher2;
+                calls++;
+                return watcher;
+              },
         );
 
         await domain.handleRequest(
