@@ -99,4 +99,5 @@ export default defineConfig({
 		}),
 	],
 	vite: { plugins: [tailwindcss()] },
+	redirects: { 'discord': 'https://discord.gg/ykpUvKxw9k' }
 });
