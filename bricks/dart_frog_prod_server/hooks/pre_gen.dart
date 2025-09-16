@@ -33,11 +33,37 @@ Future<void> preGen(
   VoidCallback? revertPubspecLock;
 
   if (usesWorkspaces) {
+    final workspaceRoot = getWorkspaceRoot(projectDirectory.path);
+    if (workspaceRoot == null) {
+      context.logger.err(
+        'Unable to determine workspace root for $projectDirectory',
+      );
+      return exit(1);
+    }
+
+    // We need to make sure the package_config.json is up to date.
+    await dartPubGet(
+      context,
+      workingDirectory: projectDirectory.path,
+      runProcess: runProcess,
+      exit: exit,
+    );
+
+    final packageConfig = getPackageConfig(workspaceRoot.path);
+    if (packageConfig == null) {
+      context.logger.err(
+        'Unable to find package_config.json for ${workspaceRoot.path}',
+      );
+      return exit(1);
+    }
+
     // Disable workspace resolution until we can generate per-package lockfiles.
     // https://github.com/dart-lang/pub/issues/4594
     restoreWorkspaceResolution = disableWorkspaceResolution(
       context,
+      packageConfig: packageConfig,
       projectDirectory: projectDirectory.path,
+      workspaceRoot: workspaceRoot.path,
       exit: exit,
     );
     // Copy the pubspec.lock from the workspace root to ensure the same versions
@@ -45,11 +71,12 @@ Future<void> preGen(
     revertPubspecLock = copyWorkspacePubspecLock(
       context,
       projectDirectory: projectDirectory.path,
+      workspaceRoot: workspaceRoot.path,
       exit: exit,
     );
   }
 
-  // We need to make sure that the pubspec.lock file is up to date
+  // We need to make sure that the pubspec.lock file is up to date.
   await dartPubGet(
     context,
     workingDirectory: projectDirectory.path,
