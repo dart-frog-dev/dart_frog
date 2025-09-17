@@ -19,7 +19,8 @@ PackageGraph _$PackageGraphFromJson(Map<String, dynamic> json) =>
           packages: $checkedConvert(
               'packages',
               (v) => (v as List<dynamic>)
-                  .map((e) => Package.fromJson(e as Map<String, dynamic>))
+                  .map((e) =>
+                      PackageGraphPackage.fromJson(e as Map<String, dynamic>))
                   .toList()),
           configVersion:
               $checkedConvert('configVersion', (v) => (v as num).toInt()),
@@ -28,11 +29,12 @@ PackageGraph _$PackageGraphFromJson(Map<String, dynamic> json) =>
       },
     );
 
-Package _$PackageFromJson(Map<String, dynamic> json) => $checkedCreate(
-      'Package',
+PackageGraphPackage _$PackageGraphPackageFromJson(Map<String, dynamic> json) =>
+    $checkedCreate(
+      'PackageGraphPackage',
       json,
       ($checkedConvert) {
-        final val = Package(
+        final val = PackageGraphPackage(
           name: $checkedConvert('name', (v) => v as String),
           version: $checkedConvert('version', (v) => v as String),
           dependencies: $checkedConvert(

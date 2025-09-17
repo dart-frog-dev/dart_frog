@@ -44,7 +44,7 @@ void main() {
       when(() => packageGraph.roots).thenReturn([packageName]);
       when(() => packageGraph.packages).thenReturn(
         [
-          const Package(
+          const PackageGraphPackage(
             name: packageName,
             dependencies: [],
             devDependencies: [],

@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:dart_frog_prod_server_hooks/dart_frog_prod_server_hooks.dart';
 import 'package:mason/mason.dart';
-import 'package:package_config/package_config.dart' as package_config;
+import 'package:package_config/package_config.dart';
 import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
 import 'package:yaml_edit/yaml_edit.dart';
@@ -10,7 +10,7 @@ import 'package:yaml_edit/yaml_edit.dart';
 /// https://github.com/dart-lang/pub/issues/4594
 VoidCallback disableWorkspaceResolution(
   HookContext context, {
-  required package_config.PackageConfig packageConfig,
+  required PackageConfig packageConfig,
   required PackageGraph packageGraph,
   required String projectDirectory,
   required String workspaceRoot,
@@ -73,7 +73,7 @@ VoidCallback overrideResolutionInPubspecOverrides(String projectDirectory) {
 /// Add overrides for all path dependencies to `pubspec_overrides.yaml`
 void overridePathDependenciesInPubspecOverrides({
   required String projectDirectory,
-  required package_config.PackageConfig packageConfig,
+  required PackageConfig packageConfig,
   required PackageGraph packageGraph,
 }) {
   final name = getPackageName(projectDirectory: projectDirectory);
@@ -98,7 +98,7 @@ void overridePathDependenciesInPubspecOverrides({
 
 void writePathDependencyOverrides({
   required String projectDirectory,
-  required Iterable<package_config.Package> pathDependencies,
+  required Iterable<Package> pathDependencies,
 }) {
   final pubspecOverridesFile = File(
     path.join(projectDirectory, 'pubspec_overrides.yaml'),
