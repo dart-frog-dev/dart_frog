@@ -36,7 +36,7 @@ Future<void> preGen(
     final workspaceRoot = getWorkspaceRoot(projectDirectory.path);
     if (workspaceRoot == null) {
       context.logger.err(
-        'Unable to determine workspace root for $projectDirectory',
+        'Unable to determine workspace root for ${projectDirectory.path}',
       );
       return exit(1);
     }

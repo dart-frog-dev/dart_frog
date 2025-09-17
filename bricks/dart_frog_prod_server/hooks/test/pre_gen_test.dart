@@ -163,6 +163,185 @@ void main() {
       expect(exitCalls, equals([1]));
     });
 
+    test('exits(1) when unable to determine workspace root', () async {
+      const configuration = RouteConfiguration(
+        middleware: [],
+        directories: [],
+        routes: [],
+        rogueRoutes: [],
+        endpoints: {},
+      );
+
+      final directory = Directory.systemTemp.createTempSync();
+      final server = Directory(
+        path.join(directory.path, 'server'),
+      )..createSync();
+      File(
+        path.join(server.path, 'pubspec.yaml'),
+      ).writeAsStringSync('''
+name: server
+description: A new Dart Frog application
+version: 1.0.0+1
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  dart_frog: ^1.1.0
+  protocol: ^1.0.0
+''');
+      final exitCalls = <int>[];
+      await pre_gen.preGen(
+        context,
+        buildConfiguration: (_) => configuration,
+        exit: exitCalls.add,
+        directory: server,
+        runProcess: successRunProcess,
+        copyPath: (_, __) async {},
+      );
+
+      expect(exitCalls, equals([1]));
+      verify(
+        () => logger.err(
+          'Unable to determine workspace root for ${server.path}',
+        ),
+      ).called(1);
+      directory.delete(recursive: true).ignore();
+    });
+
+    test('exits(1) when unable to find package_config.json', () async {
+      const configuration = RouteConfiguration(
+        middleware: [],
+        directories: [],
+        routes: [],
+        rogueRoutes: [],
+        endpoints: {},
+      );
+
+      final directory = Directory.systemTemp.createTempSync();
+      File(
+        path.join(directory.path, 'pubspec.yaml'),
+      ).writeAsStringSync('''
+name: _
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+workspace:
+  - packages/client
+  - packages/protocol
+  - packages/models
+  - packages/server
+''');
+      final server = Directory(
+        path.join(directory.path, 'server'),
+      )..createSync();
+      File(
+        path.join(server.path, 'pubspec.yaml'),
+      ).writeAsStringSync('''
+name: server
+description: A new Dart Frog application
+version: 1.0.0+1
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  dart_frog: ^1.1.0
+  protocol: ^1.0.0
+''');
+      final exitCalls = <int>[];
+      await pre_gen.preGen(
+        context,
+        buildConfiguration: (_) => configuration,
+        exit: exitCalls.add,
+        directory: server,
+        runProcess: successRunProcess,
+        copyPath: (_, __) async {},
+      );
+
+      expect(exitCalls, equals([1]));
+      verify(
+        () => logger.err(
+          'Unable to find package_config.json for ${directory.path}',
+        ),
+      ).called(1);
+      directory.delete(recursive: true).ignore();
+    });
+
+    test('exits(1) when unable to find package_graph.json', () async {
+      const configuration = RouteConfiguration(
+        middleware: [],
+        directories: [],
+        routes: [],
+        rogueRoutes: [],
+        endpoints: {},
+      );
+
+      final directory = Directory.systemTemp.createTempSync();
+      File(
+        path.join(directory.path, '.dart_tool', 'package_config.json'),
+      )
+        ..createSync(recursive: true)
+        ..writeAsStringSync(packageConfigWithDirectAndTransitiveDependencies);
+      File(
+        path.join(directory.path, 'pubspec.yaml'),
+      ).writeAsStringSync('''
+name: _
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+workspace:
+  - packages/client
+  - packages/protocol
+  - packages/models
+  - packages/server
+''');
+      final server = Directory(
+        path.join(directory.path, 'server'),
+      )..createSync();
+      File(
+        path.join(server.path, 'pubspec.yaml'),
+      ).writeAsStringSync('''
+name: server
+description: A new Dart Frog application
+version: 1.0.0+1
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  dart_frog: ^1.1.0
+  protocol: ^1.0.0
+''');
+      final exitCalls = <int>[];
+      await pre_gen.preGen(
+        context,
+        buildConfiguration: (_) => configuration,
+        exit: exitCalls.add,
+        directory: server,
+        runProcess: successRunProcess,
+        copyPath: (_, __) async {},
+      );
+
+      expect(exitCalls, equals([1]));
+      verify(
+        () => logger.err(
+          'Unable to find package_graph.json for ${directory.path}',
+        ),
+      ).called(1);
+      directory.delete(recursive: true).ignore();
+    });
+
     test('works with workspaces', () async {
       const configuration = RouteConfiguration(
         middleware: [],
