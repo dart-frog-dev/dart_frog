@@ -9,8 +9,9 @@ import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
 
 import '../pre_gen.dart' as pre_gen;
+import 'fixtures/package_configs.dart';
+import 'fixtures/package_graphs.dart';
 import 'pubspec_locks.dart';
-import 'pubspecs.dart';
 
 class _FakeHookContext extends Fake implements HookContext {
   _FakeHookContext({Logger? logger}) : _logger = logger ?? _MockLogger();
@@ -173,14 +174,49 @@ void main() {
 
       final directory = Directory.systemTemp.createTempSync();
       File(
+        path.join(directory.path, '.dart_tool', 'package_config.json'),
+      )
+        ..createSync(recursive: true)
+        ..writeAsStringSync(packageConfigWithDirectAndTransitiveDependencies);
+      File(
+        path.join(directory.path, '.dart_tool', 'package_graph.json'),
+      )
+        ..createSync(recursive: true)
+        ..writeAsStringSync(packageGraphWithDirectAndTransitiveDeps);
+      File(
         path.join(directory.path, 'pubspec.yaml'),
-      ).writeAsStringSync(workspaceRoot);
+      ).writeAsStringSync('''
+name: _
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+workspace:
+  - packages/client
+  - packages/protocol
+  - packages/models
+  - packages/server
+''');
       final server = Directory(
         path.join(directory.path, 'server'),
       )..createSync();
       File(
         path.join(server.path, 'pubspec.yaml'),
-      ).writeAsStringSync(workspaceChild);
+      ).writeAsStringSync('''
+name: server
+description: A new Dart Frog application
+version: 1.0.0+1
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  dart_frog: ^1.1.0
+  protocol: ^1.0.0
+''');
       File(
         path.join(server.path, 'pubspec.lock'),
       ).writeAsStringSync('''

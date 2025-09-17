@@ -105,7 +105,11 @@ void writePathDependencyOverrides({
     path.join(projectDirectory, 'pubspec_overrides.yaml'),
   );
   final contents = pubspecOverridesFile.readAsStringSync();
-  final editor = YamlEditor(contents)..update(['dependency_overrides'], {});
+  final overrides = loadYaml(contents) as YamlMap;
+  final editor = YamlEditor(contents);
+  if (!overrides.containsKey('dependency_overrides')) {
+    editor.update(['dependency_overrides'], {});
+  }
   for (final package in pathDependencies) {
     editor.update(
       ['dependency_overrides', package.name],

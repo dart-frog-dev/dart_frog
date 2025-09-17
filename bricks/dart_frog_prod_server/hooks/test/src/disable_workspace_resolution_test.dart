@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dart_frog_prod_server_hooks/dart_frog_prod_server_hooks.dart';
 import 'package:mason/mason.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:package_config/package_config.dart' hide Package;
 import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
 
@@ -10,20 +11,48 @@ class _MockHookContext extends Mock implements HookContext {}
 
 class _MockLogger extends Mock implements Logger {}
 
+class _MockPackageConfig extends Mock implements PackageConfig {}
+
+class _MockPackageGraph extends Mock implements PackageGraph {}
+
 void main() {
   group('disableWorkspaceResolution', () {
+    const packageName = 'server';
+
     late List<int> exitCalls;
     late HookContext context;
     late Logger logger;
+    late Directory rootDirectory;
     late Directory projectDirectory;
+    late PackageConfig packageConfig;
+    late PackageGraph packageGraph;
 
     setUp(() {
       exitCalls = [];
       context = _MockHookContext();
       logger = _MockLogger();
-      projectDirectory = Directory.systemTemp.createTempSync('project');
+      rootDirectory = Directory.systemTemp.createTempSync('root');
+      projectDirectory = Directory(
+        path.join(rootDirectory.path, 'packages', 'project'),
+      )..createSync(recursive: true);
+      File(path.join(projectDirectory.path, 'pubspec.yaml'))
+          .writeAsStringSync('name: "$packageName"');
+      packageConfig = _MockPackageConfig();
+      packageGraph = _MockPackageGraph();
 
       when(() => context.logger).thenReturn(logger);
+      when(() => packageGraph.roots).thenReturn([packageName]);
+      when(() => packageGraph.packages).thenReturn(
+        [
+          const Package(
+            name: packageName,
+            dependencies: [],
+            devDependencies: [],
+            version: '1.0.0',
+          ),
+        ],
+      );
+      when(() => packageConfig.packages).thenReturn([]);
 
       addTearDown(() => projectDirectory.delete().ignore());
     });
@@ -32,15 +61,23 @@ void main() {
       test('adds resolution: null', () {
         disableWorkspaceResolution(
           context,
+          packageConfig: packageConfig,
+          packageGraph: packageGraph,
           projectDirectory: projectDirectory.path,
+          workspaceRoot: rootDirectory.path,
           exit: exitCalls.add,
         );
         final contents = projectDirectory.listSync();
-        expect(contents, hasLength(1));
-        final pubspecOverrides = contents.first as File;
+        expect(contents, hasLength(2));
+        final pubspecOverrides = contents.firstWhere(
+          (p) => path.basename(p.path) == 'pubspec_overrides.yaml',
+        ) as File;
         expect(
           pubspecOverrides.readAsStringSync(),
-          equals('resolution: null'),
+          equals('''
+resolution: null
+dependency_overrides: {}
+'''),
         );
       });
     });
@@ -60,12 +97,17 @@ dependency_overrides:
       test('adds resolution: null', () {
         disableWorkspaceResolution(
           context,
+          packageConfig: packageConfig,
+          packageGraph: packageGraph,
           projectDirectory: projectDirectory.path,
+          workspaceRoot: rootDirectory.path,
           exit: exitCalls.add,
         );
         final contents = projectDirectory.listSync();
-        expect(contents, hasLength(1));
-        final pubspecOverrides = contents.first as File;
+        expect(contents, hasLength(2));
+        final pubspecOverrides = contents.firstWhere(
+          (p) => path.basename(p.path) == 'pubspec_overrides.yaml',
+        ) as File;
         expect(
           pubspecOverrides.readAsStringSync(),
           equals(
@@ -89,11 +131,14 @@ resolution: null
       test('exits with error', () {
         disableWorkspaceResolution(
           context,
+          packageConfig: packageConfig,
+          packageGraph: packageGraph,
           projectDirectory: projectDirectory.path,
+          workspaceRoot: rootDirectory.path,
           exit: exitCalls.add,
         );
         final contents = projectDirectory.listSync();
-        expect(contents, hasLength(1));
+        expect(contents, hasLength(2));
         expect(exitCalls, equals([1]));
         verify(
           () => logger.err(any(that: contains('Permission denied'))),
