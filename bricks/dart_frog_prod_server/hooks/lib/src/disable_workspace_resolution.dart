@@ -1,9 +1,9 @@
 import 'dart:io';
-import 'package:dart_frog_prod_server_hooks/dart_frog_prod_server_hooks.dart';
+import 'package:dart_frog_prod_server_hooks/dart_frog_prod_server_hooks.dart'
+    hide Package;
 import 'package:mason/mason.dart';
 import 'package:package_config/package_config_types.dart';
 import 'package:path/path.dart' as path;
-import 'package:pubspec_parse/pubspec_parse.dart';
 import 'package:yaml/yaml.dart';
 import 'package:yaml_edit/yaml_edit.dart';
 
@@ -28,58 +28,23 @@ VoidCallback disableWorkspaceResolution(
     return () {}; // no-op
   }
 
-  // Get all package dependencies.
-  final pubspecFile = File(path.join(projectDirectory, 'pubspec.yaml'));
-  final pubspec = Pubspec.parse(pubspecFile.readAsStringSync());
-
-  final dependencies = <String>[];
-  final root = packageGraph.roots.firstWhere((root) => root == pubspec.name);
-  final rootPackage = packageGraph.packages.firstWhere((p) => p.name == root);
-  final dependenciesToVisit = <String>[...rootPackage.dependencies];
-  final uniqueDependencies = <String>{};
-
-  // Build complete list of dependencies (direct and transitive).
-  do {
-    final newDependenciesToVisit = <String>[];
-    for (final dependencyToVisit in dependenciesToVisit) {
-      final package = packageGraph.packages.firstWhere(
-        (p) => p.name == dependencyToVisit,
-      );
-      dependencies.add(package.name);
-      for (final packageDependency in package.dependencies) {
-        // Avoid infinite loops from dependency cycles (circular dependencies).
-        if (uniqueDependencies.contains(packageDependency)) continue;
-        uniqueDependencies.add(packageDependency);
-        newDependenciesToVisit.add(packageDependency);
-      }
-    }
-    dependenciesToVisit
-      ..clear()
-      ..addAll(newDependenciesToVisit);
-  } while (dependenciesToVisit.isNotEmpty);
-
-  // Find path dependencies using the package_config.json.
-  final pathDependencies = packageConfig.packages.where(
-    (package) => package.relativeRoot && dependencies.contains(package.name),
-  );
-
-  // Add dependency_overrides to the pubspec_overrides.yaml.
-  final pubspecOverridesFile = File(
-    path.join(projectDirectory, 'pubspec_overrides.yaml'),
-  );
-  final contents = pubspecOverridesFile.readAsStringSync();
-  final editor = YamlEditor(contents)..update(['dependency_overrides'], {});
-  for (final package in pathDependencies) {
-    editor.update(
-      ['dependency_overrides', package.name],
-      {'path': path.relative(package.root.path, from: projectDirectory)},
+  try {
+    overridePathDependenciesInPubspecOverrides(
+      projectDirectory: projectDirectory,
+      packageConfig: packageConfig,
+      packageGraph: packageGraph,
     );
+  } on Exception catch (e) {
+    restoreWorkspaceResolution();
+    context.logger.err('$e');
+    exit(1);
+    return () {}; // no-op
   }
-  pubspecOverridesFile.writeAsStringSync(editor.toString());
 
   return restoreWorkspaceResolution;
 }
 
+/// Add resolution:null to pubspec_overrides.yaml.
 VoidCallback overrideResolutionInPubspecOverrides(String projectDirectory) {
   final pubspecOverridesFile = File(
     path.join(projectDirectory, 'pubspec_overrides.yaml'),
@@ -104,4 +69,90 @@ VoidCallback overrideResolutionInPubspecOverrides(String projectDirectory) {
   pubspecOverridesFile.writeAsStringSync(editor.toString());
 
   return () => pubspecOverridesFile.writeAsStringSync(contents);
+}
+
+/// Add overrides for all path dependencies to `pubspec_overrides.yaml`
+void overridePathDependenciesInPubspecOverrides({
+  required String projectDirectory,
+  required PackageConfig packageConfig,
+  required PackageGraph packageGraph,
+}) {
+  final name = getPackageName(projectDirectory: projectDirectory);
+  if (name == null) {
+    throw Exception('Failed to parse "name" from pubspec.yaml');
+  }
+
+  final productionDeps = getProductionDependencies(
+    packageName: name,
+    packageGraph: packageGraph,
+  );
+
+  final pathDependencies = packageConfig.packages.where(
+    (package) => package.relativeRoot && productionDeps.contains(package.name),
+  );
+
+  writePathDependencyOverrides(
+    projectDirectory: projectDirectory,
+    pathDependencies: pathDependencies,
+  );
+}
+
+void writePathDependencyOverrides({
+  required String projectDirectory,
+  required Iterable<Package> pathDependencies,
+}) {
+  final pubspecOverridesFile = File(
+    path.join(projectDirectory, 'pubspec_overrides.yaml'),
+  );
+  final contents = pubspecOverridesFile.readAsStringSync();
+  final editor = YamlEditor(contents)..update(['dependency_overrides'], {});
+  for (final package in pathDependencies) {
+    editor.update(
+      ['dependency_overrides', package.name],
+      {'path': path.relative(package.root.path, from: projectDirectory)},
+    );
+  }
+  pubspecOverridesFile.writeAsStringSync(editor.toString());
+}
+
+/// Extract the package name from the pubspec.yaml in [projectDirectory].
+String? getPackageName({required String projectDirectory}) {
+  final pubspecFile = File(path.join(projectDirectory, 'pubspec.yaml'));
+  final pubspec = loadYaml(pubspecFile.readAsStringSync());
+  if (pubspec is! YamlMap) return null;
+
+  final name = pubspec['name'];
+  if (name is! String) return null;
+
+  return name;
+}
+
+/// Build a complete list of dependencies (direct and transitive).
+Set<String> getProductionDependencies({
+  required String packageName,
+  required PackageGraph packageGraph,
+}) {
+  final dependencies = <String>{};
+  final root = packageGraph.roots.firstWhere((root) => root == packageName);
+  final rootPackage = packageGraph.packages.firstWhere((p) => p.name == root);
+  final dependenciesToVisit = <String>[...rootPackage.dependencies];
+
+  do {
+    final discoveredDependencies = <String>[];
+    for (final dependencyToVisit in dependenciesToVisit) {
+      final package = packageGraph.packages.firstWhere(
+        (p) => p.name == dependencyToVisit,
+      );
+      dependencies.add(package.name);
+      for (final packageDependency in package.dependencies) {
+        // Avoid infinite loops from dependency cycles (circular dependencies).
+        if (dependencies.contains(packageDependency)) continue;
+        discoveredDependencies.add(packageDependency);
+      }
+    }
+    dependenciesToVisit
+      ..clear()
+      ..addAll(discoveredDependencies);
+  } while (dependenciesToVisit.isNotEmpty);
+  return dependencies;
 }

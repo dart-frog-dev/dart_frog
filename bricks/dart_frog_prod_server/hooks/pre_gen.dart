@@ -44,6 +44,7 @@ Future<void> preGen(
     // We need to make sure the package_config.json is up to date.
     await dartPubGet(
       context,
+      message: 'Generating package graph',
       workingDirectory: projectDirectory.path,
       runProcess: runProcess,
       exit: exit,
@@ -88,6 +89,7 @@ Future<void> preGen(
   // We need to make sure that the pubspec.lock file is up to date.
   await dartPubGet(
     context,
+    message: 'Updating lockfile',
     workingDirectory: projectDirectory.path,
     runProcess: runProcess,
     exit: exit,
