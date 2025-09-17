@@ -57,11 +57,20 @@ Future<void> preGen(
       return exit(1);
     }
 
+    final packageGraph = getPackageGraph(workspaceRoot.path);
+    if (packageGraph == null) {
+      context.logger.err(
+        'Unable to find package_graph.json for ${workspaceRoot.path}',
+      );
+      return exit(1);
+    }
+
     // Disable workspace resolution until we can generate per-package lockfiles.
     // https://github.com/dart-lang/pub/issues/4594
     restoreWorkspaceResolution = disableWorkspaceResolution(
       context,
       packageConfig: packageConfig,
+      packageGraph: packageGraph,
       projectDirectory: projectDirectory.path,
       workspaceRoot: workspaceRoot.path,
       exit: exit,

@@ -12,6 +12,7 @@ import 'package:yaml_edit/yaml_edit.dart';
 VoidCallback disableWorkspaceResolution(
   HookContext context, {
   required PackageConfig packageConfig,
+  required PackageGraph packageGraph,
   required String projectDirectory,
   required String workspaceRoot,
   required void Function(int exitCode) exit,
@@ -30,14 +31,36 @@ VoidCallback disableWorkspaceResolution(
   // Get all package dependencies.
   final pubspecFile = File(path.join(projectDirectory, 'pubspec.yaml'));
   final pubspec = Pubspec.parse(pubspecFile.readAsStringSync());
-  final allDependencies = [
-    ...pubspec.dependencies.keys,
-    ...pubspec.devDependencies.keys,
-  ];
 
-  // Find path dependencies based on the package_config.json.
+  final dependencies = <String>[];
+  final root = packageGraph.roots.firstWhere((root) => root == pubspec.name);
+  final rootPackage = packageGraph.packages.firstWhere((p) => p.name == root);
+  final dependenciesToVisit = <String>[...rootPackage.dependencies];
+  final uniqueDependencies = <String>{};
+
+  // Build complete list of dependencies (direct and transitive).
+  do {
+    final newDependenciesToVisit = <String>[];
+    for (final dependencyToVisit in dependenciesToVisit) {
+      final package = packageGraph.packages.firstWhere(
+        (p) => p.name == dependencyToVisit,
+      );
+      dependencies.add(package.name);
+      for (final packageDependency in package.dependencies) {
+        // Avoid infinite loops from dependency cycles (circular dependencies).
+        if (uniqueDependencies.contains(packageDependency)) continue;
+        uniqueDependencies.add(packageDependency);
+        newDependenciesToVisit.add(packageDependency);
+      }
+    }
+    dependenciesToVisit
+      ..clear()
+      ..addAll(newDependenciesToVisit);
+  } while (dependenciesToVisit.isNotEmpty);
+
+  // Find path dependencies using the package_config.json.
   final pathDependencies = packageConfig.packages.where(
-    (package) => package.relativeRoot && allDependencies.contains(package.name),
+    (package) => package.relativeRoot && dependencies.contains(package.name),
   );
 
   // Add dependency_overrides to the pubspec_overrides.yaml.
