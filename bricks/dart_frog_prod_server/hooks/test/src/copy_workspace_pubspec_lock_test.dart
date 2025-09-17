@@ -35,48 +35,11 @@ void main() {
       });
     });
 
-    test('exits with error when unable to determine the workspace root', () {
-      copyWorkspacePubspecLock(
-        context,
-        projectDirectory: projectDirectory.path,
-        exit: exitCalls.add,
-      );
-      expect(exitCalls, equals([1]));
-      verify(
-        () => logger.err(
-          'Unable to determine workspace root for ${projectDirectory.path}',
-        ),
-      );
-    });
-
-    test('exits with error when unable to parse pubspec.yaml', () {
-      File(path.join(rootDirectory.path, 'pubspec.yaml'))
-          .writeAsStringSync('invalid pubspec.yaml');
-      copyWorkspacePubspecLock(
-        context,
-        projectDirectory: projectDirectory.path,
-        exit: exitCalls.add,
-      );
-      expect(exitCalls, equals([1]));
-      verify(
-        () => logger.err(
-          'Unable to determine workspace root for ${projectDirectory.path}',
-        ),
-      );
-    });
-
     test('does nothing when pubspec.lock does not exist in workspace root', () {
-      File(path.join(rootDirectory.path, 'pubspec.yaml')).writeAsStringSync('''
-name: _
-version: 0.0.0
-environment:
-  sdk: ^3.8.0
-workspace:
-  - packages/hello_world
-''');
       copyWorkspacePubspecLock(
         context,
         projectDirectory: projectDirectory.path,
+        workspaceRoot: rootDirectory.path,
         exit: exitCalls.add,
       );
       expect(exitCalls, isEmpty);
@@ -90,20 +53,13 @@ workspace:
 # See https://dart.dev/tools/pub/glossary#lockfile
 packages:
 ''';
-      File(path.join(rootDirectory.path, 'pubspec.yaml')).writeAsStringSync('''
-name: _
-version: 0.0.0
-environment:
-  sdk: ^3.8.0
-workspace:
-  - packages/hello_world
-''');
       final file = File(path.join(rootDirectory.path, 'pubspec.lock'))
         ..writeAsStringSync(pubspecLockContents);
       Process.runSync('chmod', ['000', file.path]);
       copyWorkspacePubspecLock(
         context,
         projectDirectory: projectDirectory.path,
+        workspaceRoot: rootDirectory.path,
         exit: exitCalls.add,
       );
       expect(exitCalls, equals([1]));
@@ -118,19 +74,12 @@ workspace:
 # See https://dart.dev/tools/pub/glossary#lockfile
 packages:
 ''';
-      File(path.join(rootDirectory.path, 'pubspec.yaml')).writeAsStringSync('''
-name: _
-version: 0.0.0
-environment:
-  sdk: ^3.8.0
-workspace:
-  - packages/hello_world
-''');
       File(path.join(rootDirectory.path, 'pubspec.lock'))
           .writeAsStringSync(pubspecLockContents);
       copyWorkspacePubspecLock(
         context,
         projectDirectory: projectDirectory.path,
+        workspaceRoot: rootDirectory.path,
         exit: exitCalls.add,
       );
       expect(exitCalls, isEmpty);
