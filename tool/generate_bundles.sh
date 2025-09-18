@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# Ensure mason_cli is installed.
+dart pub global activate mason_cli
+
 # Runs `mason bundle` to generate bundles for all bricks within the top level bricks directory.
 
 # Create Dart Frog Brick

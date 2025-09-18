@@ -18,17 +18,14 @@ jobs:
 
       - uses: dart-lang/setup-dart@v1
 
-      - name: Install mason
-        run: dart pub global activate mason_cli
-
-      - name: Bump templates
+      - name: Update Bundles
         run: tool/generate_bundles.sh
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7.0.8
         with:
           base: main
-          branch: feat/bump-template-bundles
+          branch: feat/update-template-bundles
           commit-message: "feat: update cli bundles"
           title: "feat(dart_frog_cli): update cli bundles"
           body: Please squash and merge me!

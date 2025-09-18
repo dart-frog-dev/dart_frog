@@ -1,3 +1,7 @@
+# 1.2.9
+
+- fix: workspace package version resolution ([#1859](https://github.com/dart-frog-dev/dart_frog/pull/1859))
+
 # 1.2.8
 
 - feat: support for Dart workspaces ([#1825](https://github.com/dart-frog-dev/dart_frog/pull/1825))
