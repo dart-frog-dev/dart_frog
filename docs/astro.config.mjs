@@ -32,7 +32,7 @@ export default defineConfig({
 				{
 					icon: 'discord',
 					label: 'Discord',
-					href: 'https://discord.gg/dart-frog',
+					href: 'https://dart-frog.dev/discord',
 				},
 			],
 			editLink: {

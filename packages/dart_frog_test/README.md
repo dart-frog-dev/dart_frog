@@ -114,7 +114,7 @@ await expectNotAllowedMethods(
 [dart_frog_lint_link]: https://pub.dev/packages/dart_frog_lint
 [dart_link]: https://dart.dev
 [discord_badge]: https://img.shields.io/discord/1394707782271238184?style=for-the-badge&logo=discord&color=1C2A2E&logoColor=1DF9D2
-[discord_link]: https://discord.gg/dart-frog
+[discord_link]: https://dart-frog.dev/discord
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [license_link]: https://opensource.org/licenses/MIT
 [logo_black]: https://raw.githubusercontent.com/VGVentures/very_good_brand/main/styles/README/vgv_logo_black.png#gh-light-mode-only

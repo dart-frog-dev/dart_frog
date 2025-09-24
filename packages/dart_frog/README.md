@@ -75,7 +75,7 @@ View the full documentation [here][docs_link].
 [dart_link]: https://dart.dev
 [dart_installation_link]: https://dart.dev/get-dart
 [discord_badge]: https://img.shields.io/discord/1394707782271238184?style=for-the-badge&logo=discord&color=1C2A2E&logoColor=1DF9D2
-[discord_link]: https://discord.gg/dart-frog
+[discord_link]: https://dart-frog.dev/discord
 [docs_link]: https://dart-frog.dev
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [license_link]: https://opensource.org/licenses/MIT

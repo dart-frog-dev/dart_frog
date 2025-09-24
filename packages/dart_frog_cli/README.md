@@ -52,7 +52,7 @@ Learn more about it on the [official docs][docs_link].
 [dart_frog_lint_badge]: https://img.shields.io/badge/style-dart_frog_lint-1DF9D2.svg
 [dart_frog_lint_link]: https://pub.dev/packages/dart_frog_lint
 [discord_badge]: https://img.shields.io/discord/1394707782271238184?style=for-the-badge&logo=discord&color=1C2A2E&logoColor=1DF9D2
-[discord_link]: https://discord.gg/dart-frog
+[discord_link]: https://dart-frog.dev/discord
 [docs_link]: https://dart-frog.dev/getting-started
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [license_link]: https://opensource.org/licenses/MIT
