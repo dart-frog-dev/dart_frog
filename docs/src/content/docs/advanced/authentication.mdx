@@ -319,10 +319,7 @@ Handler middleware(Handler handler) {
     authenticator: (context, cookies) {
       final userRepository = context.read<UserRepository>();
       final user = userRepository.getUserFromCookies(cookies);
-      if (user != null) {
-        return AppUser(user.id);
-      }
-      return AnonymousUser();
+      return user != null ? AppUser(user.id) : AnonymousUser();
     },
   ));
 }
