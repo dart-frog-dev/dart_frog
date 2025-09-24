@@ -329,13 +329,7 @@ Handler middleware(Handler handler) {
 // Use it in your handler
 Response onRequest(RequestContext context) {
   final user = context.read<User>();
-  if (user is AnonymousUser) {
-    return UnauthenticatedResponse();
-  }
-
-  if (user is AppUser) {
-    return AuthenticatedResponse(user.userId);
-  }
+  return user is AppUser ? AuthenticatedResponse() : UnauthenticatedResponse();
 }
 ```
 
