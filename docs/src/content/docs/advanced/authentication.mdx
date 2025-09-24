@@ -64,8 +64,9 @@ Authorization: Bearer TOKEN
 ### Cookie-based Authentication
 
 Cookie-based authentication stores user credentials in HTTP cookies that are
-stored in a user's web browser and automatically sent with each subsequent request.
-This method uses the `Cookie` header to transmit authentication information.
+stored in a user's web browser and automatically sent with each subsequent
+request. This method uses the `Cookie` header to transmit authentication
+information.
 
 The cookies typically contain session tokens or encrypted user data that the
 server can validate to authenticate the user. Common implementations include
@@ -297,7 +298,9 @@ checked.
 
 ### Optionally Authenticated Routes
 
-In some cases, developers may want to allow a route to be accessed with or without authentication, and they would like to return a different response based on the authentication status.
+In some cases, developers may want to allow a route to be accessed with or
+without authentication, and they would like to return a different response based
+on the authentication status.
 
 To achieve this, we recommend the following approach:
 
