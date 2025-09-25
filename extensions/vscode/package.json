@@ -1,12 +1,12 @@
 {
-  "name": "dart-frog",
-  "displayName": "Dart Frog",
+  "name": "dart-frog-dev",
+  "displayName": "Dart Frog Dev",
   "description": "Support for Dart Frog, a minimalistic backend framework.",
   "version": "0.2.6",
-  "publisher": "VeryGoodVentures",
+  "publisher": "DartFrog",
   "bugs": {
     "url": "https://github.com/dart-frog-dev/dart_frog/issues",
-    "email": "tools@verygood.ventures"
+    "email": "felangelov@gmail.com"
   },
   "repository": {
     "type": "git",

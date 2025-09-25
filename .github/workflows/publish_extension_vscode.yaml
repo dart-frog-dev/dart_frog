@@ -30,7 +30,7 @@ jobs:
           npm install -g @vscode/vsce 
 
           echo "${{ secrets.VSCODE_CREDENTIALS }}" > vscode-credentials
-          vsce login VeryGoodVentures < vscode-credentials
+          vsce login DartFrog < vscode-credentials
 
           tag=${GITHUB_REF#refs/*/}
           version=$(echo $tag | sed -En "s/^(.*)-v(.*)/\2/p")
