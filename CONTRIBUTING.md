@@ -16,7 +16,7 @@ The contents of the mono repo is divided into the following directories:
 - [`assets/`](https://github.com/dart-frog-dev/dart_frog/tree/main/assets): images to embed into READMEs
 - [`docs/`](https://github.com/dart-frog-dev/dart_frog/tree/main/docs): source code for the [docs site][dart_frog_site].
 - [`examples/`](https://github.com/dart-frog-dev/dart_frog/tree/main/examples): example projects of some of the several usages of Dart Frog
-- [`extensions/`](https://github.com/dart-frog-dev/dart_frog/tree/main/extensions): Integrations with IDEs such as VS Code.
+- [`extensions/`](https://github.com/dart-frog-dev/dart_frog/tree/main/extensions): Integrations with IDEs such as VSCode.
 - [`bricks/`](https://github.com/dart-frog-dev/dart_frog/tree/main/bricks): Internal mason bricks used by [dart_frog_cli][dart_frog_cli_link] to perform tasks such as creating new projects, starting a dev server, and building a prod server.
 - [`packages/`](https://github.com/dart-frog-dev/dart_frog/tree/main/packages): The source code of the packages that constitute the Dart Frog suite (`dart_frog_cli`, `dart_frog` and `dart_frog_gen`) as well as companion packages (such as `dart_frog_web_socket`).
 
@@ -55,7 +55,7 @@ Prerequisites:
 
 - Install a valid [Dart SDK](https://dart.dev/get-dart) in your local environment, it should be compatible with the latest version of [Dart Frog CLI](https://github.com/dart-frog-dev/dart_frog/blob/main/packages/dart_frog_cli/pubspec.yaml). If you have Flutter installed, you likely have a valid Dart SDK version already installed.
 - [Mason CLI][mason_install_link] (to run and test the `bricks`);
-- [Node.js][node_js_dowload_link], for working with the VS Code extension or the documentation website. Refer to their CONTRIBUTING files for further installation requirements.
+- [Node.js][node_js_dowload_link], for working with the VSCode extension or the documentation website. Refer to their CONTRIBUTING files for further installation requirements.
 - Capability to run shell scripts (for the scripts under `tool/`).
 
 ## Understanding the `packages/` contents:

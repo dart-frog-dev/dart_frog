@@ -94,7 +94,7 @@ Dart Frog provides a simple core with a small API surface area in order to reduc
 
 ## Extensions 💻
 
-- [VS Code](https://marketplace.visualstudio.com/items?itemName=VeryGoodVentures.dart-frog): extends VS Code with support for Dart Frog and provides tools for effectively managing Dart Frog projects within VS Code.
+- [VSCode](https://marketplace.visualstudio.com/items?itemName=DartFrog.dart-frog-dev): extends VSCode with support for Dart Frog and provides tools for effectively managing Dart Frog projects within VSCode.
 
 [ci_badge]: https://github.com/dart-frog-dev/dart_frog/actions/workflows/main.yaml/badge.svg
 [ci_link]: https://github.com/dart-frog-dev/dart_frog/actions/workflows/main.yaml

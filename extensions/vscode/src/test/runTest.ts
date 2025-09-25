@@ -1,5 +1,5 @@
 /**
- * This file downloads, unzipps, and launches VS Code with extension test
+ * This file downloads, unzipps, and launches VSCode with extension test
  * parameters.
  *
  * @see https://code.visualstudio.com/api/working-with-extensions/testing-extension#the-test-script
@@ -33,7 +33,7 @@ async function main() {
       }
     );
 
-    // Download VS Code, unzip it and run the integration test
+    // Download VSCode, unzip it and run the integration test
     await runTests({
       vscodeExecutablePath,
       extensionDevelopmentPath,
