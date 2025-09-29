@@ -1,0 +1,177 @@
+---
+title: Fall 2025 Recap
+date: 2025-10-02
+excerpt:
+  A short recap of all the changes that have happened since the project was
+  transfered as well as a peak at what's to come.
+authors:
+  - team
+featured: true
+cover:
+  alt: Midyear Recap
+  dark: ../../../assets/blog/fall_2025_recap/cover_dark.svg
+  light: ../../../assets/blog/fall_2025_recap/cover_light.svg
+tags:
+  - community
+---
+
+import { Image } from 'astro:assets';
+import websiteRedesignLight from '../../../assets/blog/fall_2025_recap/website_redesign_light.svg';
+import websiteRedesignDark from '../../../assets/blog/fall_2025_recap/website_redesign_dark.svg';
+
+import lintLight from '../../../assets/blog/fall_2025_recap/lint_light.svg';
+import lintDark from '../../../assets/blog/fall_2025_recap/lint_dark.svg';
+
+import workspacesLight from '../../../assets/blog/fall_2025_recap/workspaces_light.svg';
+import workspacesDark from '../../../assets/blog/fall_2025_recap/workspaces_dark.svg';
+
+import benchmarksLight from '../../../assets/blog/fall_2025_recap/benchmarks_light.svg';
+import benchmarksDark from '../../../assets/blog/fall_2025_recap/benchmarks_dark.svg';
+
+import vscodeLight from '../../../assets/blog/fall_2025_recap/vscode_light.svg';
+import vscodeDark from '../../../assets/blog/fall_2025_recap/vscode_dark.svg';
+
+import discordLight from '../../../assets/blog/fall_2025_recap/discord_light.svg';
+import discordDark from '../../../assets/blog/fall_2025_recap/discord_dark.svg';
+
+We can't believe it's been two months since
+[Dart Frog moved to a new organization](/blog/future-of-dart-frog)!
+
+Here's a quick recap of what the team has been up to:
+
+- Migrated and redesigned the [**Dart Frog Website**](https://dart-frog.dev)
+- Migrated the
+  [**VSCode Extension**](https://marketplace.visualstudio.com/items?itemName=DartFrog.dart-frog-dev)
+- Released [**package:dart_frog_lint**](https://pub.dev/packages/dart_frog_lint)
+- Added support for
+  [**Pub Workspaces**](https://github.com/dart-frog-dev/dart_frog/pull/1825)
+- Contributed benchmarks to
+  [**TechEmpower Framework Benchmarks**](https://github.com/TechEmpower/FrameworkBenchmarks/pull/10048)
+- Created a new [**Discord Server**](https://dart-frog.dev/discord)
+- Published
+  [**14 package releases to pub.dev**](https://pub.dev/publishers/dart-frog.dev/packages)
+- Closed over
+  [**20 pull requests**](https://github.com/dart-frog-dev/dart_frog/pulls?q=is%3Apr+is%3Aclosed)
+
+## 🌐 Meet [dart-frog.dev](https://dart-frog.dev)
+
+One of the first things we worked on was migrating the official website and
+documentation to an independent domain. The site is now powered by
+[Starlight](https://starlight.astro.build) and includes a refreshed design, full
+text search, updated documentation, a new blog with an
+[RSS Feed](/blog/rss.xml).
+
+<Image
+	class="light:sl-hidden"
+	src={websiteRedesignDark}
+	alt="website redesign"
+/>
+<Image
+	class="dark:sl-hidden"
+	src={websiteRedesignLight}
+	alt="website redesign"
+/>
+
+## 📦 New Package: [`dart_frog_lint`](https://pub.dev/packages/dart_frog_lint)
+
+While updating documentation and examples, we realized we could provide a much
+better developer experience configuring lint rules.
+
+We released the [`dart_frog_lint`](https://pub.dev/packages/dart_frog_lint)
+package to standardize lint rules across all Dart Frog projects.
+
+New projects created via `dart_frog create` now ship with `dart_frog_lint`
+automatically.
+
+Existing projects can add `dart_frog_lint` by following these steps:
+
+1. Install `dart_frog_lint` as a dev dependency
+
+```sh
+dart pub add --dev dart_frog_lint
+```
+
+2. Use the recommended rules in the `analysis_options.yaml`
+
+```yaml
+include: package:dart_frog_lint/recommended.yaml
+```
+
+With over 8,400 downloads in the last 30 days, it's awesome to see the impact
+`dart_frog_lint` is having already within the community!
+
+<Image class="light:sl-hidden" src={lintDark} alt="Dart Frog Lint" />
+<Image class="dark:sl-hidden" src={lintLight} alt="Dart Frog Lint" />
+
+## 🎯 Pub Workspaces Support
+
+A highly-anticipated feature was adding support for
+[pub workspaces](https://dart.dev/tools/pub/workspaces). Since Dart 3.6.0, pub
+supports organizing repositories into a workspace using a single shared
+resolution for all packages. Using workspaces for large repositories reduces the
+amount of memory required for analysis, hence improving performance.
+
+As of
+[Dart Frog CLI v1.2.9](https://github.com/dart-frog-dev/dart_frog/pull/1825),
+Dart Frog fully supports pub workspaces! Dart Frog workspaces is already being
+used in production at [Shorebird](https://shorebird.dev) to serve millions of
+patches all over the world. If your team is using pub workspaces with Dart Frog,
+[let us know](https://dart-frog.dev/discord) — we'd love to hear about your
+experience!
+
+<Image class="light:sl-hidden" src={workspacesDark} alt="Workspace Support" />
+<Image class="dark:sl-hidden" src={workspacesLight} alt="Workspace Support" />
+
+## 🏎️ New Benchmarks
+
+As part of burning down a variety of longstanding issues, we added basic
+performance benchmarks to
+[TechEmpower Framework Benchmarks](https://www.techempower.com/benchmarks/#section=data-r23)
+for both [Shelf](https://github.com/TechEmpower/FrameworkBenchmarks/pull/10025)
+and [Dart Frog](https://github.com/TechEmpower/FrameworkBenchmarks/pull/10048).
+This is just the first many benchmarks we plan to add in order to both measure
+and improve the performance of Dart Frog servers.
+
+<Image class="light:sl-hidden" src={benchmarksDark} alt="benchmarks" />
+<Image class="dark:sl-hidden" src={benchmarksLight} alt="benchmarks" />
+
+## 🧑‍💻 Updated VSCode Extension
+
+As part of the migration to a new GitHub organization, we also had to migrate
+the Dart Frog VSCode extension. Since the VSCode marketplace does not support
+transferring an existing extension to a different publisher, we have published a
+new Dart Frog
+[**VSCode Extension**](https://marketplace.visualstudio.com/items?itemName=DartFrog.dart-frog-dev).
+We are working on deprecating the old extension in order to provide a smooth,
+seamless transition so stay tuned for additional updates over the coming days.
+
+<Image class="light:sl-hidden" src={vscodeDark} alt="VSCode Extension" />
+<Image class="dark:sl-hidden" src={vscodeLight} alt="VSCode Extension" />
+
+## 💬 Dedicated Discord Server
+
+Finally, Dart Frog now has an official
+[Discord Server](https://dart-frog.dev/discord)! You can join the community, get
+support from the team, show off you work and more! We're currently at 99 active
+members so join us and help us continue to grow the community!
+
+<Image class="light:sl-hidden" src={discordDark} alt="Discord Server" />
+<Image class="dark:sl-hidden" src={discordLight} alt="Discord Server" />
+
+## 👀 What's Next
+
+While we've gotten a lot done over the last two months, there's still much to
+look forward to!
+
+Next, we'll focus on burning down the existing backlog of issues which includes
+tackling some highly requested features such as:
+
+- [API Documentation Generation](https://github.com/dart-frog-dev/dart_frog/issues/152)
+- [Dart API Client Generation](https://github.com/dart-frog-dev/dart_frog/issues/151)
+- [Logger Suppor](https://github.com/dart-frog-dev/dart_frog/issues/153)
+
+If there's anything you feel is missing or can be improved, please
+[let us know](https://github.com/dart-frog-dev/dart_frog/issues/new).
+
+None of this would be possible without the community so thanks everyone for the
+support and we'll see you in the next update! ✌️
