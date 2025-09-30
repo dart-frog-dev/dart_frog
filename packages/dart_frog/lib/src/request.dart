@@ -146,12 +146,12 @@ class Request {
 
   /// Returns a [Future] containing the body as a [String].
   Future<String> body() async {
-    final bodyFromContext = _bodyFutureExpando[_request];
-    if (bodyFromContext != null) return bodyFromContext;
+    final bodyFromCache = _requestBodyCache[_request];
+    if (bodyFromCache != null) return bodyFromCache;
 
     final completer = Completer<String>();
     try {
-      _bodyFutureExpando[_request] = completer.future;
+      _requestBodyCache[_request] = completer.future;
       completer.complete(await _request.readAsString());
     } catch (error, stackTrace) {
       completer.completeError(error, stackTrace);
@@ -181,4 +181,4 @@ class Request {
   }
 }
 
-final _bodyFutureExpando = Expando<Future<String>>('dart_frog.request.body');
+final _requestBodyCache = Expando<Future<String>>('dart_frog.request.body');
