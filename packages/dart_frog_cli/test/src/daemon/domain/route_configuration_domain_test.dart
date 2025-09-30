@@ -380,8 +380,9 @@ void main() {
 
     group('watcherGenerateRouteConfiguration', () {
       setUp(() async {
-        when(() => watcher.forceRouteConfigurationRegeneration())
-            .thenReturn(_configuration);
+        when(
+          () => watcher.forceRouteConfigurationRegeneration(),
+        ).thenReturn(_configuration);
 
         await domain.handleRequest(
           const DaemonRequest(
@@ -491,8 +492,9 @@ void main() {
       });
 
       test('when cannot generate route config', () async {
-        when(() => watcher.forceRouteConfigurationRegeneration())
-            .thenReturn(null);
+        when(
+          () => watcher.forceRouteConfigurationRegeneration(),
+        ).thenReturn(null);
 
         expect(
           await domain.handleRequest(

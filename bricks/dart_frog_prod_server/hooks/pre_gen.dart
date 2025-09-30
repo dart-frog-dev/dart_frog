@@ -12,8 +12,6 @@ typedef RouteConfigurationBuilder = RouteConfiguration Function(
   io.Directory directory,
 );
 
-void _defaultExit(int code) => ExitOverrides.current?.exit ?? io.exit;
-
 Future<void> run(HookContext context) => preGen(context);
 
 Future<void> preGen(
@@ -21,14 +19,77 @@ Future<void> preGen(
   io.Directory? directory,
   ProcessRunner runProcess = io.Process.run,
   RouteConfigurationBuilder buildConfiguration = buildRouteConfiguration,
-  void Function(int exitCode) exit = _defaultExit,
+  void Function(int exitCode) exit = defaultExit,
   Future<void> Function(String from, String to) copyPath = io_expanded.copyPath,
 }) async {
   final projectDirectory = directory ?? io.Directory.current;
+  final usesWorkspaces = usesWorkspaceResolution(
+    context,
+    workingDirectory: projectDirectory.path,
+    exit: exit,
+  );
 
-  // We need to make sure that the pubspec.lock file is up to date
+  VoidCallback? restoreWorkspaceResolution;
+  VoidCallback? revertPubspecLock;
+
+  if (usesWorkspaces) {
+    final workspaceRoot = getWorkspaceRoot(projectDirectory.path);
+    if (workspaceRoot == null) {
+      context.logger.err(
+        'Unable to determine workspace root for ${projectDirectory.path}',
+      );
+      return exit(1);
+    }
+
+    // We need to make sure the package_config.json is up to date.
+    await dartPubGet(
+      context,
+      message: 'Generating package graph',
+      workingDirectory: projectDirectory.path,
+      runProcess: runProcess,
+      exit: exit,
+    );
+
+    final packageConfig = getPackageConfig(workspaceRoot.path);
+    if (packageConfig == null) {
+      context.logger.err(
+        'Unable to find package_config.json for ${workspaceRoot.path}',
+      );
+      return exit(1);
+    }
+
+    final packageGraph = getPackageGraph(workspaceRoot.path);
+    if (packageGraph == null) {
+      context.logger.err(
+        'Unable to find package_graph.json for ${workspaceRoot.path}',
+      );
+      return exit(1);
+    }
+
+    // Disable workspace resolution until we can generate per-package lockfiles.
+    // https://github.com/dart-lang/pub/issues/4594
+    restoreWorkspaceResolution = disableWorkspaceResolution(
+      context,
+      packageConfig: packageConfig,
+      packageGraph: packageGraph,
+      projectDirectory: projectDirectory.path,
+      workspaceRoot: workspaceRoot.path,
+      exit: exit,
+    );
+    // Copy the pubspec.lock from the workspace root to ensure the same versions
+    // of dependencies are used in the production build.
+    revertPubspecLock = copyWorkspacePubspecLock(
+      context,
+      projectDirectory: projectDirectory.path,
+      workspaceRoot: workspaceRoot.path,
+      exit: exit,
+    );
+  }
+
+  // We need to make sure that the pubspec.lock file is up to date.
   await dartPubGet(
     context,
+    message: 'Updating lockfile',
     workingDirectory: projectDirectory.path,
     runProcess: runProcess,
     exit: exit,
@@ -45,10 +106,12 @@ Future<void> preGen(
     exit: exit,
   );
 
+  restoreWorkspaceResolution?.call();
+
   final RouteConfiguration configuration;
   try {
     configuration = buildConfiguration(projectDirectory);
-  } catch (error) {
+  } on Exception catch (error) {
     context.logger.err('$error');
     return exit(1);
   }
@@ -64,9 +127,7 @@ Future<void> preGen(
         '''Route conflict detected. ${lightCyan.wrap(originalFilePath)} and ${lightCyan.wrap(conflictingFilePath)} both resolve to ${lightCyan.wrap(conflictingEndpoint)}.''',
       );
     },
-    onViolationEnd: () {
-      exit(1);
-    },
+    onViolationEnd: () => exit(1),
   );
 
   reportRogueRoutes(
@@ -76,13 +137,7 @@ Future<void> preGen(
         '''Rogue route detected.${defaultForeground.wrap(' ')}Rename ${lightCyan.wrap(filePath)} to ${lightCyan.wrap(idealPath)}.''',
       );
     },
-    onViolationEnd: () {
-      exit(1);
-    },
-  );
-
-  final customDockerFile = io.File(
-    path.join(projectDirectory.path, 'Dockerfile'),
+    onViolationEnd: () => exit(1),
   );
 
   final internalPathDependencies = await getInternalPathDependencies(
@@ -95,6 +150,11 @@ Future<void> preGen(
     copyPath: copyPath,
   );
 
+  revertPubspecLock?.call();
+
+  final customDockerFile = io.File(
+    path.join(projectDirectory.path, 'Dockerfile'),
+  );
   final addDockerfile = !customDockerFile.existsSync();
 
   context.vars = {

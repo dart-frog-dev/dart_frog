@@ -1,0 +1,22 @@
+name: publish/dart_frog_lint
+
+on:
+  push:
+    tags:
+      - "dart_frog_lint-v[0-9]+.[0-9]+.[0-9]+*"
+
+jobs:
+  publish:
+    environment: pub.dev
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # Required for authentication using OIDC
+
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v5
+
+      - name: 📦 Publish
+        uses: ./.github/actions/pub_publish
+        with:
+          working_directory: packages/dart_frog_lint

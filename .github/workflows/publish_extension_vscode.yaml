@@ -16,21 +16,21 @@ jobs:
 
     steps:
       - name: 📚 Git Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 🎯 Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 22.11.0
           cache: "npm"
           cache-dependency-path: extensions/vscode/package-lock.json
 
-      - name: 🎉 Publish VS Code Extension
+      - name: 🎉 Publish VSCode Extension
         run: |
           npm install -g @vscode/vsce 
 
           echo "${{ secrets.VSCODE_CREDENTIALS }}" > vscode-credentials
-          vsce login VeryGoodVentures < vscode-credentials
+          vsce login DartFrog < vscode-credentials
 
           tag=${GITHUB_REF#refs/*/}
           version=$(echo $tag | sed -En "s/^(.*)-v(.*)/\2/p")

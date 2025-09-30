@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_positional_boolean_parameters
-
 import 'package:dart_frog/dart_frog.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
@@ -10,6 +8,8 @@ void main() {
   group('requestLogger', () {
     var gotLog = false;
 
+    // ignoring to align with shelf logger
+    // ignore: avoid_positional_boolean_parameters
     void logger(String msg, bool isError) {
       expect(gotLog, isFalse);
       gotLog = true;

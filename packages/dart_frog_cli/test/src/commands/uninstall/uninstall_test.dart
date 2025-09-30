@@ -19,7 +19,7 @@ void main() {
     test('prints a link to the documentation section', () async {
       final result = await command.run();
       final docs = link(
-        uri: Uri.parse('https://dartfrog.vgv.dev/docs/overview#uninstalling-'),
+        uri: Uri.parse('https://dart-frog.dev/getting-started#uninstalling'),
       );
       final message =
           'For instructions on how to uninstall $packageName completely, '

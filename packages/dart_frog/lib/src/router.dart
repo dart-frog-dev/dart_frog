@@ -36,8 +36,14 @@ class Router {
   ///
   /// The [notFoundHandler] will be invoked for requests where no matching route
   /// was found. By default, a simple 404 response will be used.
-  Router({Handler notFoundHandler = _defaultNotFound})
-      : _notFoundHandler = notFoundHandler;
+  ///
+  /// The [methodNotAllowedHandler] will be invoked for requests where the HTTP
+  /// method is not allowed. By default, a simple 405 response will be used.
+  Router({
+    Handler notFoundHandler = _defaultNotFound,
+    Handler methodNotAllowedHandler = _defaultMethodNotAllowed,
+  })  : _notFoundHandler = notFoundHandler,
+        _methodNotAllowedHandler = methodNotAllowedHandler;
 
   /// Name of the parameter used for matching
   /// the rest of the path in a mounted route.
@@ -48,6 +54,7 @@ class Router {
 
   final List<RouterEntry> _routes = [];
   final Handler _notFoundHandler;
+  final Handler _methodNotAllowedHandler;
 
   /// Add [handler] for [verb] requests to [route].
   ///
@@ -167,8 +174,14 @@ class Router {
   /// This method allows a Router instance to be a [Handler].
   Future<Response> call(RequestContext context) async {
     for (final route in _routes) {
-      if (route.verb != context.request.method.value.toUpperCase() &&
-          route.verb != 'ALL') {
+      final HttpMethod method;
+      try {
+        method = context.request.method;
+      } on UnsupportedHttpMethodException {
+        return _methodNotAllowedHandler(context);
+      }
+
+      if (route.verb != method.value.toUpperCase() && route.verb != 'ALL') {
         continue;
       }
       final params = route.match('/${context.request._request.url.path}');
@@ -211,11 +224,22 @@ class Router {
 
   static Response _defaultNotFound(RequestContext context) => routeNotFound;
 
+  static Response _defaultMethodNotAllowed(RequestContext context) {
+    return methodNotAllowed;
+  }
+
   /// Sentinel [Response] object indicating that no matching route was found.
   ///
   /// This is the default response value from a [Router] created without a
   /// `notFoundHandler`, when no routes matches the incoming request.
   static final Response routeNotFound = _RouteNotFoundResponse();
+
+  /// Sentinel [Response] object indicating that the http method
+  /// was not allowed for the requested route.
+  ///
+  /// This is the default response value from a [Router] created without a
+  /// `methodNotAllowedHandler`, when an unsupported http method is requested.
+  static final Response methodNotAllowed = _MethodNotAllowedResponse();
 }
 
 /// Extends [Response] to allow it to be used multiple times in the
@@ -224,6 +248,29 @@ class _RouteNotFoundResponse extends Response {
   _RouteNotFoundResponse()
       : super(statusCode: HttpStatus.notFound, body: _message);
   static const _message = 'Route not found';
+  static final _messageBytes = utf8.encode(_message);
+
+  @override
+  shelf.Response get _response => super._response.change(body: _messageBytes);
+
+  @override
+  Stream<List<int>> bytes() => Stream<List<int>>.value(_messageBytes);
+
+  @override
+  Future<String> body() async => _message;
+
+  @override
+  Response copyWith({Map<String, Object?>? headers, dynamic body}) {
+    return super.copyWith(headers: headers, body: body ?? _message);
+  }
+}
+
+/// Extends [Response] to allow it to be used multiple times in the
+/// actual content being served.
+class _MethodNotAllowedResponse extends Response {
+  _MethodNotAllowedResponse()
+      : super(statusCode: HttpStatus.methodNotAllowed, body: _message);
+  static const _message = 'Method not allowed';
   static final _messageBytes = utf8.encode(_message);
 
   @override
@@ -275,6 +322,7 @@ class RouterEntry {
     final params = <String>[];
     var pattern = '';
     for (final m in _parser.allMatches(route)) {
+      // avoiding string_buffers to align with shelf_router
       // ignore: use_string_buffers
       pattern += RegExp.escape(m[1]!);
       if (m[2] != null) {
@@ -371,6 +419,7 @@ class RouterEntry {
       }
 
       if (_handler is Handler || _params.isEmpty) {
+        // ignoring to align with shelf_router
         // ignore: avoid_dynamic_calls
         return await _handler(updatedContext) as Response;
       }

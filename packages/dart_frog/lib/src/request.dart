@@ -1,5 +1,22 @@
 part of '_internal.dart';
 
+/// {@template unsupported_http_method_exception}
+/// Exception thrown when an unsupported HTTP method is used.
+/// {@endtemplate}
+class UnsupportedHttpMethodException implements Exception {
+  /// {@macro unsupported_http_method_exception}
+  const UnsupportedHttpMethodException(this.method);
+
+  /// The unsupported http method.
+  final String method;
+
+  @override
+  String toString() => '''
+Unsupported HTTP method: $method. 
+The following methods are supported:
+${HttpMethod.values.map((m) => m.value.toUpperCase()).join(', ')}.''';
+}
+
 /// {@template request}
 /// An HTTP request.
 /// {@endtemplate}
@@ -112,8 +129,17 @@ class Request {
 
   /// The [HttpMethod] associated with the request.
   HttpMethod get method {
-    return HttpMethod.values.firstWhere((m) => m.value == _request.method);
+    return HttpMethod.values.firstWhere(
+      (m) => m.value == _request.method,
+      orElse: () => throw UnsupportedHttpMethodException(_request.method),
+    );
   }
+
+  /// Returns the url parameters captured by the [Router].
+  /// Returns an empty map if no parameters are captured.
+  ///
+  /// The returned map is unmodifiable.
+  Map<String, String> get params => _request.params;
 
   /// Returns a [Stream] representing the body.
   Stream<List<int>> bytes() => _request.read();

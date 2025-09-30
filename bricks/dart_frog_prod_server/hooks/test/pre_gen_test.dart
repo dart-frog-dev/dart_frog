@@ -9,6 +9,8 @@ import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
 
 import '../pre_gen.dart' as pre_gen;
+import 'fixtures/package_configs.dart';
+import 'fixtures/package_graphs.dart';
 import 'pubspec_locks.dart';
 
 class _FakeHookContext extends Fake implements HookContext {
@@ -161,49 +163,298 @@ void main() {
       expect(exitCalls, equals([1]));
     });
 
-    test(
-      'works with external dependencies',
-      () async {
-        const configuration = RouteConfiguration(
-          middleware: [],
-          directories: [],
-          routes: [],
-          rogueRoutes: [],
-          endpoints: {},
-        );
+    test('exits(1) when unable to determine workspace root', () async {
+      const configuration = RouteConfiguration(
+        middleware: [],
+        directories: [],
+        routes: [],
+        rogueRoutes: [],
+        endpoints: {},
+      );
 
-        final directory = Directory.systemTemp.createTempSync();
-        File(path.join(directory.path, 'pubspec.yaml')).writeAsStringSync(
-          '''
-name: example
-version: 0.1.0
+      final directory = Directory.systemTemp.createTempSync();
+      final server = Directory(
+        path.join(directory.path, 'server'),
+      )..createSync();
+      File(
+        path.join(server.path, 'pubspec.yaml'),
+      ).writeAsStringSync('''
+name: server
+description: A new Dart Frog application
+version: 1.0.0+1
+publish_to: none
+resolution: workspace
+
 environment:
-  sdk: ^2.17.0
-dependencies:
-  mason: any
-  foo:
-    path: ../../foo
-dev_dependencies:
-  test: any
-''',
-        );
-        File(path.join(directory.path, 'pubspec.lock')).writeAsStringSync(
-          fooPath,
-        );
-        final exitCalls = <int>[];
-        await pre_gen.preGen(
-          context,
-          buildConfiguration: (_) => configuration,
-          exit: exitCalls.add,
-          directory: directory,
-          runProcess: successRunProcess,
-          copyPath: (_, __) async {},
-        );
+  sdk: ^3.6.0
 
-        expect(exitCalls, isEmpty);
-        directory.delete(recursive: true).ignore();
-      },
-    );
+dependencies:
+  dart_frog: ^1.1.0
+  protocol: ^1.0.0
+''');
+      final exitCalls = <int>[];
+      await pre_gen.preGen(
+        context,
+        buildConfiguration: (_) => configuration,
+        exit: exitCalls.add,
+        directory: server,
+        runProcess: successRunProcess,
+        copyPath: (_, __) async {},
+      );
+
+      expect(exitCalls, equals([1]));
+      verify(
+        () => logger.err(
+          'Unable to determine workspace root for ${server.path}',
+        ),
+      ).called(1);
+      directory.delete(recursive: true).ignore();
+    });
+
+    test('exits(1) when unable to find package_config.json', () async {
+      const configuration = RouteConfiguration(
+        middleware: [],
+        directories: [],
+        routes: [],
+        rogueRoutes: [],
+        endpoints: {},
+      );
+
+      final directory = Directory.systemTemp.createTempSync();
+      File(
+        path.join(directory.path, 'pubspec.yaml'),
+      ).writeAsStringSync('''
+name: _
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+workspace:
+  - packages/client
+  - packages/protocol
+  - packages/models
+  - packages/server
+''');
+      final server = Directory(
+        path.join(directory.path, 'server'),
+      )..createSync();
+      File(
+        path.join(server.path, 'pubspec.yaml'),
+      ).writeAsStringSync('''
+name: server
+description: A new Dart Frog application
+version: 1.0.0+1
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  dart_frog: ^1.1.0
+  protocol: ^1.0.0
+''');
+      final exitCalls = <int>[];
+      await pre_gen.preGen(
+        context,
+        buildConfiguration: (_) => configuration,
+        exit: exitCalls.add,
+        directory: server,
+        runProcess: successRunProcess,
+        copyPath: (_, __) async {},
+      );
+
+      expect(exitCalls, equals([1]));
+      verify(
+        () => logger.err(
+          'Unable to find package_config.json for ${directory.path}',
+        ),
+      ).called(1);
+      directory.delete(recursive: true).ignore();
+    });
+
+    test('exits(1) when unable to find package_graph.json', () async {
+      const configuration = RouteConfiguration(
+        middleware: [],
+        directories: [],
+        routes: [],
+        rogueRoutes: [],
+        endpoints: {},
+      );
+
+      final directory = Directory.systemTemp.createTempSync();
+      File(
+        path.join(directory.path, '.dart_tool', 'package_config.json'),
+      )
+        ..createSync(recursive: true)
+        ..writeAsStringSync(packageConfigWithDirectAndTransitiveDependencies);
+      File(
+        path.join(directory.path, 'pubspec.yaml'),
+      ).writeAsStringSync('''
+name: _
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+workspace:
+  - packages/client
+  - packages/protocol
+  - packages/models
+  - packages/server
+''');
+      final server = Directory(
+        path.join(directory.path, 'server'),
+      )..createSync();
+      File(
+        path.join(server.path, 'pubspec.yaml'),
+      ).writeAsStringSync('''
+name: server
+description: A new Dart Frog application
+version: 1.0.0+1
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  dart_frog: ^1.1.0
+  protocol: ^1.0.0
+''');
+      final exitCalls = <int>[];
+      await pre_gen.preGen(
+        context,
+        buildConfiguration: (_) => configuration,
+        exit: exitCalls.add,
+        directory: server,
+        runProcess: successRunProcess,
+        copyPath: (_, __) async {},
+      );
+
+      expect(exitCalls, equals([1]));
+      verify(
+        () => logger.err(
+          'Unable to find package_graph.json for ${directory.path}',
+        ),
+      ).called(1);
+      directory.delete(recursive: true).ignore();
+    });
+
+    test('works with workspaces', () async {
+      const configuration = RouteConfiguration(
+        middleware: [],
+        directories: [],
+        routes: [],
+        rogueRoutes: [],
+        endpoints: {},
+      );
+
+      final directory = Directory.systemTemp.createTempSync();
+      File(
+        path.join(directory.path, '.dart_tool', 'package_config.json'),
+      )
+        ..createSync(recursive: true)
+        ..writeAsStringSync(packageConfigWithDirectAndTransitiveDependencies);
+      File(
+        path.join(directory.path, '.dart_tool', 'package_graph.json'),
+      )
+        ..createSync(recursive: true)
+        ..writeAsStringSync(packageGraphWithDirectAndTransitiveDeps);
+      File(
+        path.join(directory.path, 'pubspec.yaml'),
+      ).writeAsStringSync('''
+name: _
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+workspace:
+  - packages/client
+  - packages/protocol
+  - packages/models
+  - packages/server
+''');
+      final server = Directory(
+        path.join(directory.path, 'server'),
+      )..createSync();
+      File(
+        path.join(server.path, 'pubspec.yaml'),
+      ).writeAsStringSync('''
+name: server
+description: A new Dart Frog application
+version: 1.0.0+1
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  dart_frog: ^1.1.0
+  protocol: ^1.0.0
+''');
+      File(
+        path.join(server.path, 'pubspec.lock'),
+      ).writeAsStringSync('''
+# Generated by pub
+# See https://dart.dev/tools/pub/glossary#lockfile
+packages:
+  _fe_analyzer_shared:
+    dependency: transitive
+    description:
+      name: _fe_analyzer_shared
+      sha256: da0d9209ca76bde579f2da330aeb9df62b6319c834fa7baae052021b0462401f
+      url: "https://pub.dev"
+    source: hosted
+    version: "85.0.0"
+''');
+      final exitCalls = <int>[];
+      await pre_gen.preGen(
+        context,
+        buildConfiguration: (_) => configuration,
+        exit: exitCalls.add,
+        directory: server,
+        runProcess: successRunProcess,
+        copyPath: (_, __) async {},
+      );
+
+      expect(exitCalls, isEmpty);
+      directory.delete(recursive: true).ignore();
+    });
+
+    test('works with external dependencies', () async {
+      const configuration = RouteConfiguration(
+        middleware: [],
+        directories: [],
+        routes: [],
+        rogueRoutes: [],
+        endpoints: {},
+      );
+
+      final directory = Directory.systemTemp.createTempSync();
+      File(
+        path.join(directory.path, 'pubspec.lock'),
+      ).writeAsStringSync(fooPath);
+      final exitCalls = <int>[];
+      await pre_gen.preGen(
+        context,
+        buildConfiguration: (_) => configuration,
+        exit: exitCalls.add,
+        directory: directory,
+        runProcess: successRunProcess,
+        copyPath: (from, to) async {
+          File(
+            path.join(to, 'pubspec_overrides.yaml'),
+          ).createSync(recursive: true);
+        },
+      );
+
+      expect(exitCalls, isEmpty);
+      directory.delete(recursive: true).ignore();
+    });
 
     test('retains invokeCustomEntrypoint (true)', () async {
       const configuration = RouteConfiguration(

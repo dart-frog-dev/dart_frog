@@ -152,9 +152,11 @@ void main() {
         ).called(1);
 
         verify(() {
-          progress.complete('Running on ${link(
-            uri: Uri.parse('http://localhost:8080'),
-          )}');
+          progress.complete(
+            'Running on ${link(
+              uri: Uri.parse('http://localhost:8080'),
+            )}',
+          );
         }).called(1);
       });
 
@@ -266,9 +268,11 @@ void main() {
         ).called(1);
 
         verify(() {
-          progress.complete('Running on ${link(
-            uri: Uri.parse('http://localhost:4242'),
-          )}');
+          progress.complete(
+            'Running on ${link(
+              uri: Uri.parse('http://localhost:4242'),
+            )}',
+          );
         }).called(1);
       });
 
@@ -320,9 +324,11 @@ void main() {
         ).called(1);
 
         verify(() {
-          progress.complete('Running on ${link(
-            uri: Uri.parse('http://192.162.1.2:4242'),
-          )}');
+          progress.complete(
+            'Running on ${link(
+              uri: Uri.parse('http://192.162.1.2:4242'),
+            )}',
+          );
         }).called(1);
       });
 
@@ -565,8 +571,9 @@ void main() {
         when(() => process.stdout).thenAnswer(
           (_) => Stream.value(utf8.encode('[hotreload] hot reload enabled.')),
         );
-        when(() => directoryWatcher.events)
-            .thenAnswer((_) => controller.stream);
+        when(
+          () => directoryWatcher.events,
+        ).thenAnswer((_) => controller.stream);
         await expectLater(devServerRunner.start(), completes);
 
         expect(devServerRunner.isWatching, isTrue);
@@ -592,8 +599,9 @@ void main() {
             utf8.encode('[hotreload] hot reload enabled.'),
           ),
         );
-        when(() => directoryWatcher.events)
-            .thenAnswer((_) => controller.stream);
+        when(
+          () => directoryWatcher.events,
+        ).thenAnswer((_) => controller.stream);
         await expectLater(devServerRunner.start(), completes);
 
         expect(devServerRunner.isWatching, isTrue);
@@ -620,8 +628,9 @@ runs codegen with debounce when changes are made to the public or routes directo
           when(() => process.stdout).thenAnswer(
             (_) => Stream.value(utf8.encode('[hotreload] hot reload enabled.')),
           );
-          when(() => directoryWatcher.events)
-              .thenAnswer((_) => controller.stream);
+          when(
+            () => directoryWatcher.events,
+          ).thenAnswer((_) => controller.stream);
 
           await expectLater(devServerRunner.start(), completes);
 
@@ -699,8 +708,9 @@ runs codegen with debounce when changes are made to the public or routes directo
         when(() => process.stdout).thenAnswer(
           (_) => Stream.value(utf8.encode('[hotreload] hot reload enabled.')),
         );
-        when(() => directoryWatcher.events)
-            .thenAnswer((_) => controller.stream);
+        when(
+          () => directoryWatcher.events,
+        ).thenAnswer((_) => controller.stream);
 
         await expectLater(devServerRunner.start(), completes);
 
@@ -737,8 +747,9 @@ runs codegen with debounce when changes are made to the public or routes directo
           (_) => Stream.value(utf8.encode('[hotreload] hot reload enabled.')),
         );
 
-        when(() => directoryWatcher.events)
-            .thenAnswer((_) => controller.stream);
+        when(
+          () => directoryWatcher.events,
+        ).thenAnswer((_) => controller.stream);
 
         await expectLater(devServerRunner.start(), completes);
 
@@ -865,8 +876,9 @@ runs codegen with debounce when changes are made to the public or routes directo
           when(() => process.exitCode).thenAnswer((_) => completer.future);
 
           final controller = StreamController<WatchEvent>();
-          when(() => directoryWatcher.events)
-              .thenAnswer((_) => controller.stream);
+          when(
+            () => directoryWatcher.events,
+          ).thenAnswer((_) => controller.stream);
 
           await expectLater(devServerRunner.start(), completes);
 
@@ -891,8 +903,9 @@ runs codegen with debounce when changes are made to the public or routes directo
           when(() => process.exitCode).thenAnswer((_) => completer.future);
 
           final controller = StreamController<WatchEvent>();
-          when(() => directoryWatcher.events)
-              .thenAnswer((_) => controller.stream);
+          when(
+            () => directoryWatcher.events,
+          ).thenAnswer((_) => controller.stream);
 
           await expectLater(devServerRunner.start(), completes);
           await controller.close();

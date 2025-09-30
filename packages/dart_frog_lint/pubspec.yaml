@@ -1,0 +1,15 @@
+name: dart_frog_lint
+description: A collection of lint rules built specifically for the Dart Frog backend framework.
+version: 0.1.1
+homepage: https://dart-frog.dev
+repository: https://github.com/dart-frog-dev/dart_frog
+issue_tracker: https://github.com/dart-frog-dev/dart_frog/issues
+documentation: https://dart-frog.dev/getting-started
+topics: [lint, server, backend, shelf, dart-frog]
+
+screenshots:
+  - description: Dart Frog logo.
+    path: assets/logo.png
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"

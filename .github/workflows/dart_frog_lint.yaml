@@ -1,0 +1,30 @@
+name: dart_frog_lint
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/dart_frog_lint.yaml"
+      - "packages/dart_frog_lint/lib/**"
+      - "packages/dart_frog_lint/pubspec.yaml"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/dart_frog_lint.yaml"
+      - "packages/dart_frog_lint/lib/**"
+      - "packages/dart_frog_lint/pubspec.yaml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v5
+
+      - name: 🎯 Build
+        uses: ./.github/actions/dart_package
+        with:
+          analyze_directories: lib
+          run_tests: false # there aren't any tests since this is just a single yaml file.
+          working_directory: packages/dart_frog_lint

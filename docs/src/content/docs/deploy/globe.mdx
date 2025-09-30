@@ -1,0 +1,60 @@
+---
+title: 🌐 Globe
+url: /globe
+description: How to deploy a Dart Frog application to Globe.
+sidebar:
+  order: 5
+---
+
+[Globe](https://globe.dev/) is a deployment platform for Dart developers, that
+allows you to deploy your Dart Frog backend to a globally distributed service
+without the need to manage servers, networks, or scaling. They provides a
+seamless developer experience for deploying and managing Dart Frog projects.
+
+## Prerequisites
+
+Before you get started, if you don't already have a
+[free Globe Account](https://globe.dev/login), you'll need to create one.
+
+:::note
+
+Globe is currently in public preview.
+
+:::
+
+Additionally, you'll need the
+[`globe` command line interface (CLI)](https://docs.globe.dev/cli#installation)
+installed on your computer.
+
+Finally, you'll want to log in to `globe` by running:
+
+```bash
+globe login
+```
+
+## Deploying
+
+### 1. Deploy your API for production
+
+In order to deploy, you can simply run:
+
+```bash
+globe deploy --prod
+```
+
+### 2. Enjoy your API on Globe!
+
+Congratulations 🎉, you have successfully built and deployed your API on Globe.
+You can now access your API at the Deployment URL that is available through the
+Globe dashboard.
+
+## Templates
+
+Globe also provides templates to start your next project quickly with Dart Frog,
+[check them out in the Globe templates website](https://globe.dev/templates?tag=dart-frog).
+
+## Additional Resources
+
+- [Globe documentation](https://docs.globe.dev/)
+- [`globe deploy` documentation](https://docs.globe.dev/cli/commands/deploy)
+- [Globe's Dart Frog documentation](https://docs.globe.dev/frameworks/dart-frog)

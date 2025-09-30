@@ -1,3 +1,4 @@
+// ignoring for testing purposes
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:io';
@@ -55,7 +56,9 @@ void main() {
     tearDown(() {
       try {
         tempDir.deleteSync(recursive: true);
-      } catch (_) {}
+      } on Exception {
+        // no-op
+      }
     });
 
     test('throws when a pubspec.yaml does not exist', () {

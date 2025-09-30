@@ -8,9 +8,7 @@ import 'package:mason/mason.dart' hide packageVersion;
 /// {@endtemplate}
 class UninstallCommand extends Command<int> {
   /// {@macro uninstall_command}
-  UninstallCommand({
-    required Logger logger,
-  }) : _logger = logger;
+  UninstallCommand({required Logger logger}) : _logger = logger;
 
   final Logger _logger;
 
@@ -23,7 +21,7 @@ class UninstallCommand extends Command<int> {
   @override
   Future<int> run() async {
     final docs = link(
-      uri: Uri.parse('https://dartfrog.vgv.dev/docs/overview#uninstalling-'),
+      uri: Uri.parse('https://dart-frog.dev/getting-started#uninstalling'),
     );
     _logger.info(
       'For instructions on how to uninstall $packageName completely, check out:'

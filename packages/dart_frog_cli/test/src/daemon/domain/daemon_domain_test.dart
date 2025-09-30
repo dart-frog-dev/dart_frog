@@ -70,8 +70,9 @@ void main() {
       test('kills the daemon and sends goodbye', () async {
         final domain = DaemonDomain(daemonServer, processId: 42);
 
-        when(() => daemonServer.kill(ExitCode.success))
-            .thenAnswer((_) async {});
+        when(
+          () => daemonServer.kill(ExitCode.success),
+        ).thenAnswer((_) async {});
 
         final response = await domain.handleRequest(
           const DaemonRequest(

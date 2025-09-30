@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:dart_frog/dart_frog.dart';
+import 'package:dart_frog/src/_internal.dart';
 import 'package:dart_frog/src/body_parsers/body_parsers.dart';
 import 'package:test/test.dart';
 
@@ -43,6 +45,20 @@ void main() {
       expect(request.bytes(), emits(utf8.encode(body)));
     });
 
+    test('throw exception when method is unsupported', () {
+      final request = Request('FOO', localhost);
+      expect(
+        () => request.method,
+        throwsA(
+          isA<UnsupportedHttpMethodException>()
+              .having((e) => e.toString(), 'toString', '''
+Unsupported HTTP method: FOO. 
+The following methods are supported:
+${HttpMethod.values.map((m) => m.value.toUpperCase()).join(', ')}.'''),
+        ),
+      );
+    });
+
     test('throws exception when unable to read body', () async {
       final exception = Exception('oops');
       final body = Stream<Object>.error(exception);
@@ -62,6 +78,14 @@ void main() {
       const headers = <String, String>{'foo': 'bar'};
       final request = Request('GET', localhost, headers: headers);
       expect(request.headers['foo'], equals(headers['foo']));
+    });
+
+    test('has correct params (empty)', () {
+      final request = Request('GET', localhost);
+      expect(
+        request.params,
+        equals(UnmodifiableMapView<String, String>(const {})),
+      );
     });
 
     test('body can be read multiple times (sync)', () {

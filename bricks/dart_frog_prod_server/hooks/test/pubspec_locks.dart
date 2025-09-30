@@ -1,6 +1,3 @@
-/// Collection of `pubspec.lock` files used as fixtures during testing.
-library pubspec_locks;
-
 /// An artificially crafted `pubspec.lock` file with:
 ///
 /// * A transitive dependency.

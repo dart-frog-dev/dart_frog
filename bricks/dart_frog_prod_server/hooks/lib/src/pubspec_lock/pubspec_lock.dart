@@ -1,10 +1,3 @@
-/// A simple parser for pubspec.lock files.
-///
-/// This is used by the bundling process to check for those dependencies that
-/// are external path dependencies. Hence, it is not a complete parser, it only
-/// parses the information that is needed for the bundling process.
-library pubspec_lock;
-
 import 'dart:collection';
 
 import 'package:equatable/equatable.dart';
@@ -35,6 +28,8 @@ class PubspecLock {
     late final YamlMap yaml;
     try {
       yaml = loadYaml(content) as YamlMap;
+      // ignoring for backward compatibility
+      // ignore: avoid_catches_without_on_clauses
     } catch (_) {
       throw const PubspecLockParseException();
     }
@@ -53,6 +48,8 @@ class PubspecLock {
           data: entry.value as YamlMap,
         );
         parsedPackages.add(package);
+        // ignoring for backward compatibility
+        // ignore: avoid_catches_without_on_clauses
       } catch (_) {
         // Ignore those packages that for some reason cannot be parsed.
       }

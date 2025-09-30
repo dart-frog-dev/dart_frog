@@ -29,8 +29,9 @@ void main() {
       watcherController.close();
     });
 
-    when(() => directoryWatcher.events)
-        .thenAnswer((_) => watcherController.stream);
+    when(
+      () => directoryWatcher.events,
+    ).thenAnswer((_) => watcherController.stream);
 
     routeConfigurationWatcher = RouteConfigurationWatcher(
       logger: logger,

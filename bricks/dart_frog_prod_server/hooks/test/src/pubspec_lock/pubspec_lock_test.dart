@@ -1,3 +1,4 @@
+// ignoring for testing purposes
 // ignore_for_file: prefer_const_constructors
 
 import 'package:dart_frog_prod_server_hooks/src/pubspec_lock/pubspec_lock.dart';
@@ -306,12 +307,10 @@ packages:
     not_dependency: "bad"
 sdks:
   dart: ">=3.1.0 <4.0.0"
-
 ''';
 
 /// A valid pubspec lock file with no packages.
 const _emptyPubspecLockContent = '''
 sdks:
   dart: ">=3.1.0 <4.0.0"
-
 ''';

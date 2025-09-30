@@ -68,8 +68,9 @@ void main() {
       )
         ..testArgResults = argResults
         ..testCwd = cwd;
-      when(() => builder.build())
-          .thenAnswer((_) => Future.value(ExitCode.tempFail));
+      when(
+        () => builder.build(),
+      ).thenAnswer((_) => Future.value(ExitCode.tempFail));
 
       await expectLater(command.run(), completion(ExitCode.tempFail.code));
 

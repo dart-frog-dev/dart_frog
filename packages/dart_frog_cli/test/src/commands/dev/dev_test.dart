@@ -34,8 +34,9 @@ void main() {
       stdin = _MockStdin();
 
       when<dynamic>(() => argResults['port']).thenReturn('8080');
-      when<dynamic>(() => argResults['dart-vm-service-port'])
-          .thenReturn('8181');
+      when<dynamic>(
+        () => argResults['dart-vm-service-port'],
+      ).thenReturn('8181');
       when(() => argResults.rest).thenReturn(['--enable-experiment=macros']);
       when(() => stdin.hasTerminal).thenReturn(false);
     });

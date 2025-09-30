@@ -84,17 +84,17 @@ void main() {
           });
 
           fail('exception not thrown');
-        } catch (e) {
-          expect(e.toString(), contains('Could not start the VM service:'));
+        } on String catch (e) {
+          expect(e, contains('Could not start the VM service:'));
 
           expect(
-            e.toString(),
+            e,
             contains(
               'DartDevelopmentServiceException: Failed to create server socket',
             ),
           );
 
-          expect(e.toString(), contains('127.0.0.1:8181'));
+          expect(e, contains('127.0.0.1:8181'));
         }
       },
     );
@@ -131,6 +131,6 @@ extension<T> on Future<T> {
   Future<void> ignoreErrors() async {
     try {
       await this;
-    } catch (_) {}
+    } on Exception catch (_) {}
   }
 }

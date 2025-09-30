@@ -1,4 +1,3 @@
-// ignore_for_file: no_adjacent_strings_in_list
 import 'dart:async';
 import 'dart:io';
 
@@ -20,6 +19,8 @@ class _MockProcessSignal extends Mock implements ProcessSignal {}
 class _MockStdin extends Mock implements Stdin {}
 
 const expectedUsage = [
+  // ignoring for ease of testing usage
+  // ignore: no_adjacent_strings_in_list
   'A fast, minimalistic backend framework for Dart.\n'
       '\n'
       'Usage: dart_frog <command> [arguments]\n'
@@ -39,7 +40,7 @@ const expectedUsage = [
       '  uninstall   Explains how to uninstall the Dart Frog CLI.\n'
       '  update      Update the Dart Frog CLI.\n'
       '\n'
-      'Run "dart_frog help <command>" for more information about a command.'
+      'Run "dart_frog help <command>" for more information about a command.',
 ];
 
 const latestVersion = '0.0.0';
@@ -47,7 +48,7 @@ final changelogLink = lightCyan.wrap(
   styleUnderlined.wrap(
     link(
       uri: Uri.parse(
-        'https://github.com/verygoodopensource/dart_frog/releases/tag/dart_frog_cli-v$latestVersion',
+        'https://github.com/dart-frog-dev/dart_frog/releases/tag/dart_frog_cli-v$latestVersion',
       ),
     ),
   ),

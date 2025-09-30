@@ -57,7 +57,7 @@ export enum DartFrogDaemonEventEmitterTypes {
  * The Dart Frog daemon is a long-running process that is responsible for
  * managing a single or multiple Dart Frog projects simultaneously.
  *
- * @see {@link https://dartfrog.vgv.dev/docs/advanced/daemon Dart Frog daemon documentation }
+ * @see {@link https://dart-frog.dev/advanced/daemon Dart Frog daemon documentation }
  */
 export class DartFrogDaemon {
   private static _instance: DartFrogDaemon;

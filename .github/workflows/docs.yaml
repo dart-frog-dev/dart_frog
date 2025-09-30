@@ -1,38 +1,48 @@
 name: docs
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   pull_request:
     paths:
       - ".github/workflows/docs.yaml"
       - "docs/**"
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: docs
+    name: 🌐 Site Build
 
     steps:
       - name: 📚 Git Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
-      - name: ⚙️ Setup Node
-        uses: actions/setup-node@v4
+      - name: 📦 Build Site
+        uses: ./.github/actions/astro_site
         with:
-          node-version: 18.x
-          cache: yarn
-          cache-dependency-path: docs/yarn.lock
+          working_directory: ./docs
 
-      - name: 📦 Install Dependencies
-        run: yarn install --frozen-lockfile
+  deploy:
+    needs: build
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
 
-      - name: ✨ Check Format
-        run: yarn run format:check
+    runs-on: ubuntu-latest
 
-      - name: 🧹 Lint
-        run: yarn run lint
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
-      - name: 👷 Build website
-        run: yarn build
+    steps:
+      - name: 🚀 Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

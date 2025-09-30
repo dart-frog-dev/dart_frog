@@ -14,8 +14,9 @@ Future<void> dartPubGet(
   required String workingDirectory,
   required ProcessRunner runProcess,
   required void Function(int exitCode) exit,
+  String message = 'Installing dependencies',
 }) async {
-  final progress = context.logger.progress('Installing dependencies');
+  final progress = context.logger.progress(message);
   try {
     final result = await runProcess(
       'dart',

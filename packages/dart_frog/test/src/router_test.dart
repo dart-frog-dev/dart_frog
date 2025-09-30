@@ -16,6 +16,7 @@
 @TestOn('vm')
 library;
 
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
@@ -90,6 +91,13 @@ void main() {
     var response = await http.get(Uri.parse('${server.url}/wrong-path'));
     expect(response.statusCode, equals(HttpStatus.notFound));
     expect(response.body, equals('Route not found'));
+
+    final streamedResponse = await http.Client().send(
+      http.Request('FOO', Uri.parse('${server.url}/hello/world')),
+    );
+    response = await http.Response.fromStream(streamedResponse);
+    expect(response.statusCode, equals(HttpStatus.methodNotAllowed));
+    expect(response.body, equals('Method not allowed'));
 
     response = await http.get(Uri.parse('${server.url}/hello/world'));
     expect(response.statusCode, equals(HttpStatus.ok));
@@ -284,10 +292,90 @@ void main() {
     expect(response.body, equals('hello'));
   });
 
+  test('request exposes captured params (empty)', () async {
+    final context = _MockRequestContext();
+    final app = Router()
+      ..get('/hello', (RequestContext context) {
+        expect(
+          context.request.params,
+          equals(UnmodifiableMapView<String, String>(const {})),
+        );
+        return Response(body: 'hello world');
+      });
+
+    server.mount((request) async {
+      when(() => context.request).thenReturn(
+        Request(request.method, request.requestedUri),
+      );
+      final response = await app(context);
+      final body = await response.body();
+      return shelf.Response(response.statusCode, body: body);
+    });
+
+    final response = await http.get(Uri.parse('${server.url}/hello'));
+    expect(response.statusCode, equals(HttpStatus.ok));
+    expect(response.body, equals('hello world'));
+  });
+
+  test('request exposes captured params (single)', () async {
+    final context = _MockRequestContext();
+    final app = Router()
+      ..get('/users/<id>/greet', (RequestContext context, String id) {
+        expect(
+          context.request.params,
+          equals(UnmodifiableMapView<String, String>({'id': id})),
+        );
+        return Response(body: 'hello $id');
+      });
+
+    server.mount((request) async {
+      when(() => context.request).thenReturn(
+        Request(request.method, request.requestedUri),
+      );
+      final response = await app(context);
+      final body = await response.body();
+      return shelf.Response(response.statusCode, body: body);
+    });
+
+    final response = await http.get(Uri.parse('${server.url}/users/42/greet'));
+    expect(response.statusCode, equals(HttpStatus.ok));
+    expect(response.body, equals('hello 42'));
+  });
+
+  test('request exposes captured params (multiple)', () async {
+    final context = _MockRequestContext();
+    final app = Router()
+      ..get('/users/<id>/greet/<name>', (
+        RequestContext context,
+        String id,
+        String name,
+      ) {
+        expect(
+          context.request.params,
+          equals(UnmodifiableMapView<String, String>({'id': id, 'name': name})),
+        );
+        return Response(body: 'hello $name ($id)');
+      });
+
+    server.mount((request) async {
+      when(() => context.request).thenReturn(
+        Request(request.method, request.requestedUri),
+      );
+      final response = await app(context);
+      final body = await response.body();
+      return shelf.Response(response.statusCode, body: body);
+    });
+
+    final response =
+        await http.get(Uri.parse('${server.url}/users/42/greet/felangel'));
+    expect(response.statusCode, equals(HttpStatus.ok));
+    expect(response.body, equals('hello felangel (42)'));
+  });
+
   test('mount(Router)', () async {
     final context = _MockRequestContext();
     final api = Router()
-      ..all('/user/<user>/info', (RequestContext request, String user) {
+      ..all('/user/<user>/info', (RequestContext context, String user) {
         return Response(body: 'Hello $user');
       });
 
@@ -443,6 +531,26 @@ void main() {
     final response = Router.routeNotFound.copyWith(headers: {'foo': 'bar'});
     expect(response.headers['foo'], equals('bar'));
     expect(response.body(), completion(equals('Route not found')));
+  });
+
+  test('can call Router.methodNotAllowed.body() multiple times', () async {
+    final b1 = await Router.methodNotAllowed.body();
+    expect(b1, 'Method not allowed');
+    final b2 = await Router.methodNotAllowed.body();
+    expect(b2, b1);
+  });
+
+  test('can call Router.methodNotAllowed.bytes() multiple times', () async {
+    final b1 = Router.methodNotAllowed.bytes();
+    expect(b1, emits(utf8.encode('Method not allowed')));
+    final b2 = Router.methodNotAllowed.bytes();
+    expect(b2, emits(utf8.encode('Method not allowed')));
+  });
+
+  test('can call Router.methodNotAllowed.copyWith()', () async {
+    final response = Router.methodNotAllowed.copyWith(headers: {'foo': 'bar'});
+    expect(response.headers['foo'], equals('bar'));
+    expect(response.body(), completion(equals('Method not allowed')));
   });
 
   test('can mount route without params', () async {

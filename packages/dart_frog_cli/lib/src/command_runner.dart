@@ -73,7 +73,7 @@ class DartFrogCommandRunner extends CompletionCommandRunner<int> {
     late final int exitCode;
     try {
       exitCode = await runCommand(argResults) ?? ExitCode.success.code;
-    } catch (error) {
+    } on Exception catch (error) {
       _logger.err('$error');
       exitCode = ExitCode.software.code;
     }
@@ -109,7 +109,7 @@ class DartFrogCommandRunner extends CompletionCommandRunner<int> {
           styleUnderlined.wrap(
             link(
               uri: Uri.parse(
-                'https://github.com/verygoodopensource/dart_frog/releases/tag/dart_frog_cli-v$latestVersion',
+                'https://github.com/dart-frog-dev/dart_frog/releases/tag/dart_frog_cli-v$latestVersion',
               ),
             ),
           ),
@@ -123,7 +123,7 @@ ${lightYellow.wrap('Changelog:')} $changelogLink
 Run ${lightCyan.wrap('$executableName update')} to update''',
           );
       }
-    } catch (error, stackTrace) {
+    } on Exception catch (error, stackTrace) {
       _logger.detail(
         '[updater] update check error.\n$error\n$stackTrace',
       );

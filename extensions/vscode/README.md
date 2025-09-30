@@ -1,18 +1,18 @@
-[![Dart Frog Logo][logo_black]][dart_frog_link_light]
+[![Dart Frog Logo][logo_black]][dart_frog_link]
 
-> ✏️ Note: The extension is currently in the early stages, if you experience issues or have a recommendation we are eager to hear from you [here](https://github.com/VeryGoodOpenSource/dart_frog/issues/new/choose)!
+> ✏️ Note: The extension is currently in the early stages, if you experience issues or have a recommendation we are eager to hear from you [here](https://github.com/dart-frog-dev/dart_frog/issues/new/choose)!
 
-This is the [Dart Frog](https://dartfrog.vgv.dev/) [VS Code](https://code.visualstudio.com/) extension, which provides tools for effectively managing Dart Frog projects.
+This is the [Dart Frog](https://dart-frog.dev/) [VSCode](https://code.visualstudio.com/) extension, which provides tools for effectively managing Dart Frog projects.
 
-Developed with 💙 by [Very Good Ventures][very_good_ventures_link] 🦄
+[Originally developed][credits_link] by [Very Good Ventures][very_good_ventures_link] 🦄
 
 ## Installation
 
-Dart Frog can be installed from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=VeryGoodVentures.dart-frog) or by [searching within VS Code](https://code.visualstudio.com/docs/editor/extension-gallery#_search-for-an-extension).
+Dart Frog can be installed from the [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=DartFrog.dart-frog-dev) or by [searching within VSCode](https://code.visualstudio.com/docs/editor/extension-gallery#_search-for-an-extension).
 
 ## Demonstration
 
-![demonstration](https://raw.githubusercontent.com/VeryGoodOpenSource/dart_frog/main/extensions/vscode/assets/demonstration.gif)
+![demonstration](https://raw.githubusercontent.com/dart-frog-dev/dart_frog/main/extensions/vscode/assets/demonstration.gif)
 
 ## Commands
 
@@ -35,9 +35,10 @@ Dart Frog can be installed from the [VS Code Marketplace](https://marketplace.vi
 | -------------------------- | --------------------------------------------------- | ------- | ------- |
 | `dart-frog.enableCodeLens` | Whether or not to enable [CodeLens][code_lens_link] | Boolean | True    |
 
-[ci_link]: https://github.com/VeryGoodOpenSource/dart_frog/actions/workflows/main.yaml
-[dart_frog_link_light]: https://github.com/verygoodopensource/dart_frog
+[ci_link]: https://github.com/dart-frog-dev/dart_frog/actions/workflows/main.yaml
+[credits_link]: https://github.com/dart-frog-dev/dart_frog/blob/main/CREDITS.md#acknowledgments
+[dart_frog_link]: https://github.com/dart-frog-dev/dart_frog
 [license_link]: https://opensource.org/licenses/MIT
-[logo_black]: https://raw.githubusercontent.com/VeryGoodOpenSource/dart_frog/main/assets/dart_frog_logo_black.png
+[logo_black]: https://raw.githubusercontent.com/dart-frog-dev/dart_frog/main/assets/dart_frog_logo_black.png
 [very_good_ventures_link]: https://verygood.ventures
 [code_lens_link]: https://code.visualstudio.com/blogs/2017/02/12/code-lens-roundup

@@ -26,10 +26,10 @@ jobs:
 
     steps:
       - name: 📚 Git Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 🎯 Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 22.11.0
           cache: "npm"

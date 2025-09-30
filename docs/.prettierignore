@@ -1,5 +1,1 @@
-node_modules
-/build
-/public/build
-.env
-.docusaurus
+src/components/**/*.mdx

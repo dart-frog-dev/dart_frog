@@ -22,28 +22,35 @@ class _MockProcessSignal extends Mock implements ProcessSignal {}
 class _MockStdin extends Mock implements Stdin {}
 
 const expectedUsage = [
+  // ignoring for ease of testing usage
   // ignore: no_adjacent_strings_in_list
   'Start the Dart Frog daemon\n'
       '\n'
       'Usage: dart_frog daemon [arguments]\n'
       '-h, --help    Print this usage information.\n'
       '\n'
-      'Run "dart_frog help" to see global options.'
+      'Run "dart_frog help" to see global options.',
 ];
 
 void main() {
   group('dart_frog daemon', () {
     late DartFrogCommandRunner commandRunner;
     late Logger logger;
+    late PubUpdater updater;
 
     setUp(() {
       logger = _MockLogger();
-
+      updater = _MockPubUpdater();
       final sigint = _MockProcessSignal();
+
       when(sigint.watch).thenAnswer((_) => const Stream.empty());
+      when(
+        () => updater.getLatestVersion(any()),
+      ).thenAnswer((_) async => packageVersion);
+
       commandRunner = DartFrogCommandRunner(
         logger: logger,
-        pubUpdater: _MockPubUpdater(),
+        pubUpdater: updater,
         exit: (_) {},
         sigint: sigint,
         stdin: _MockStdin(),

@@ -22,9 +22,7 @@ Future<List<String>> createExternalPackagesFolder({
       .map(
         (dependency) {
           final pathDescription = dependency.pathDescription;
-          if (pathDescription == null) {
-            return null;
-          }
+          if (pathDescription == null) return null;
 
           final isExternal = !pathResolver.isWithin('', pathDescription.path);
           if (!isExternal) return null;
@@ -38,9 +36,7 @@ Future<List<String>> createExternalPackagesFolder({
       .whereType<_ExternalPathDependency>()
       .toList();
 
-  if (externalPathDependencies.isEmpty) {
-    return [];
-  }
+  if (externalPathDependencies.isEmpty) return [];
 
   final packagesDirectory = Directory(
     pathResolver.join(
@@ -51,34 +47,38 @@ Future<List<String>> createExternalPackagesFolder({
 
   final copiedExternalPathDependencies = await Future.wait(
     externalPathDependencies.map(
-      (externalPathDependency) => externalPathDependency.copyTo(
-        copyPath: copyPath,
-        targetDirectory: Directory(
-          pathResolver.join(
-            packagesDirectory.path,
-            externalPathDependency.name,
+      (externalPathDependency) async {
+        final copy = await externalPathDependency.copyTo(
+          copyPath: copyPath,
+          targetDirectory: Directory(
+            pathResolver.join(
+              packagesDirectory.path,
+              externalPathDependency.name,
+            ),
           ),
-        ),
-      ),
+        );
+        overrideResolutionInPubspecOverrides(copy.path);
+        return copy;
+      },
     ),
   );
 
-  await File(
-    pathResolver.join(
-      buildDirectory.path,
-      'pubspec_overrides.yaml',
-    ),
-  ).writeAsString('''
+  File(
+    pathResolver.join(buildDirectory.path, 'pubspec_overrides.yaml'),
+  ).writeAsStringSync(
+    '''
+resolution: null
 dependency_overrides:
 ${copiedExternalPathDependencies.map(
-    (dependency) {
-      final name = dependency.name;
-      final path =
-          pathResolver.relative(dependency.path, from: buildDirectory.path);
-      return '  $name:\n    path: $path';
-    },
-  ).join('\n')}
-''');
+      (dependency) {
+        final name = dependency.name;
+        final path =
+            pathResolver.relative(dependency.path, from: buildDirectory.path);
+        return '  $name:\n    path: $path';
+      },
+    ).join('\n')}
+''',
+  );
 
   return copiedExternalPathDependencies
       .map((dependency) => dependency.path)

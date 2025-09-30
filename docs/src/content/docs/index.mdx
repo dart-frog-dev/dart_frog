@@ -1,0 +1,79 @@
+---
+template: splash
+title: Home
+description:
+  The official documentation site for Dart Frog. A fast, minimalistic backend
+  framework for Dart 🎯
+editUrl: false
+lastUpdated: false
+hero:
+  title: Dart Frog
+  tagline: A fast, minimalistic backend framework for Dart.
+  image:
+    html: <img src="/hero.png" class="w-full" alt="hero">
+  actions:
+    - text: Get Started
+      link: /getting-started/
+      variant: primary
+      icon: rocket
+    - text: View on GitHub
+      link: https://github.com/dart-frog-dev/dart_frog
+      icon: github
+      variant: secondary
+---
+
+import { CardGrid } from '@astrojs/starlight/components';
+import Card from '~/components/landing/Card.astro';
+import ListCard from '~/components/landing/ListCard.astro';
+import SplitCard from '~/components/landing/SplitCard.astro';
+import Discord from '~/components/landing/Discord.astro';
+
+<hr />
+
+<CardGrid>
+
+<SplitCard title="Get Started" icon="rocket">
+	```sh
+	# Create a new project
+	dart_frog create hello_world
+	```
+
+[Get started](/getting-started) with Dart Frog. Go from installation to
+deployment in just a few minutes with our detailed documentation.
+
+</SplitCard>
+
+<ListCard title="Core Concepts" icon="information">
+
+    - [Introduction](/getting-started)
+    - [Routing](/basics/routes)
+    - [Middleware](/basics/middleware)
+    - [Testing](/basics/testing)
+    - [Dependency Injection](/basics/dependency-injection)
+    - [Environment Variables](/basics/environment)
+
+</ListCard>
+
+<ListCard title="Tutorials" icon="star">
+
+    - [Hello World](/tutorials/hello-world)
+    - [Echo](/tutorials/echo)
+    - [Counter](/tutorials/counter)
+    - [Todos](/tutorials/todos)
+    - [WebSocket Counter](/tutorials/web-socket-counter)
+    - [Authentication](/tutorials/authentication)
+
+</ListCard>
+
+<Card title="News" icon="open-book">
+	[Check out our blog](/blog/) for the latest on all things Dart Frog.
+</Card>
+
+<Card title="Community" icon="discord">
+	Join the growing Dart Frog community on
+	[Discord](https://dart-frog.dev/discord).
+</Card>
+
+</CardGrid>
+
+<Discord />
