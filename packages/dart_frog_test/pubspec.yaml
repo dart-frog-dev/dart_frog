@@ -1,11 +1,15 @@
 name: dart_frog_test
-description: A testing library which makes it easy to test Dart frog services.
-version: 0.1.1
+description: The official testing library for Dart Frog — a fast, minimalistic backend framework for Dart.
+version: 0.1.2
 homepage: https://dart-frog.dev
 repository: https://github.com/dart-frog-dev/dart_frog
 issue_tracker: https://github.com/dart-frog-dev/dart_frog/issues
 documentation: https://dart-frog.dev/getting-started
 topics: [server, backend, dart-frog, test]
+
+screenshots:
+  - description: "Dart Frog logo."
+    path: assets/logo.png
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
