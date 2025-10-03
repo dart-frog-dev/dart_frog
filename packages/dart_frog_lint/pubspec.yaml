@@ -1,6 +1,6 @@
 name: dart_frog_lint
-description: A collection of lint rules built specifically for the Dart Frog backend framework.
-version: 0.1.1
+description: A collection of lint rules built specifically for Dart Frog — a fast, minimalistic backend framework for Dart.
+version: 0.1.2
 homepage: https://dart-frog.dev
 repository: https://github.com/dart-frog-dev/dart_frog
 issue_tracker: https://github.com/dart-frog-dev/dart_frog/issues
