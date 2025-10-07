@@ -17,4 +17,10 @@ mason bundle -s git https://github.com/dart-frog-dev/dart_frog --git-path bricks
 # Create dart frog routes and middlewares
 mason bundle -s git https://github.com/dart-frog-dev/dart_frog --git-path bricks/dart_frog_new -t dart -o packages/dart_frog_cli/lib/src/commands/new/templates
 
-dart format ./packages/dart_frog_cli
+# Ensure the templates are all formatted.
+cd ./packages/dart_frog_cli
+
+dart pub get
+dart format .
+
+cd -
