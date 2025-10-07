@@ -18,6 +18,5 @@ mason bundle -s git https://github.com/dart-frog-dev/dart_frog --git-path bricks
 mason bundle -s git https://github.com/dart-frog-dev/dart_frog --git-path bricks/dart_frog_new -t dart -o packages/dart_frog_cli/lib/src/commands/new/templates
 
 # Ensure the templates are all formatted.
-cd ./packages/dart_frog_cli
-dart format .
-cd -
+dart pub get --enforce-lockfile --directory ./package/dart_frog_cli
+dart format ./packages/dart_frog_cli
