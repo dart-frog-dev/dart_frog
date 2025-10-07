@@ -19,6 +19,6 @@ mason bundle -s git https://github.com/dart-frog-dev/dart_frog --git-path bricks
 
 # Format the generated bundles
 cd ./packages/dart_frog_cli
-# dart pub get
+dart pub get
 dart format .
 cd -
