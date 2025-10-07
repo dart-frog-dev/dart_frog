@@ -23,7 +23,8 @@ class CreateCommand extends DartFrogCommand {
   }) : _generator = generator ?? MasonGenerator.fromBundle {
     argParser.addOption(
       'project-name',
-      help: 'The project name for this new project. '
+      help:
+          'The project name for this new project. '
           'This must be a valid dart package name.',
     );
   }
@@ -66,7 +67,8 @@ class CreateCommand extends DartFrogCommand {
   /// Uses the current directory path name
   /// if the `--project-name` option is not explicitly specified.
   String get _projectName {
-    final projectName = results['project-name'] as String? ??
+    final projectName =
+        results['project-name'] as String? ??
         path.basename(path.normalize(_outputDirectory.absolute.path));
     _validateProjectName(projectName);
     return projectName;

@@ -175,20 +175,20 @@ class DaemonResponse extends DaemonMessage {
     required String id,
     required Map<String, dynamic> result,
   }) : this._(
-          id: id,
-          result: result,
-          error: null,
-        );
+         id: id,
+         result: result,
+         error: null,
+       );
 
   /// Creates an error [DaemonResponse].
   const DaemonResponse.error({
     required String id,
     required Map<String, dynamic> error,
   }) : this._(
-          id: id,
-          result: null,
-          error: error,
-        );
+         id: id,
+         result: null,
+         error: error,
+       );
 
   /// Creates a [DaemonResponse] from a [rawMessage] json.
   factory DaemonResponse.fromJson(Map<String, dynamic> rawMessage) {
