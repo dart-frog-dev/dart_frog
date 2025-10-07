@@ -18,9 +18,9 @@ class DevServerDomain extends DomainBase {
     @visibleForTesting super.getId,
     @visibleForTesting GeneratorBuilder? generator,
     @visibleForTesting DevServerRunnerConstructor? devServerRunnerConstructor,
-  })  : _generator = generator ?? MasonGenerator.fromBundle,
-        _devServerRunnerConstructor =
-            devServerRunnerConstructor ?? DevServerRunner.new {
+  }) : _generator = generator ?? MasonGenerator.fromBundle,
+       _devServerRunnerConstructor =
+           devServerRunnerConstructor ?? DevServerRunner.new {
     addHandler('start', _start);
     addHandler('reload', _reload);
     addHandler('stop', _stop);
