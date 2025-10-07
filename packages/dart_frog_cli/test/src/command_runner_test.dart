@@ -53,7 +53,8 @@ final changelogLink = lightCyan.wrap(
     ),
   ),
 );
-final updateMessage = '''
+final updateMessage =
+    '''
 ${lightYellow.wrap('Update available!')} ${lightCyan.wrap(packageVersion)} \u2192 ${lightCyan.wrap(latestVersion)}
 ${lightYellow.wrap('Changelog:')} $changelogLink
 Run ${lightCyan.wrap('$executableName update')} to update''';
@@ -103,7 +104,8 @@ void main() {
                 );
                 // The message should contain the invalid option name but is
                 // differet based on the platform it's running on.
-                final containsInvalidOption = message.contains(
+                final containsInvalidOption =
+                    message.contains(
                       '"invalid-option"',
                     ) ||
                     message.contains(
