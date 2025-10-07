@@ -11,22 +11,25 @@ import 'package:stream_transform/stream_transform.dart';
 import 'package:watcher/watcher.dart';
 
 /// Typedef for [io.Process.start].
-typedef ProcessStart = Future<io.Process> Function(
-  String executable,
-  List<String> arguments, {
-  bool runInShell,
-});
+typedef ProcessStart =
+    Future<io.Process> Function(
+      String executable,
+      List<String> arguments, {
+      bool runInShell,
+    });
 
 /// Typedef for [io.Process.run].
-typedef ProcessRun = Future<io.ProcessResult> Function(
-  String executable,
-  List<String> arguments,
-);
+typedef ProcessRun =
+    Future<io.ProcessResult> Function(
+      String executable,
+      List<String> arguments,
+    );
 
 /// Typedef for [DirectoryWatcher.new].
-typedef DirectoryWatcherBuilder = DirectoryWatcher Function(
-  String directory,
-);
+typedef DirectoryWatcherBuilder =
+    DirectoryWatcher Function(
+      String directory,
+    );
 
 /// Regex for detecting warnings in the output of `dart run`.
 final _warningRegex = RegExp(r'^.*:\d+:\d+: Warning: .*', multiLine: true);
@@ -39,15 +42,16 @@ final _dartVmServiceAlreadyInUseErrorRegex = RegExp(
 );
 
 /// Typedef for [DevServerRunner.new].
-typedef DevServerRunnerConstructor = DevServerRunner Function({
-  required Logger logger,
-  required String port,
-  required io.InternetAddress? address,
-  required MasonGenerator devServerBundleGenerator,
-  required String dartVmServicePort,
-  required io.Directory workingDirectory,
-  void Function()? onHotReloadEnabled,
-});
+typedef DevServerRunnerConstructor =
+    DevServerRunner Function({
+      required Logger logger,
+      required String port,
+      required io.InternetAddress? address,
+      required MasonGenerator devServerBundleGenerator,
+      required String dartVmServicePort,
+      required io.Directory workingDirectory,
+      void Function()? onHotReloadEnabled,
+    });
 
 /// {@template dev_server_runner}
 /// A class that manages a local development server process lifecycle.
@@ -81,20 +85,20 @@ class DevServerRunner {
     @visibleForTesting ProcessRun? runProcess,
     @visibleForTesting
     RuntimeCompatibilityCallback? runtimeCompatibilityCallback,
-  })  : _directoryWatcher = directoryWatcher ?? DirectoryWatcher.new,
-        _isWindows = isWindows ?? io.Platform.isWindows,
-        _sigint = sigint ?? io.ProcessSignal.sigint,
-        _startProcess = startProcess ?? io.Process.start,
-        _runProcess = runProcess ?? io.Process.run,
-        _generatorTarget =
-            generatorTarget ?? RestorableDirectoryGeneratorTarget.new,
-        _ensureRuntimeCompatibility =
-            runtimeCompatibilityCallback ?? ensureRuntimeCompatibility,
-        assert(port.isNotEmpty, 'port cannot be empty'),
-        assert(
-          dartVmServicePort.isNotEmpty,
-          'dartVmServicePort cannot be empty',
-        );
+  }) : _directoryWatcher = directoryWatcher ?? DirectoryWatcher.new,
+       _isWindows = isWindows ?? io.Platform.isWindows,
+       _sigint = sigint ?? io.ProcessSignal.sigint,
+       _startProcess = startProcess ?? io.Process.start,
+       _runProcess = runProcess ?? io.Process.run,
+       _generatorTarget =
+           generatorTarget ?? RestorableDirectoryGeneratorTarget.new,
+       _ensureRuntimeCompatibility =
+           runtimeCompatibilityCallback ?? ensureRuntimeCompatibility,
+       assert(port.isNotEmpty, 'port cannot be empty'),
+       assert(
+         dartVmServicePort.isNotEmpty,
+         'dartVmServicePort cannot be empty',
+       );
 
   /// [Logger] instance used to wrap stdout.
   final Logger logger;
@@ -381,13 +385,17 @@ class DevServerRunner {
         .debounce(Duration.zero)
         .listen((_) => _reload());
 
-    _watcherSubscription!.asFuture<void>().then((_) async {
-      await _cancelWatcherSubscription();
-      await stop();
-    }).catchError((_) async {
-      await _cancelWatcherSubscription();
-      await stop(ExitCode.software);
-    }).ignore();
+    _watcherSubscription!
+        .asFuture<void>()
+        .then((_) async {
+          await _cancelWatcherSubscription();
+          await stop();
+        })
+        .catchError((_) async {
+          await _cancelWatcherSubscription();
+          await stop(ExitCode.software);
+        })
+        .ignore();
   }
 
   /// Stops the development server and the watcher then

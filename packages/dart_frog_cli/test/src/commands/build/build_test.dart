@@ -51,23 +51,25 @@ void main() {
       late Directory givenWorkingDirectory;
       late MasonGenerator givenProdServerBundleGenerator;
 
-      final command = BuildCommand(
-        logger: logger,
-        generator: (_) async => generator,
-        prodServerBuilderConstructor: ({
-          required Logger logger,
-          required String dartVersion,
-          required Directory workingDirectory,
-          required MasonGenerator prodServerBundleGenerator,
-        }) {
-          givenDartVersion = dartVersion;
-          givenWorkingDirectory = workingDirectory;
-          givenProdServerBundleGenerator = prodServerBundleGenerator;
-          return builder;
-        },
-      )
-        ..testArgResults = argResults
-        ..testCwd = cwd;
+      final command =
+          BuildCommand(
+              logger: logger,
+              generator: (_) async => generator,
+              prodServerBuilderConstructor:
+                  ({
+                    required Logger logger,
+                    required String dartVersion,
+                    required Directory workingDirectory,
+                    required MasonGenerator prodServerBundleGenerator,
+                  }) {
+                    givenDartVersion = dartVersion;
+                    givenWorkingDirectory = workingDirectory;
+                    givenProdServerBundleGenerator = prodServerBundleGenerator;
+                    return builder;
+                  },
+            )
+            ..testArgResults = argResults
+            ..testCwd = cwd;
       when(
         () => builder.build(),
       ).thenAnswer((_) => Future.value(ExitCode.tempFail));
@@ -82,19 +84,20 @@ void main() {
     });
 
     test('returns software error if the builder throws', () {
-      final command = BuildCommand(
-        logger: logger,
-        generator: (_) async => generator,
-        prodServerBuilderConstructor: ({
-          required Logger logger,
-          required String dartVersion,
-          required Directory workingDirectory,
-          required MasonGenerator prodServerBundleGenerator,
-        }) =>
-            builder,
-      )
-        ..testArgResults = argResults
-        ..testCwd = cwd;
+      final command =
+          BuildCommand(
+              logger: logger,
+              generator: (_) async => generator,
+              prodServerBuilderConstructor:
+                  ({
+                    required Logger logger,
+                    required String dartVersion,
+                    required Directory workingDirectory,
+                    required MasonGenerator prodServerBundleGenerator,
+                  }) => builder,
+            )
+            ..testArgResults = argResults
+            ..testCwd = cwd;
 
       when(() => builder.build()).thenThrow(Exception());
       expect(command.run(), completion(ExitCode.software.code));
