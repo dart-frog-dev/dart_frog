@@ -76,7 +76,7 @@ void main() {
       expect(copyCalls, ['$from -> $to']);
     });
 
-    test("doesn't override existing overrides", () async {
+    test("doesn't overwrite existing overrides", () async {
       const existingOverrides = '''
 dependency_overrides:
   dart_frog:
