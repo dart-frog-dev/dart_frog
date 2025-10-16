@@ -86,9 +86,9 @@ void overridePathDependenciesInPubspecOverrides({
     packageGraph: packageGraph,
   );
 
-  final pathDependencies = packageConfig.packages.where(
-    (package) => package.relativeRoot && productionDeps.contains(package.name),
-  );
+  final pathDependencies = packageConfig.packages
+      .where((p) => p.relativeRoot && productionDeps.contains(p.name))
+      .map((p) => PathDependency(name: p.name, path: p.root.path));
 
   writePathDependencyOverrides(
     projectDirectory: projectDirectory,
@@ -98,7 +98,7 @@ void overridePathDependenciesInPubspecOverrides({
 
 void writePathDependencyOverrides({
   required String projectDirectory,
-  required Iterable<Package> pathDependencies,
+  required Iterable<PathDependency> pathDependencies,
 }) {
   final pubspecOverridesFile = File(
     path.join(projectDirectory, 'pubspec_overrides.yaml'),
@@ -112,7 +112,7 @@ void writePathDependencyOverrides({
   for (final package in pathDependencies) {
     editor.update(
       ['dependency_overrides', package.name],
-      {'path': path.relative(package.root.path, from: projectDirectory)},
+      {'path': path.relative(package.path, from: projectDirectory)},
     );
   }
   pubspecOverridesFile.writeAsStringSync(editor.toString());

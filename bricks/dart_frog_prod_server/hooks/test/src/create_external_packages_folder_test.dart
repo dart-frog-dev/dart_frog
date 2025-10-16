@@ -75,5 +75,51 @@ void main() {
       );
       expect(copyCalls, ['$from -> $to']);
     });
+
+    test("doesn't override existing overrides", () async {
+      const existingOverrides = '''
+dependency_overrides:
+  dart_frog:
+    git:
+      url: https://github.com/dart-frog-dev/dart_frog
+      path: packages/dart_frog
+''';
+      final projectDirectory = Directory.systemTemp.createTempSync();
+      File(
+        path.join(projectDirectory.path, 'build', 'pubspec_overrides.yaml'),
+      )
+        ..createSync(recursive: true)
+        ..writeAsStringSync(existingOverrides);
+      File(
+        path.join(projectDirectory.path, 'pubspec.lock'),
+      ).writeAsStringSync(fooPathWithInternalDependency);
+      final copyCalls = <String>[];
+
+      await createExternalPackagesFolder(
+        projectDirectory: projectDirectory,
+        buildDirectory: Directory(path.join(projectDirectory.path, 'build')),
+        copyPath: (from, to) async {
+          copyCalls.add('$from -> $to');
+          File(
+            path.join(to, 'pubspec_overrides.yaml'),
+          ).createSync(recursive: true);
+        },
+      );
+
+      final from = path.join(projectDirectory.path, '../../foo');
+      final to = path.join(
+        projectDirectory.path,
+        'build',
+        '.dart_frog_path_dependencies',
+        'foo',
+      );
+      expect(copyCalls, ['$from -> $to']);
+      expect(
+        File(
+          path.join(projectDirectory.path, 'build', 'pubspec_overrides.yaml'),
+        ).readAsStringSync(),
+        contains(existingOverrides),
+      );
+    });
   });
 }
