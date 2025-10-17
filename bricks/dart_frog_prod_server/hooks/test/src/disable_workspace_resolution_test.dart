@@ -41,11 +41,17 @@ void main() {
       packageGraph = _MockPackageGraph();
 
       when(() => context.logger).thenReturn(logger);
-      when(() => packageGraph.roots).thenReturn([packageName]);
+      when(() => packageGraph.roots).thenReturn([packageName, 'dart_frog']);
       when(() => packageGraph.packages).thenReturn(
         [
           const PackageGraphPackage(
             name: packageName,
+            dependencies: ['dart_frog'],
+            devDependencies: [],
+            version: '1.0.0',
+          ),
+          const PackageGraphPackage(
+            name: 'dart_frog',
             dependencies: [],
             devDependencies: [],
             version: '1.0.0',
@@ -117,6 +123,50 @@ resolution: null
 ''',
           ),
         );
+      });
+
+      group('when workspace root contains pubspec_overrides.yaml', () {
+        const workspaceRootDartFrogOverride = '''
+  dart_frog:
+    git:
+      url: https://github.com/dart-frog-dev/dart_frog
+      path: packages/dart_frog''';
+        const workspaceRootPubspecOverrides = '''
+dependency_overrides:
+$workspaceRootDartFrogOverride
+    ''';
+
+        setUp(() {
+          File(
+            path.join(rootDirectory.path, 'pubspec_overrides.yaml'),
+          ).writeAsStringSync(workspaceRootPubspecOverrides);
+        });
+
+        test('adds root overrides', () {
+          disableWorkspaceResolution(
+            context,
+            packageConfig: packageConfig,
+            packageGraph: packageGraph,
+            projectDirectory: projectDirectory.path,
+            workspaceRoot: rootDirectory.path,
+            exit: exitCalls.add,
+          );
+          final contents = projectDirectory.listSync();
+          expect(contents, hasLength(2));
+          final pubspecOverrides = contents.firstWhere(
+            (p) => path.basename(p.path) == 'pubspec_overrides.yaml',
+          ) as File;
+          expect(
+            pubspecOverrides.readAsStringSync(),
+            equals(
+              '''
+$originalPubspecOverridesContent
+$workspaceRootDartFrogOverride
+resolution: null
+''',
+            ),
+          );
+        });
       });
     });
 

@@ -64,9 +64,17 @@ Future<List<String>> createExternalPackagesFolder({
   );
 
   overrideResolutionInPubspecOverrides(buildDirectory.path);
-  writePathDependencyOverrides(
+  writeDependencyOverrides(
     projectDirectory: buildDirectory.path,
-    pathDependencies: copiedExternalPathDependencies,
+    overrides: {
+      for (final externalDependency in copiedExternalPathDependencies)
+        externalDependency.name: {
+          'path': path.relative(
+            externalDependency.path,
+            from: buildDirectory.path,
+          ),
+        },
+    },
   );
 
   return copiedExternalPathDependencies
