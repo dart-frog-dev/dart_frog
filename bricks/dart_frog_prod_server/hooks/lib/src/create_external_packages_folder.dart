@@ -73,7 +73,7 @@ Future<List<String>> createExternalPackagesFolder({
             externalDependency.path,
             from: buildDirectory.path,
           ),
-        }
+        },
     },
   );
 
