@@ -28,10 +28,11 @@ VoidCallback disableWorkspaceResolution(
   }
 
   try {
-    overridePathDependenciesInPubspecOverrides(
+    overrideDependenciesInPubspecOverrides(
       projectDirectory: projectDirectory,
       packageConfig: packageConfig,
       packageGraph: packageGraph,
+      workspaceRoot: workspaceRoot,
     );
   } on Exception catch (e) {
     restoreWorkspaceResolution();
@@ -70,11 +71,12 @@ VoidCallback overrideResolutionInPubspecOverrides(String projectDirectory) {
   return () => pubspecOverridesFile.writeAsStringSync(contents);
 }
 
-/// Add overrides for all path dependencies to `pubspec_overrides.yaml`
-void overridePathDependenciesInPubspecOverrides({
+/// Add overrides for all neccessary dependencies to `pubspec_overrides.yaml`
+void overrideDependenciesInPubspecOverrides({
   required String projectDirectory,
   required PackageConfig packageConfig,
   required PackageGraph packageGraph,
+  required String workspaceRoot,
 }) {
   final name = getPackageName(projectDirectory: projectDirectory);
   if (name == null) {
@@ -90,29 +92,45 @@ void overridePathDependenciesInPubspecOverrides({
       .where((p) => p.relativeRoot && productionDeps.contains(p.name))
       .map((p) => PathDependency(name: p.name, path: p.root.path));
 
-  writePathDependencyOverrides(
+  final workspaceRootOverrides = getWorkspaceRootDependencyOverrides(
+    workspaceRoot: workspaceRoot,
+  );
+  final productionOverrides = workspaceRootOverrides.entries.where(
+    (e) => productionDeps.contains(e.key),
+  );
+
+  final overrides = <String, dynamic>{
+    for (final pathDependency in pathDependencies)
+      pathDependency.name: {
+        'path': path.relative(pathDependency.path, from: projectDirectory),
+      },
+    for (final override in productionOverrides)
+      '${override.key}': override.value,
+  };
+
+  writeDependencyOverrides(
     projectDirectory: projectDirectory,
-    pathDependencies: pathDependencies,
+    overrides: overrides,
   );
 }
 
-void writePathDependencyOverrides({
+void writeDependencyOverrides({
   required String projectDirectory,
-  required Iterable<PathDependency> pathDependencies,
+  required Map<String, dynamic> overrides,
 }) {
   final pubspecOverridesFile = File(
     path.join(projectDirectory, 'pubspec_overrides.yaml'),
   );
   final contents = pubspecOverridesFile.readAsStringSync();
-  final overrides = loadYaml(contents) as YamlMap;
+  final pubspecOverrides = loadYaml(contents) as YamlMap;
   final editor = YamlEditor(contents);
-  if (!overrides.containsKey('dependency_overrides')) {
+  if (!pubspecOverrides.containsKey('dependency_overrides')) {
     editor.update(['dependency_overrides'], {});
   }
-  for (final package in pathDependencies) {
+  for (final override in overrides.entries) {
     editor.update(
-      ['dependency_overrides', package.name],
-      {'path': path.relative(package.path, from: projectDirectory)},
+      ['dependency_overrides', override.key],
+      override.value,
     );
   }
   pubspecOverridesFile.writeAsStringSync(editor.toString());
@@ -128,6 +146,21 @@ String? getPackageName({required String projectDirectory}) {
   if (name is! String) return null;
 
   return name;
+}
+
+YamlMap getWorkspaceRootDependencyOverrides({required String workspaceRoot}) {
+  final pubspecOverridesFile = File(
+    path.join(workspaceRoot, 'pubspec_overrides.yaml'),
+  );
+  if (!pubspecOverridesFile.existsSync()) return YamlMap();
+
+  final pubspecOverrides = loadYaml(pubspecOverridesFile.readAsStringSync());
+  if (pubspecOverrides is! YamlMap) return YamlMap();
+
+  final overrides = pubspecOverrides['dependency_overrides'];
+  if (overrides is! YamlMap) return YamlMap();
+
+  return overrides;
 }
 
 /// Build a complete list of dependencies (direct and transitive).
