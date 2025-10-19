@@ -71,7 +71,7 @@ VoidCallback overrideResolutionInPubspecOverrides(String projectDirectory) {
   return () => pubspecOverridesFile.writeAsStringSync(contents);
 }
 
-/// Add overrides for all neccessary dependencies to `pubspec_overrides.yaml`
+/// Add overrides for all necessary dependencies to `pubspec_overrides.yaml`
 void overrideDependenciesInPubspecOverrides({
   required String projectDirectory,
   required PackageConfig packageConfig,
