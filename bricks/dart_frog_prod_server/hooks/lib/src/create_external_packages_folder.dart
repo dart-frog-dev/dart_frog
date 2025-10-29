@@ -27,13 +27,13 @@ Future<List<String>> createExternalPackagesFolder({
           final isExternal = !pathResolver.isWithin('', pathDescription.path);
           if (!isExternal) return null;
 
-          return _ExternalPathDependency(
+          return ExternalPathDependency(
             name: dependency.name,
             path: path.join(projectDirectory.path, pathDescription.path),
           );
         },
       )
-      .whereType<_ExternalPathDependency>()
+      .whereType<ExternalPathDependency>()
       .toList();
 
   if (externalPathDependencies.isEmpty) return [];
@@ -63,59 +63,21 @@ Future<List<String>> createExternalPackagesFolder({
     ),
   );
 
-  File(
-    pathResolver.join(buildDirectory.path, 'pubspec_overrides.yaml'),
-  ).writeAsStringSync(
-    '''
-resolution: null
-dependency_overrides:
-${copiedExternalPathDependencies.map(
-      (dependency) {
-        final name = dependency.name;
-        final path =
-            pathResolver.relative(dependency.path, from: buildDirectory.path);
-        return '  $name:\n    path: $path';
-      },
-    ).join('\n')}
-''',
+  overrideResolutionInPubspecOverrides(buildDirectory.path);
+  writeDependencyOverrides(
+    projectDirectory: buildDirectory.path,
+    overrides: {
+      for (final externalDependency in copiedExternalPathDependencies)
+        externalDependency.name: {
+          'path': path.relative(
+            externalDependency.path,
+            from: buildDirectory.path,
+          ),
+        },
+    },
   );
 
   return copiedExternalPathDependencies
       .map((dependency) => dependency.path)
       .toList();
-}
-
-/// {@template external_path_dependency}
-/// A path dependency that is not within the bundled Dart Frog project
-/// directory.
-///
-/// For example:
-/// ```yaml
-/// name: my_dart_frog_project
-/// dependencies:
-///   my_package:
-///     path: ../my_package
-/// ```
-/// {@endtemplate}
-class _ExternalPathDependency {
-  /// {@macro external_path_dependency}
-  const _ExternalPathDependency({
-    required this.name,
-    required this.path,
-  });
-
-  /// The name of the package.
-  final String name;
-
-  /// The absolute path to the package.
-  final String path;
-
-  /// Copies the [_ExternalPathDependency] to [targetDirectory].
-  Future<_ExternalPathDependency> copyTo({
-    required Directory targetDirectory,
-    CopyPath copyPath = io.copyPath,
-  }) async {
-    await copyPath(path, targetDirectory.path);
-    return _ExternalPathDependency(name: name, path: targetDirectory.path);
-  }
 }

@@ -2,13 +2,13 @@
 
 > ✏️ Note: The extension is currently in the early stages, if you experience issues or have a recommendation we are eager to hear from you [here](https://github.com/dart-frog-dev/dart_frog/issues/new/choose)!
 
-This is the [Dart Frog](https://dart-frog.dev/) [VS Code](https://code.visualstudio.com/) extension, which provides tools for effectively managing Dart Frog projects.
+This is the [Dart Frog](https://dart-frog.dev/) [VSCode](https://code.visualstudio.com/) extension, which provides tools for effectively managing Dart Frog projects.
 
 [Originally developed][credits_link] by [Very Good Ventures][very_good_ventures_link] 🦄
 
 ## Installation
 
-Dart Frog can be installed from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=VeryGoodVentures.dart-frog) or by [searching within VS Code](https://code.visualstudio.com/docs/editor/extension-gallery#_search-for-an-extension).
+Dart Frog can be installed from the [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=DartFrog.dart-frog-dev) or by [searching within VSCode](https://code.visualstudio.com/docs/editor/extension-gallery#_search-for-an-extension).
 
 ## Demonstration
 

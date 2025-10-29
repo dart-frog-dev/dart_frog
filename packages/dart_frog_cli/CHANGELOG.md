@@ -1,3 +1,12 @@
+# 1.2.11
+
+- fix: support workspace root `pubspec_overrides.yaml` ([#1897](https://github.com/dart-frog-dev/dart_frog/pull/1897))
+- fix: avoid overwriting `pubspec_overrides.yaml` in `dart_frog build` ([#1895](https://github.com/dart-frog-dev/dart_frog/pull/1895))
+
+# 1.2.10
+
+- docs: update discord server link ([#1862](https://github.com/dart-frog-dev/dart_frog/pull/1862))
+
 # 1.2.9
 
 - fix: workspace package version resolution ([#1859](https://github.com/dart-frog-dev/dart_frog/pull/1859))

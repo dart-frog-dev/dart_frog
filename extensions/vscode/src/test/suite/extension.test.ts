@@ -65,7 +65,7 @@ suite("activate", () => {
 
   test("does not throw", async () => {
     const extension = vscode.extensions.getExtension(
-      "VeryGoodVentures.dart-frog"
+      "DartFrog.dart-frog-dev"
     ) as vscode.Extension<any>;
 
     assert.doesNotThrow(async () => await extension.activate());

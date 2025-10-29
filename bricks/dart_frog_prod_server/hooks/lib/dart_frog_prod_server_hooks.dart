@@ -10,6 +10,7 @@ export 'src/get_package_graph.dart';
 export 'src/get_pubspec_lock.dart';
 export 'src/get_workspace_root.dart';
 export 'src/package_graph/package_graph.dart';
+export 'src/path_dependency.dart';
 export 'src/uses_workspace_resolution.dart';
 
 /// A void callback function (e.g. `void Function()`).

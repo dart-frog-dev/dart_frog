@@ -1,3 +1,7 @@
+# 1.0.3
+
+- docs: update discord server link ([#1862](https://github.com/dart-frog-dev/dart_frog/pull/1862))
+
 # 1.0.2
 
 - refactor: standardize project-wide analysis options ([#1842](https://github.com/dart-frog-dev/dart_frog/pull/1842))

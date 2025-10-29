@@ -1,3 +1,9 @@
+# 1.2.4
+
+- perf: optimize `Request.read` ([#1410](https://github.com/dart-frog-dev/dart_frog/pull/1410))
+- docs: update discord server link ([#1862](https://github.com/dart-frog-dev/dart_frog/pull/1862))
+- chore: minor `pubspec.yaml` adjustments ([#1849](https://github.com/dart-frog-dev/dart_frog/pull/1849))
+
 # 1.2.3
 
 - refactor: standardize project-wide analysis options ([#1842](https://github.com/dart-frog-dev/dart_frog/pull/1842))

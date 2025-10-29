@@ -34,6 +34,7 @@ suite("readDartFrogCLIVersion", () => {
         cpStub.execSync.returns(encodedDartFrogVersionCommandResult);
 
         assert.strictEqual(cliVersion.readDartFrogCLIVersion(), "1.1.1");
+        assert.strictEqual(cliVersion.isDartFrogCLIInstalled(), true);
       });
 
       test("when new version is available", () => {
@@ -49,6 +50,7 @@ suite("readDartFrogCLIVersion", () => {
         cpStub.execSync.returns(encodedDartFrogVersionCommandResult);
 
         assert.strictEqual(cliVersion.readDartFrogCLIVersion(), "1.1.1");
+        assert.strictEqual(cliVersion.isDartFrogCLIInstalled(), true);
       });
     }
   );
@@ -57,6 +59,7 @@ suite("readDartFrogCLIVersion", () => {
     cpStub.execSync.throws();
 
     assert.strictEqual(cliVersion.readDartFrogCLIVersion(), undefined);
+    assert.strictEqual(cliVersion.isDartFrogCLIInstalled(), false);
   });
 });
 
