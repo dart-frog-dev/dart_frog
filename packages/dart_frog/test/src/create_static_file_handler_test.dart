@@ -47,6 +47,46 @@ void main() {
       );
       expect(notFoundResponse.statusCode, equals(HttpStatus.notFound));
 
+      final rootResponse = await http.get(
+        Uri.parse('http://localhost:$port/'),
+      );
+      expect(rootResponse.statusCode, equals(HttpStatus.notFound));
+
+      await server.close();
+      tempDir.delete(recursive: true).ignore();
+    });
+
+    test('serves default document', () async {
+      const port = 3003;
+      final tempDir = Directory.systemTemp.createTempSync();
+
+      const messageContents = 'hello world';
+      File(
+        path.join(tempDir.path, 'message.txt'),
+      ).writeAsStringSync(messageContents);
+
+      final profileContents = json.encode(
+        <String, dynamic>{'name': 'dash', 'age': 42, 'lovesDart': true},
+      );
+      File(
+        path.join(tempDir.path, 'profile.json'),
+      ).writeAsStringSync(profileContents);
+
+      final server = await serve(
+        createStaticFileHandler(
+          path: tempDir.path,
+          defaultDocument: 'message.txt',
+        ),
+        'localhost',
+        port,
+      );
+
+      final messageResponse = await http.get(
+        Uri.parse('http://localhost:$port/'),
+      );
+      expect(messageResponse.statusCode, equals(HttpStatus.ok));
+      expect(messageResponse.body, equals(messageContents));
+
       await server.close();
       tempDir.delete(recursive: true).ignore();
     });
