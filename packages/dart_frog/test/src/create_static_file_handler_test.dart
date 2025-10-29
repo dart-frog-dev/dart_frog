@@ -65,13 +65,6 @@ void main() {
         path.join(tempDir.path, 'message.txt'),
       ).writeAsStringSync(messageContents);
 
-      final profileContents = json.encode(
-        <String, dynamic>{'name': 'dash', 'age': 42, 'lovesDart': true},
-      );
-      File(
-        path.join(tempDir.path, 'profile.json'),
-      ).writeAsStringSync(profileContents);
-
       final server = await serve(
         createStaticFileHandler(
           path: tempDir.path,
