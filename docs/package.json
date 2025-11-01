@@ -12,18 +12,18 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.4",
-    "@astrojs/starlight": "^0.36.0",
-    "astro": "^5.14.1",
+    "@astrojs/check": "^0.9.5",
+    "@astrojs/starlight": "^0.36.2",
+    "astro": "^5.15.3",
     "sharp": "^0.34.4",
-    "starlight-blog": "^0.24.1"
+    "starlight-blog": "^0.24.3"
   },
   "devDependencies": {
-    "@astrojs/starlight-tailwind": "^4.0.1",
-    "@tailwindcss/vite": "^4.1.14",
+    "@astrojs/starlight-tailwind": "^4.0.2",
+    "@tailwindcss/vite": "^4.1.16",
     "prettier": "^3.6.2",
     "prettier-plugin-astro": "^0.14.1",
-    "prettier-plugin-tailwindcss": "^0.6.14",
-    "starlight-links-validator": "^0.18.0"
+    "prettier-plugin-tailwindcss": "^0.7.1",
+    "starlight-links-validator": "^0.19.0"
   }
 }
