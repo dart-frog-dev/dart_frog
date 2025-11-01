@@ -1,3 +1,7 @@
+# 1.2.5
+
+- feat: add `defaultDocument` to `createStaticFileHandler` ([#1901](https://github.com/dart-frog-dev/dart_frog/pull/1901))
+
 # 1.2.4
 
 - perf: optimize `Request.read` ([#1410](https://github.com/dart-frog-dev/dart_frog/pull/1410))
