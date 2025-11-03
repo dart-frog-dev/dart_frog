@@ -1,6 +1,6 @@
 name: dart_frog
 description: The official runtime for Dart Frog — a fast, minimalistic backend framework for Dart.
-version: 1.2.5
+version: 1.2.6
 homepage: https://dart-frog.dev
 repository: https://github.com/dart-frog-dev/dart_frog
 issue_tracker: https://github.com/dart-frog-dev/dart_frog/issues
