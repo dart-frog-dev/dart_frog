@@ -225,7 +225,7 @@ SFTrELxay/xfdivEUxK9wEIG
       Middleware middleware() {
         return (handler) {
           return (context) async {
-            await context.request.body();
+            await context.request.body(); // Read #1
             return handler(context);
           };
         };
@@ -233,22 +233,25 @@ SFTrELxay/xfdivEUxK9wEIG
 
       Handler handler() {
         return (context) async {
-          await context.request.body();
+          await context.request.body(); // Read #2
           return Response();
         };
       }
 
+      const address = 'localhost';
+      const port = 3000;
       final pipeline = const Pipeline().addMiddleware(middleware());
       final router = Router()..mount('/', handler());
       final server = await serve(
         pipeline.addHandler(router.call),
-        'localhost',
-        3000,
+        address,
+        port,
       );
       final client = HttpClient();
-      final request = await client.getUrl(Uri.parse('http://localhost:3000'));
+      final request = await client.getUrl(Uri.parse('http://$address:$port'));
       final response = await request.close();
       expect(response.statusCode, equals(HttpStatus.ok));
+      client.close();
       await server.close();
     });
   });
