@@ -220,5 +220,36 @@ SFTrELxay/xfdivEUxK9wEIG
         throwsA(isA<HandshakeException>()),
       );
     });
+
+    test('can read request.body across middleware:handler gap', () async {
+      Middleware middleware() {
+        return (handler) {
+          return (context) async {
+            await context.request.body();
+            return handler(context);
+          };
+        };
+      }
+
+      Handler handler() {
+        return (context) async {
+          await context.request.body();
+          return Response();
+        };
+      }
+
+      final pipeline = const Pipeline().addMiddleware(middleware());
+      final router = Router()..mount('/', handler());
+      final server = await serve(
+        pipeline.addHandler(router.call),
+        'localhost',
+        3000,
+      );
+      final client = HttpClient();
+      final request = await client.getUrl(Uri.parse('http://localhost:3000'));
+      final response = await request.close();
+      expect(response.statusCode, equals(HttpStatus.ok));
+      await server.close();
+    });
   });
 }
