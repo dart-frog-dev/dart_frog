@@ -251,7 +251,6 @@ SFTrELxay/xfdivEUxK9wEIG
       final request = await client.getUrl(Uri.parse('http://$address:$port'));
       final response = await request.close();
       expect(response.statusCode, equals(HttpStatus.ok));
-      client.close();
       await server.close();
     });
   });
