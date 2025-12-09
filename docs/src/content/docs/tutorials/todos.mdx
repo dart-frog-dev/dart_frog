@@ -165,7 +165,7 @@ mason add -g very_good_dart_package
 Then we can create the `todos_data_source` via:
 
 ```bash
-mason make very_good_dart_package --project_name "todos_data_source" --description "A generic interface for managing todos." -o packages
+mason make very_good_dart_package --project_name "todos_data_source" --description "A generic interface for managing todos." -o packages/todos_data_source
 ```
 
 :::note
@@ -406,7 +406,7 @@ From the root of the project we can use `mason make` to generate a new Dart
 package again:
 
 ```bash
-mason make very_good_dart_package --project_name "in_memory_todos_data_source" --description "An in-memory implementation of the TodosDataSource interface." -o packages
+mason make very_good_dart_package --project_name "in_memory_todos_data_source" --description "An in-memory implementation of the TodosDataSource interface." -o packages/in_memory_todos_data_source
 ```
 
 ### Updating the `pubspec.yaml`
