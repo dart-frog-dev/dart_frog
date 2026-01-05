@@ -1,5 +1,4 @@
 import 'package:dart_frog_gen/dart_frog_gen.dart';
-
 import 'package:mocktail/mocktail.dart';
 import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
@@ -197,14 +196,15 @@ void main() {
     });
 
     test(
-      'reports error when dynamic directories conflict with non dynamic files',
+      'does not report error when static route can take precedence over '
+      'a dynamic route (e.g. /cars/mine vs /cars/<id>)',
       () {
         when(() => configuration.endpoints).thenReturn({
           '/cars/<id>': const [
             RouteFile(
               name: r'cars_$id_index',
               path: '../routes/cars/[id]/index.dart',
-              route: '/',
+              route: '/cars/<id>',
               params: [],
               wildcard: false,
             ),
@@ -213,7 +213,7 @@ void main() {
             RouteFile(
               name: 'cars_mine',
               path: '../routes/cars/mine.dart',
-              route: '/mine',
+              route: '/cars/mine',
               params: [],
               wildcard: false,
             ),
@@ -239,29 +239,22 @@ void main() {
           },
         );
 
-        expect(violationStartCalled, isTrue);
-        expect(violationEndCalled, isTrue);
-        expect(
-          conflicts,
-          equals(
-            [
-              '${path.normalize('/cars/<id>')} and ${path.normalize('//cars/mine')} -> /cars/<id>',
-            ],
-          ),
-        );
+        expect(violationStartCalled, isFalse);
+        expect(violationEndCalled, isFalse);
+        expect(conflicts, isEmpty);
       },
     );
 
     test(
-      'reports error when dynamic directories conflict with non dynamic files, '
-      'with multiple folders',
+      'does not report error when multiple static routes can take precedence '
+      'over dynamic routes at different nesting levels',
       () {
         when(() => configuration.endpoints).thenReturn({
           '/turtles/random': const [
             RouteFile(
               name: 'turtles_random',
               path: '../routes/turtles/random.dart',
-              route: '/',
+              route: '/turtles/random',
               params: [],
               wildcard: false,
             ),
@@ -279,7 +272,7 @@ void main() {
             RouteFile(
               name: r'turtles_$id_bla',
               path: '../routes/turtles/[id]/bla.dart',
-              route: '/turtles/<id>/bla.dart',
+              route: '/turtles/<id>/bla',
               params: [],
               wildcard: false,
             ),
@@ -288,7 +281,7 @@ void main() {
             RouteFile(
               name: r'turtles_$id_$name_index',
               path: '../routes/turtles/[id]/[name]/index.dart',
-              route: '/turtles/<id>/<name>/index.dart',
+              route: '/turtles/<id>/<name>',
               params: [],
               wildcard: false,
             ),
@@ -325,15 +318,143 @@ void main() {
           },
         );
 
+        expect(violationStartCalled, isFalse);
+        expect(violationEndCalled, isFalse);
+        expect(conflicts, isEmpty);
+      },
+    );
+
+    test(
+      'reports error when overlap is ambiguous (neither route dominates)',
+      () {
+        when(() => configuration.endpoints).thenReturn({
+          '/a/<id>': const [
+            RouteFile(
+              name: r'a_$id',
+              path: '../routes/a/[id].dart',
+              route: '/a/<id>',
+              params: [],
+              wildcard: false,
+            ),
+          ],
+          '/<x>/b': const [
+            RouteFile(
+              name: r'$x_b',
+              path: '../routes/[x]/b.dart',
+              route: '/<x>/b',
+              params: [],
+              wildcard: false,
+            ),
+          ],
+        });
+
+        reportRouteConflicts(
+          configuration,
+          onViolationStart: () {
+            violationStartCalled = true;
+          },
+          onRouteConflict: (
+            originalFilePath,
+            conflictingFilePath,
+            conflictingEndpoint,
+          ) {
+            conflicts.add('$originalFilePath and '
+                '$conflictingFilePath -> '
+                '$conflictingEndpoint');
+          },
+          onViolationEnd: () {
+            violationEndCalled = true;
+          },
+        );
+
         expect(violationStartCalled, isTrue);
         expect(violationEndCalled, isTrue);
         expect(
           conflicts,
-          [
-            '${path.normalize('/turtles/<id>')} and ${path.normalize('/turtles/random')} -> /turtles/<id>',
-            '${path.normalize('/turtles/<id>/<name>')} and ${path.normalize('/turtles/<id>/bla')} -> /turtles/<id>/<name>',
-          ],
+          equals(
+            [
+              '${path.normalize('/a/<id>')} and ${path.normalize('/<x>/b')} -> /a/<id>',
+            ],
+          ),
         );
+      },
+    );
+
+    test(
+      'does not report error when a static route can take precedence over '
+      'a wildcard route (e.g. /files/latest vs /files/*)',
+      () {
+        when(() => configuration.endpoints).thenReturn({
+          '/files/*': const [
+            RouteFile(
+              name: r'files_$wildcard',
+              path: '../routes/files/[...].dart',
+              route: '/files/*',
+              params: [],
+              wildcard: true,
+            ),
+          ],
+          '/files/latest': const [
+            RouteFile(
+              name: 'files_latest',
+              path: '../routes/files/latest.dart',
+              route: '/files/latest',
+              params: [],
+              wildcard: false,
+            ),
+          ],
+        });
+
+        reportRouteConflicts(
+          configuration,
+          onViolationStart: () => violationStartCalled = true,
+          onRouteConflict: (a, b, endpoint) =>
+              conflicts.add('$a and $b -> $endpoint'),
+          onViolationEnd: () => violationEndCalled = true,
+        );
+
+        expect(violationStartCalled, isFalse);
+        expect(violationEndCalled, isFalse);
+        expect(conflicts, isEmpty);
+      },
+    );
+
+    test(
+      'does not report conflict when dynamic route overlaps wildcard route',
+      () {
+        when(() => configuration.endpoints).thenReturn({
+          '/files/*': const [
+            RouteFile(
+              name: 'filesWildcard',
+              path: '',
+              route: '/files/*',
+              params: [],
+              wildcard: true,
+            ),
+          ],
+          '/files/<id>': const [
+            RouteFile(
+              name: 'filesId',
+              path: '',
+              route: '/files/<id>',
+              params: ['id'],
+              wildcard: false,
+            ),
+          ],
+        });
+
+        reportRouteConflicts(
+          configuration,
+          onViolationStart: () => violationStartCalled = true,
+          onRouteConflict: (original, conflicting, endpoint) {
+            conflicts.add('$original and $conflicting -> $endpoint');
+          },
+          onViolationEnd: () => violationEndCalled = true,
+        );
+
+        expect(violationStartCalled, isFalse);
+        expect(violationEndCalled, isFalse);
+        expect(conflicts, isEmpty);
       },
     );
   });
