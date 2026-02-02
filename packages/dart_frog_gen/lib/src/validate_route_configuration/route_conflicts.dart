@@ -28,6 +28,55 @@ typedef OnRouteConflict = void Function(
   String conflictingEndpoint,
 );
 
+bool _isDynamic(String part) => part.startsWith('<') && part.endsWith('>');
+
+bool _overlaps(List<String> routeA, List<String> routeB) {
+  if (routeA.length != routeB.length) return false;
+
+  for (var i = 0; i < routeA.length; i++) {
+    final segmentA = routeA[i];
+    final segmentB = routeB[i];
+
+    if (segmentA == segmentB) continue;
+
+    // Dynamic segments can match any value
+    if (_isDynamic(segmentA) || _isDynamic(segmentB)) continue;
+
+    // Two different static segments can never match the same path
+    return false;
+  }
+
+  return true;
+}
+
+/// Returns true if `routeA` is at least as specific as `routeB`
+/// at every segment, and more specific in at least one segment.
+///
+/// Static segments are more specific than dynamic ones.
+bool _dominates(List<String> routeA, List<String> routeB) {
+  var hasStrictAdvantage = false;
+
+  for (var i = 0; i < routeA.length; i++) {
+    final segmentA = routeA[i];
+    final segmentB = routeB[i];
+
+    if (segmentA == segmentB) continue;
+
+    final aIsDynamic = _isDynamic(segmentA);
+    final bIsDynamic = _isDynamic(segmentB);
+
+    // A cannot dominate B if A is dynamic and B is static
+    if (aIsDynamic && !bIsDynamic) return false;
+
+    // A is strictly more specific at this segment
+    if (!aIsDynamic && bIsDynamic) {
+      hasStrictAdvantage = true;
+    }
+  }
+
+  return hasStrictAdvantage;
+}
+
 /// Reports existence of route conflicts on a [RouteConfiguration].
 void reportRouteConflicts(
   RouteConfiguration configuration, {
@@ -46,30 +95,22 @@ void reportRouteConflicts(
 
   final indirectConflicts = configuration.endpoints.entries
       .map((entry) {
+        final keyParts = entry.key.split('/');
+
         final matches = configuration.endpoints.keys.where((other) {
-          final keyParts = entry.key.split('/');
-          if (other == entry.key) {
-            return false;
-          }
+          if (other == entry.key) return false;
 
           final otherParts = other.split('/');
 
-          var match = false;
+          if (!_overlaps(keyParts, otherParts)) return false;
 
-          if (keyParts.length == otherParts.length) {
-            for (var i = 0; i < keyParts.length; i++) {
-              if ((keyParts[i] == otherParts[i]) ||
-                  (keyParts[i].startsWith('<') ||
-                      otherParts[i].startsWith('<'))) {
-                match = true;
-              } else {
-                match = false;
-                break;
-              }
-            }
-          }
+          // If either route is strictly more specific than the other,
+          // the overlap can be resolved by deterministic route ordering.
+          final aDominatesB = _dominates(keyParts, otherParts);
+          final bDominatesA = _dominates(otherParts, keyParts);
 
-          return match;
+          // Flag as conflict when neither dominates
+          return !aDominatesB && !bDominatesA;
         });
 
         if (matches.isNotEmpty) {
