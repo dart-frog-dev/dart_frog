@@ -56,14 +56,69 @@ void main() {
       tempDir.delete(recursive: true).ignore();
     });
 
-    test('serves default document', () async {
+    test('serves index.html by default', () async {
       const port = 3003;
       final tempDir = Directory.systemTemp.createTempSync();
 
-      const messageContents = 'hello world';
+      const contents = '<h1>Hello World</h1>';
+      File(
+        path.join(tempDir.path, 'index.html'),
+      ).writeAsStringSync(contents);
+
+      final server = await serve(
+        createStaticFileHandler(path: tempDir.path),
+        'localhost',
+        port,
+      );
+
+      final response = await http.get(Uri.parse('http://localhost:$port/'));
+      expect(response.statusCode, equals(HttpStatus.ok));
+      expect(response.body, equals(contents));
+
+      await server.close();
+      tempDir.delete(recursive: true).ignore();
+    });
+
+    test(
+        'does not serve index.html when default document '
+        'is explicitly set to null', () async {
+      const port = 3003;
+      final tempDir = Directory.systemTemp.createTempSync();
+
+      const contents = '<h1>Hello World</h1>';
+      File(
+        path.join(tempDir.path, 'index.html'),
+      ).writeAsStringSync(contents);
+
+      final server = await serve(
+        createStaticFileHandler(path: tempDir.path, defaultDocument: null),
+        'localhost',
+        port,
+      );
+
+      final indexHtmlResponse = await http.get(
+        Uri.parse('http://localhost:$port/index.html'),
+      );
+      expect(indexHtmlResponse.statusCode, equals(HttpStatus.ok));
+      expect(indexHtmlResponse.body, equals(contents));
+
+      final rootResponse = await http.get(
+        Uri.parse('http://localhost:$port/'),
+      );
+      expect(rootResponse.statusCode, equals(HttpStatus.notFound));
+
+      await server.close();
+      tempDir.delete(recursive: true).ignore();
+    });
+
+    test('serves custom default document', () async {
+      const port = 3003;
+      final tempDir = Directory.systemTemp.createTempSync();
+
+      const contents = 'hello world';
       File(
         path.join(tempDir.path, 'message.txt'),
-      ).writeAsStringSync(messageContents);
+      ).writeAsStringSync(contents);
 
       final server = await serve(
         createStaticFileHandler(
@@ -74,11 +129,11 @@ void main() {
         port,
       );
 
-      final messageResponse = await http.get(
+      final response = await http.get(
         Uri.parse('http://localhost:$port/'),
       );
-      expect(messageResponse.statusCode, equals(HttpStatus.ok));
-      expect(messageResponse.body, equals(messageContents));
+      expect(response.statusCode, equals(HttpStatus.ok));
+      expect(response.body, equals(contents));
 
       await server.close();
       tempDir.delete(recursive: true).ignore();
