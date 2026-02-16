@@ -1,3 +1,12 @@
+# 1.2.6
+
+- fix: revert `Expando` perf optimization ([#1908](https://github.com/dart-frog-dev/dart_frog/pull/1908))
+  - perf optimization caused a regression when calling `request.read` multiple times across a middleware/handler gap
+
+# 1.2.5
+
+- feat: add `defaultDocument` to `createStaticFileHandler` ([#1901](https://github.com/dart-frog-dev/dart_frog/pull/1901))
+
 # 1.2.4
 
 - perf: optimize `Request.read` ([#1410](https://github.com/dart-frog-dev/dart_frog/pull/1410))

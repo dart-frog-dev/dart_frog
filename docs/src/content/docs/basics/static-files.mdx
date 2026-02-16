@@ -83,6 +83,14 @@ Future<HttpServer> run(Handler handler, InternetAddress ip, int port) {
 In the above example, we're using `api/static` as our static file directory but
 you can specify a path to any directory for Dart Frog to use.
 
+## Specifying a Default Document 📄
+
+:::note
+
+Specifying a `defaultDocument` requires `dart_frog ^1.2.5`.
+
+:::
+
 You can also configure the default document by specifying the `defaultDocument`
 parameter when creating the `createStaticFileHandler` handler.
 
@@ -92,13 +100,12 @@ import 'dart:io';
 import 'package:dart_frog/dart_frog.dart';
 
 Future<HttpServer> run(Handler handler, InternetAddress ip, int port) {
-  const customStaticFilePath = 'api/static';
   final cascade = Cascade()
-      .add(createStaticFileHandler(path: customStaticFilePath, defaultDocument: 'index.html'))
+      .add(createStaticFileHandler(defaultDocument: 'index.html'))
       .add(handler);
   return serve(cascade.handler, ip, port);
 }
 ```
 
 In this example, requests made to the root of the server will serve the
-`index.html` file.
+`index.html` file located in the `public` directory.

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dart_frog_gen/src/path_to_route.dart';
+import 'package:dart_frog_gen/src/route_specificity.dart';
 import 'package:path/path.dart' as path;
 
 /// Build a [RouteConfiguration] based on the provided root project [directory].
@@ -173,6 +174,7 @@ List<RouteFile> _getRouteFiles({
       .whereType<Directory>()
       .map((directory) => path.basename(directory.path))
       .toSet();
+
   entities.where((e) => e.isRoute).cast<File>().forEach((entity) {
     final filePath = path
         .relative(entity.path, from: routesDirectory.path)
@@ -217,6 +219,17 @@ List<RouteFile> _getRouteFiles({
 
     if (isRogueRoute) onRogueRoute(route);
   });
+
+  files.sort((a, b) {
+    if (a.wildcard != b.wildcard) return a.wildcard ? 1 : -1;
+    final specificity = compareRouteSpecificity(
+      [...b.route.segments],
+      [...a.route.segments],
+    );
+    if (specificity != 0) return specificity;
+    return a.route.compareTo(b.route);
+  });
+
   return files;
 }
 

@@ -27,6 +27,40 @@ void main() {
       await server.close();
     });
 
+    test('can read request.body across middleware:handler gap', () async {
+      Middleware middleware() {
+        return (handler) {
+          return (context) async {
+            await context.request.body(); // Read #1
+            return handler(context);
+          };
+        };
+      }
+
+      Handler handler() {
+        return (context) async {
+          await context.request.body(); // Read #2
+          return Response();
+        };
+      }
+
+      const address = 'localhost';
+      const port = 3002;
+      final pipeline = const Pipeline().addMiddleware(middleware());
+      final router = Router()..mount('/', handler());
+      final server = await serve(
+        pipeline.addHandler(router.call),
+        address,
+        port,
+      );
+      final client = HttpClient();
+      final request = await client.getUrl(Uri.parse('http://$address:$port'));
+      final response = await request.close();
+      expect(response.statusCode, equals(HttpStatus.ok));
+      client.close();
+      await server.close();
+    });
+
     test('exposes connectionInfo on the incoming request', () async {
       late HttpConnectionInfo connectionInfo;
       final server = await serve(
