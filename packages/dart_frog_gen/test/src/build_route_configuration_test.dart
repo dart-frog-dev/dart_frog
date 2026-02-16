@@ -1290,7 +1290,7 @@ Future<void>init(InternetAddress ip,int port)async{}
 
     test(
         'orders by wildcard, then total segments '
-        'when static specificity is equal', () {
+        'when specificity is equal', () {
       final configuration = buildRouteConfiguration(
         createTempDir(
           files: [
