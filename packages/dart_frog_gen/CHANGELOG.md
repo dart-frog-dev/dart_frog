@@ -1,6 +1,6 @@
 # 2.1.0
 
-- feat(dart_frog_gen): allow static routes to take precedence over dynamic routes ([#19222](https://github.com/dart-frog-dev/dart_frog/pull/19222))
+- feat: allow static routes to take precedence over dynamic routes ([#19222](https://github.com/dart-frog-dev/dart_frog/pull/19222))
 
 # 2.0.2
 
