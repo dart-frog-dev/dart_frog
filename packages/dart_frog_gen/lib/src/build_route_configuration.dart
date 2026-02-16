@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dart_frog_gen/src/path_to_route.dart';
+import 'package:dart_frog_gen/src/route_specificity.dart';
 import 'package:path/path.dart' as path;
 
 /// Build a [RouteConfiguration] based on the provided root project [directory].
@@ -174,17 +175,6 @@ List<RouteFile> _getRouteFiles({
       .map((directory) => path.basename(directory.path))
       .toSet();
 
-  int segmentCount(String route) =>
-      route.split('/').where((p) => p.isNotEmpty).length;
-
-  bool isDynamicSegment(String part) =>
-      part.startsWith('<') && part.endsWith('>');
-
-  int staticSegmentCount(String route) {
-    final parts = route.split('/').where((p) => p.isNotEmpty);
-    return parts.where((p) => !isDynamicSegment(p)).length;
-  }
-
   entities.where((e) => e.isRoute).cast<File>().forEach((entity) {
     final filePath = path
         .relative(entity.path, from: routesDirectory.path)
@@ -231,26 +221,12 @@ List<RouteFile> _getRouteFiles({
   });
 
   files.sort((a, b) {
-    // Non-wildcard routes first
-    if (a.wildcard != b.wildcard) {
-      return a.wildcard ? 1 : -1;
-    }
-
-    // Routes with more static path segments first
-    final aStaticSegments = staticSegmentCount(a.route);
-    final bStaticSegments = staticSegmentCount(b.route);
-    if (aStaticSegments != bStaticSegments) {
-      return bStaticSegments.compareTo(aStaticSegments);
-    }
-
-    // Routes with more total path segments first
-    final aTotalSegments = segmentCount(a.route);
-    final bTotalSegments = segmentCount(b.route);
-    if (aTotalSegments != bTotalSegments) {
-      return bTotalSegments.compareTo(aTotalSegments);
-    }
-
-    // Deterministic fallback
+    if (a.wildcard != b.wildcard) return a.wildcard ? 1 : -1;
+    final specificity = compareRouteSpecificity(
+      [...b.route.segments],
+      [...a.route.segments],
+    );
+    if (specificity != 0) return specificity;
     return a.route.compareTo(b.route);
   });
 

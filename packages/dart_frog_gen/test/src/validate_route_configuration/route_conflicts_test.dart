@@ -325,23 +325,23 @@ void main() {
     );
 
     test(
-      'reports error when overlap is ambiguous (neither route dominates)',
+      'reports error when overlap is ambiguous',
       () {
         when(() => configuration.endpoints).thenReturn({
-          '/a/<id>': const [
+          '/a/<foo>': const [
             RouteFile(
-              name: r'a_$id',
-              path: '../routes/a/[id].dart',
-              route: '/a/<id>',
+              name: r'a_$foo',
+              path: '../routes/a/[foo].dart',
+              route: '/a/<foo>',
               params: [],
               wildcard: false,
             ),
           ],
-          '/<x>/b': const [
+          '/a/<bar>': const [
             RouteFile(
-              name: r'$x_b',
-              path: '../routes/[x]/b.dart',
-              route: '/<x>/b',
+              name: r'a_$bar',
+              path: '../routes/a/[bar].dart',
+              route: '/a/<bar>',
               params: [],
               wildcard: false,
             ),
@@ -373,7 +373,8 @@ void main() {
           conflicts,
           equals(
             [
-              '${path.normalize('/a/<id>')} and ${path.normalize('/<x>/b')} -> /a/<id>',
+              '${path.normalize('/a/<bar>')} and ${path.normalize('/a/<foo>')} -> /a/<bar>',
+              '${path.normalize('/a/<foo>')} and ${path.normalize('/a/<bar>')} -> /a/<foo>',
             ],
           ),
         );
