@@ -30,6 +30,8 @@ void main() {
   test(
     'only allows post method',
     () async {
+      // ignoring for testing.
+      // ignore: experimental_member_use
       await expectNotAllowedMethods(
         route.onRequest,
         contextBuilder: (method) => TestRequestContext(

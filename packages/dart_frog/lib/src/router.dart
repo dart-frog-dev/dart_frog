@@ -309,8 +309,6 @@ class RouterEntry {
     Middleware? middleware,
     bool mounted = false,
   }) {
-    middleware = middleware ?? ((Handler fn) => fn);
-
     if (!route.startsWith('/')) {
       throw ArgumentError.value(
         route,
@@ -343,7 +341,7 @@ class RouterEntry {
       verb,
       route,
       handler,
-      middleware,
+      middleware ?? ((Handler fn) => fn),
       routePattern,
       params,
       mounted,
