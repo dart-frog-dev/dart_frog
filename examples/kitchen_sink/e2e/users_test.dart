@@ -6,9 +6,9 @@ import 'package:test/test.dart';
 void main() {
   group('E2E (/users)', () {
     const greeting = 'Hello';
-    test('GET /users/me responds with "Hello World"', () async {
+    test('GET /users/world responds with "Hello World"', () async {
       final response = await http.get(
-        Uri.parse('http://localhost:8080/users/me'),
+        Uri.parse('http://localhost:8080/users/world'),
       );
       expect(response.statusCode, equals(HttpStatus.ok));
       expect(response.body, equals('Hello World'));
