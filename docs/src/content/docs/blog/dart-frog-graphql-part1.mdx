@@ -1,0 +1,237 @@
+---
+title: Dart Frog and GraphQL (Part 1)
+date: 2026-02-22
+excerpt:
+  A multipart guide on how to write a GraphQL server
+  with Dart Frog
+authors:
+  - team
+featured: true
+cover:
+  alt: Dart Frog and GraphQL (Part 1)
+  dark: TODO
+light: TODO
+tags:
+  - community
+---
+
+TODO review this
+import { Image } from 'astro:assets';
+import websiteRedesignLight from '../../../assets/blog/fall_2025_recap/website_redesign_light.png';
+import websiteRedesignDark from '../../../assets/blog/fall_2025_recap/website_redesign_dark.png';
+
+import lintLight from '../../../assets/blog/fall_2025_recap/lint_light.png';
+import lintDark from '../../../assets/blog/fall_2025_recap/lint_dark.png';
+
+import workspacesLight from '../../../assets/blog/fall_2025_recap/workspaces_light.png';
+import workspacesDark from '../../../assets/blog/fall_2025_recap/workspaces_dark.png';
+
+import benchmarksLight from '../../../assets/blog/fall_2025_recap/benchmarks_light.png';
+import benchmarksDark from '../../../assets/blog/fall_2025_recap/benchmarks_dark.png';
+
+import vscodeLight from '../../../assets/blog/fall_2025_recap/vscode_light.png';
+import vscodeDark from '../../../assets/blog/fall_2025_recap/vscode_dark.png';
+
+import discordLight from '../../../assets/blog/fall_2025_recap/discord_light.png';
+import discordDark from '../../../assets/blog/fall_2025_recap/discord_dark.png';
+
+We can't believe it's been two months since
+[Dart Frog moved to a new organization](/blog/future-of-dart-frog)!
+
+Here's a quick recap of what the team has been up to:
+
+- Migrated and redesigned the [**Dart Frog Website**](https://dart-frog.dev)
+- Migrated the
+  [**VSCode Extension**](https://marketplace.visualstudio.com/items?itemName=DartFrog.dart-frog-dev)
+- Released [**package:dart_frog_lint**](https://pub.dev/packages/dart_frog_lint)
+- Added support for
+  [**Pub Workspaces**](https://github.com/dart-frog-dev/dart_frog/pull/1825)
+- Contributed benchmarks to
+  [**TechEmpower Framework Benchmarks**](https://github.com/TechEmpower/FrameworkBenchmarks/pull/10048)
+- Created a new [**Discord Server**](https://dart-frog.dev/discord)
+- Published
+  [**14 package releases to pub.dev**](https://pub.dev/publishers/dart-frog.dev/packages)
+- Closed over
+  [**20 pull requests**](https://github.com/dart-frog-dev/dart_frog/pulls?q=is%3Apr+is%3Aclosed)
+
+## Dart Frog and GraphQL (Part 1)
+
+Dart Frog doesn't provide an “out of the box” way to implement a GraphQL schema with it, but that is totally achievable  if you combine it with a few other additional dart packages.
+
+There are probably several ways of implementing a GraphQL server in Dart Frog, this article we’ll present one of them, one that I found to work well for the use case that I had, feel free to use it as an example, or even just the base to build on top of!
+
+*It is not the goal of this text to discuss the pros and cons of using GraphQL over Rest, or other types of protocols, there are many good articles out there that explore this theme. Our goal here is to be direct, and propose a way of implementing this specific server query language, in a dart frog server!*
+
+## Let's get started
+
+To get started, simply create a dart frog server as you would normally would using the `dart_frog create my_server`.
+
+Once you have a project, add two dependencies on it:
+ - `graphql_schema2`
+ - `graphql_server2`
+
+As the name suggests, the first will be used to create your schema, the second to “transform” the schema into a server, or in our case, a route in our dart frog server.
+
+Next, we need to create the schema, consider this hypothetical API:
+
+> Cool Games API is a GraphQL server that provides a listing of download links of cool games for cool people to download
+
+So, considering that, we could say that our schema is composed of an entity called name, that has three fields, `id`, `name`, `downloadLink`, and we want people to be able list those entities.
+
+Consider that we have the follow model class:
+
+```dart
+class Game {
+  const Game({
+    required this.id,
+    required this.name,
+    required this.downloadLink,
+  });
+
+  final int id;
+  final String name;
+  final String downloadLink;
+}
+```
+
+We would be able describe that model in a graphql schema, with the following:
+
+```dart
+GraphQLObjectType createGameSchema(
+  RequestContext context,
+) {
+  final gameType = objectType(
+    'game',
+    fields: [
+      field('id', graphQLInt, resolve: (obj, args) => (obj as Game).id),
+      field(
+        'name',
+        graphQLString,
+        resolve: (obj, args) => (obj as Game).name,
+      ),
+      field(
+        'downloadLink',
+        graphQLString,
+        resolve: (obj, args) => (obj as Game).downloadLink,
+      ),
+  );
+  return gameType;
+}
+```
+
+Next, we need to create a full schema, with the queries we will expose in our server.
+
+Consider that we have a repository class that we can use to list and find games, something with the following signature:
+
+```dart
+class GameRepository {
+  Future<List<Game>> fetchGames();
+  Future<Game?> fetchGameById(int id);
+}
+```
+
+This is how our code would look like to create the queries.
+
+```dart
+GraphQL createGraphQL(RequestContext context) {
+  final gameSchema = createGameSchema(context);
+
+  final schema = graphQLSchema(
+    queryType: objectType(
+      'Query',
+      fields: [
+        field(
+          'games',
+          listOf(gameSchema),
+          resolve: (_, __) =>
+            context.read<GameRepository>()
+              .fetchGames(),
+        ),
+        field(
+          'findGame',
+          gameSchema,
+          inputs: [
+            GraphQLFieldInput('id', graphQLInt),
+          ],
+          resolve: (_, args) =>
+            context.read<GameRepository>().fetchGameById(
+              args['id'] as int,
+            ),
+        ),
+      ],
+    ),
+  );
+
+  return GraphQL(schema);
+}
+```
+
+Finally, we need to hook up that into a route so users can consume the information, to do so, let’s create a route `/graphql` in our server with the following code:
+
+```dart
+Future<Response> onRequest(RequestContext context) async {
+  if (context.request.method != HttpMethod.post) {
+    return Response(statusCode: 405);
+  }
+
+  final queryJson = await context.request.json();
+
+  if (queryJson is! Map<String, dynamic> || !queryJson.containsKey('query')) {
+    return Response(statusCode: 400, body: 'Missing "query" field in JSON.');
+  }
+
+  final query = queryJson['query'] as String;
+  final variables = queryJson['variables'] as Map<String, dynamic>?;
+
+  final graphQL = createGraphQL(context);
+  final data = await graphQL.parseAndExecute(
+    query,
+    variableValues: variables ?? {},
+  );
+
+  return Response.json(body: {'data': data as Map<String, dynamic>});
+}
+```
+
+And that is pretty much it! You can now query your server for games using GraphQL:
+
+```bash
+$ curl http://localhost:8080/graphql -X POST -d '
+query AllGames() {
+  games() {
+    id
+    name
+    downloadLink
+  }
+}'
+```
+
+You should get a response like this:
+
+```json
+ {
+  "data": {
+    "games": [
+      {
+        "id": "1",
+        "name": "Mine Cat Digger",
+        "downloadLink": "https://g4me.info/catdigger"
+      },
+      {
+        "id": "2",
+        "name": "Pixelado",
+        "downloadLink": "https://g4me.info/pixelado"
+      }
+    ]
+  }
+}
+```
+
+* By the way, these are real games that I made! Download them for free for android/iOS and support my work 💙 *
+
+## Wrapping up
+
+This wrap up this article, in this part of the series we showed how to set up the base schema and how to expose queries, if you want to check a real working example, check this (TODO LINK) repository and run locally the example presented here.
+
+In the next part of the series, we will show how to also expose mutation to enable callers of the API to input new data in the server, stay tuned!
+
