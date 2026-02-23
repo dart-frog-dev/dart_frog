@@ -14,10 +14,7 @@ void main() {
       final context = _MockRequestContext();
       final response = route.onRequest(context);
       expect(response.statusCode, equals(HttpStatus.ok));
-      expect(
-        response.body(),
-        completion(equals('Welcome to Dart Frog!')),
-      );
+      expect(response.body(), completion(equals('Welcome to Dart Frog!')));
     });
   });
 }
