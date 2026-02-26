@@ -35,25 +35,6 @@ import vscodeDark from '../../../assets/blog/fall_2025_recap/vscode_dark.png';
 import discordLight from '../../../assets/blog/fall_2025_recap/discord_light.png';
 import discordDark from '../../../assets/blog/fall_2025_recap/discord_dark.png';
 
-We can't believe it's been two months since
-[Dart Frog moved to a new organization](/blog/future-of-dart-frog)!
-
-Here's a quick recap of what the team has been up to:
-
-- Migrated and redesigned the [**Dart Frog Website**](https://dart-frog.dev)
-- Migrated the
-  [**VSCode Extension**](https://marketplace.visualstudio.com/items?itemName=DartFrog.dart-frog-dev)
-- Released [**package:dart_frog_lint**](https://pub.dev/packages/dart_frog_lint)
-- Added support for
-  [**Pub Workspaces**](https://github.com/dart-frog-dev/dart_frog/pull/1825)
-- Contributed benchmarks to
-  [**TechEmpower Framework Benchmarks**](https://github.com/TechEmpower/FrameworkBenchmarks/pull/10048)
-- Created a new [**Discord Server**](https://dart-frog.dev/discord)
-- Published
-  [**14 package releases to pub.dev**](https://pub.dev/publishers/dart-frog.dev/packages)
-- Closed over
-  [**20 pull requests**](https://github.com/dart-frog-dev/dart_frog/pulls?q=is%3Apr+is%3Aclosed)
-
 ## Dart Frog and GraphQL (Part 1)
 
 Dart Frog doesn't provide an “out of the box” way to implement a GraphQL schema with it, but that is totally achievable  if you combine it with a few other additional dart packages.
@@ -114,6 +95,7 @@ GraphQLObjectType createGameSchema(
         graphQLString,
         resolve: (obj, args) => (obj as Game).downloadLink,
       ),
+    ],
   );
   return gameType;
 }
@@ -129,6 +111,8 @@ class GameRepository {
   Future<Game?> fetchGameById(int id);
 }
 ```
+
+Don't forget to add this repository to our [context](https://dart-frog.dev/basics/dependency-injection/)!
 
 This is how our code would look like to create the queries.
 
@@ -196,14 +180,10 @@ Future<Response> onRequest(RequestContext context) async {
 And that is pretty much it! You can now query your server for games using GraphQL:
 
 ```bash
-$ curl http://localhost:8080/graphql -X POST -d '
-query AllGames() {
-  games() {
-    id
-    name
-    downloadLink
-  }
-}'
+$ curl http://localhost:8080/graphql \
+  -H "Content-Type: application/json" \
+  -X POST \
+  -d '{ "query": " query AllGames() { games() { id name downloadLink } } "}'
 ```
 
 You should get a response like this:
@@ -231,7 +211,7 @@ You should get a response like this:
 
 ## Wrapping up
 
-This wrap up this article, in this part of the series we showed how to set up the base schema and how to expose queries, if you want to check a real working example, check this (TODO LINK) repository and run locally the example presented here.
+This wrap up this article, in this part of the series we showed how to set up the base schema and how to expose queries, if you want to check a real working example, check [this](https://github.com/erickzanardo/game_list_server) repository and run locally the example presented here.
 
 In the next part of the series, we will show how to also expose mutation to enable callers of the API to input new data in the server, stay tuned!
 
