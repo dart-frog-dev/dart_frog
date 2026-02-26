@@ -1,9 +1,7 @@
 ---
 title: Dart Frog and GraphQL (Part 1)
 date: 2026-02-22
-excerpt:
-  A multipart guide on how to write a GraphQL server
-  with Dart Frog
+excerpt: A multipart guide on how to write a GraphQL server with Dart Frog
 authors:
   - team
 featured: true
@@ -15,10 +13,11 @@ tags:
   - community
 ---
 
-TODO review this
-import { Image } from 'astro:assets';
-import websiteRedesignLight from '../../../assets/blog/fall_2025_recap/website_redesign_light.png';
-import websiteRedesignDark from '../../../assets/blog/fall_2025_recap/website_redesign_dark.png';
+TODO review this import { Image } from 'astro:assets'; import
+websiteRedesignLight from
+'../../../assets/blog/fall_2025_recap/website_redesign_light.png'; import
+websiteRedesignDark from
+'../../../assets/blog/fall_2025_recap/website_redesign_dark.png';
 
 import lintLight from '../../../assets/blog/fall_2025_recap/lint_light.png';
 import lintDark from '../../../assets/blog/fall_2025_recap/lint_dark.png';
@@ -37,27 +36,42 @@ import discordDark from '../../../assets/blog/fall_2025_recap/discord_dark.png';
 
 ## Dart Frog and GraphQL (Part 1)
 
-Dart Frog doesn't provide an “out of the box” way to implement a GraphQL schema with it, but that is totally achievable  if you combine it with a few other additional dart packages.
+Dart Frog doesn't provide an “out of the box” way to implement a GraphQL schema
+with it, but that is totally achievable if you combine it with a few other
+additional dart packages.
 
-There are probably several ways of implementing a GraphQL server in Dart Frog, this article we’ll present one of them, one that I found to work well for the use case that I had, feel free to use it as an example, or even just the base to build on top of!
+There are probably several ways of implementing a GraphQL server in Dart Frog,
+this article we’ll present one of them, one that I found to work well for the
+use case that I had, feel free to use it as an example, or even just the base to
+build on top of!
 
-*It is not the goal of this text to discuss the pros and cons of using GraphQL over Rest, or other types of protocols, there are many good articles out there that explore this theme. Our goal here is to be direct, and propose a way of implementing this specific server query language, in a dart frog server!*
+_It is not the goal of this text to discuss the pros and cons of using GraphQL
+over Rest, or other types of protocols, there are many good articles out there
+that explore this theme. Our goal here is to be direct, and propose a way of
+implementing this specific server query language, in a dart frog server!_
 
 ## Let's get started
 
-To get started, simply create a dart frog server as you would normally would using the `dart_frog create my_server`.
+To get started, simply create a dart frog server as you would normally would
+using the `dart_frog create my_server`.
 
 Once you have a project, add two dependencies on it:
- - `graphql_schema2`
- - `graphql_server2`
 
-As the name suggests, the first will be used to create your schema, the second to “transform” the schema into a server, or in our case, a route in our dart frog server.
+- `graphql_schema2`
+- `graphql_server2`
+
+As the name suggests, the first will be used to create your schema, the second
+to “transform” the schema into a server, or in our case, a route in our dart
+frog server.
 
 Next, we need to create the schema, consider this hypothetical API:
 
-> Cool Games API is a GraphQL server that provides a listing of download links of cool games for cool people to download
+> Cool Games API is a GraphQL server that provides a listing of download links
+> of cool games for cool people to download
 
-So, considering that, we could say that our schema is composed of an entity called name, that has three fields, `id`, `name`, `downloadLink`, and we want people to be able list those entities.
+So, considering that, we could say that our schema is composed of an entity
+called name, that has three fields, `id`, `name`, `downloadLink`, and we want
+people to be able list those entities.
 
 Consider that we have the follow model class:
 
@@ -101,9 +115,11 @@ GraphQLObjectType createGameSchema(
 }
 ```
 
-Next, we need to create a full schema, with the queries we will expose in our server.
+Next, we need to create a full schema, with the queries we will expose in our
+server.
 
-Consider that we have a repository class that we can use to list and find games, something with the following signature:
+Consider that we have a repository class that we can use to list and find games,
+something with the following signature:
 
 ```dart
 class GameRepository {
@@ -112,7 +128,8 @@ class GameRepository {
 }
 ```
 
-Don't forget to add this repository to our [context](https://dart-frog.dev/basics/dependency-injection/)!
+Don't forget to add this repository to our
+[context](https://dart-frog.dev/basics/dependency-injection/)!
 
 This is how our code would look like to create the queries.
 
@@ -150,7 +167,9 @@ GraphQL createGraphQL(RequestContext context) {
 }
 ```
 
-Finally, we need to hook up that into a route so users can consume the information, to do so, let’s create a route `/graphql` in our server with the following code:
+Finally, we need to hook up that into a route so users can consume the
+information, to do so, let’s create a route `/graphql` in our server with the
+following code:
 
 ```dart
 Future<Response> onRequest(RequestContext context) async {
@@ -177,7 +196,8 @@ Future<Response> onRequest(RequestContext context) async {
 }
 ```
 
-And that is pretty much it! You can now query your server for games using GraphQL:
+And that is pretty much it! You can now query your server for games using
+GraphQL:
 
 ```bash
 $ curl http://localhost:8080/graphql \
@@ -189,29 +209,33 @@ $ curl http://localhost:8080/graphql \
 You should get a response like this:
 
 ```json
- {
-  "data": {
-    "games": [
-      {
-        "id": "1",
-        "name": "Mine Cat Digger",
-        "downloadLink": "https://g4me.info/catdigger"
-      },
-      {
-        "id": "2",
-        "name": "Pixelado",
-        "downloadLink": "https://g4me.info/pixelado"
-      }
-    ]
-  }
+{
+	"data": {
+		"games": [
+			{
+				"id": "1",
+				"name": "Mine Cat Digger",
+				"downloadLink": "https://g4me.info/catdigger"
+			},
+			{
+				"id": "2",
+				"name": "Pixelado",
+				"downloadLink": "https://g4me.info/pixelado"
+			}
+		]
+	}
 }
 ```
 
-* By the way, these are real games that I made! Download them for free for android/iOS and support my work 💙 *
+- By the way, these are real games that I made! Download them for free for
+  android/iOS and support my work 💙 \*
 
 ## Wrapping up
 
-This wrap up this article, in this part of the series we showed how to set up the base schema and how to expose queries, if you want to check a real working example, check [this](https://github.com/erickzanardo/game_list_server) repository and run locally the example presented here.
+This wrap up this article, in this part of the series we showed how to set up
+the base schema and how to expose queries, if you want to check a real working
+example, check [this](https://github.com/erickzanardo/game_list_server)
+repository and run locally the example presented here.
 
-In the next part of the series, we will show how to also expose mutation to enable callers of the API to input new data in the server, stay tuned!
-
+In the next part of the series, we will show how to also expose mutation to
+enable callers of the API to input new data in the server, stay tuned!
