@@ -157,10 +157,6 @@ Future<void> preGen(
   );
   final addDockerfile = !customDockerFile.existsSync();
 
-  context.logger.info(
-    configuration.directories.map((c) => c.toJson()).toList().join('\n'),
-  );
-
   context.vars = {
     'directories': configuration.directories.map((c) => c.toJson()).toList(),
     'routes': configuration.routes.map((r) => r.toJson()).toList(),
