@@ -81,9 +81,8 @@ void main() {
         expect(
           pubspecOverrides.readAsStringSync(),
           equals('''
-resolution: null
 dependency_overrides: {}
-'''),
+resolution: null'''),
         );
       });
     });
@@ -158,13 +157,16 @@ $workspaceRootDartFrogOverride
           ) as File;
           expect(
             pubspecOverrides.readAsStringSync(),
-            equals(
-              '''
-$originalPubspecOverridesContent
-$workspaceRootDartFrogOverride
+            equals('''
+dependency_overrides:
+  dart_frog:
+    git:
+      url: https://github.com/dart-frog-dev/dart_frog
+      path: packages/dart_frog
+  foo:
+    path: ./path/to/foo
 resolution: null
-''',
-            ),
+'''),
           );
         });
       });
