@@ -3,6 +3,3 @@ dependency_overrides:
     path: ../../packages/dart_frog
   dart_frog_lint:
     path: ../../packages/dart_frog_lint
-  # Remove when coverage reporting is fixed.
-  #  https://github.com/dart-lang/test/pull/2594
-  test: 1.26.3

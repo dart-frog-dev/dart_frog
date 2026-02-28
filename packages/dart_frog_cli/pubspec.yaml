@@ -1,6 +1,6 @@
 name: dart_frog_cli
 description: The official command line interface for Dart Frog — a fast, minimalistic backend framework for Dart.
-version: 1.2.11
+version: 1.2.12
 homepage: https://dart-frog.dev
 repository: https://github.com/dart-frog-dev/dart_frog
 issue_tracker: https://github.com/dart-frog-dev/dart_frog/issues
@@ -17,7 +17,7 @@ environment:
 dependencies:
   args: ^2.5.0
   cli_completion: ^0.5.1
-  dart_frog_gen: ^2.0.0
+  dart_frog_gen: ^2.1.0
   equatable: ^2.0.5
   mason: ^0.1.0
   meta: ^1.15.0

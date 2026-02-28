@@ -1,3 +1,9 @@
+# 1.2.12
+
+- fix: route mounting order ([#1931](https://github.com/dart-frog-dev/dart_frog/pull/1931))
+- deps: require `dart_frog_gen ^2.1.0`
+  - allows static routes to take precedence over dynamic routes
+
 # 1.2.11
 
 - fix: support workspace root `pubspec_overrides.yaml` ([#1897](https://github.com/dart-frog-dev/dart_frog/pull/1897))
