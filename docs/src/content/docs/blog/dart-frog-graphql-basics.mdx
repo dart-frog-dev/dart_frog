@@ -1,0 +1,225 @@
+---
+title: The basics of Dart Frog and GraphQL
+date: 2026-02-22
+excerpt: A guide on the basics of building a GraphQL server powered by Dart Frog.
+authors:
+  - erickzanardo
+featured: true
+cover:
+  alt: The basics of Dart Frog and GraphQL
+  dark: ../../../assets/blog/dart_frog_graphql/cover_dark.svg
+  light: ../../../assets/blog/dart_frog_graphql/cover_light.svg
+tags:
+  - guide
+---
+
+## Dart Frog and GraphQL (Part 1)
+
+While Dart Frog doesn't provide an “out of the box” way to implement a GraphQL
+schema, in this blog we'll walk through how to build a GraphQL server powered by
+Dart Frog with just a few additional Dart packages.
+
+:::note
+
+The goal of this guide is not to discuss the pros and cons of using GraphQL over
+REST or other protocols. This guide is focused on illustrating one way to
+implement a GraphQL server powered by Dart Frog.
+
+:::
+
+## Getting Started
+
+To get started, simply create a dart frog server as you would normally would
+using the `dart_frog create` command.
+
+Once you have a project, add two dependencies from [pub.dev](https://pub.dev).
+
+- [`graphql_schema2`](https://pub.dev/packages/graphql_schema2)
+- [`graphql_server2`](https://pub.dev/packages/graphql_server2)
+
+```sh
+dart pub add graphql_schema2
+dart pub add graphql_server2
+```
+
+The `graphql_schema2` package will be used to create the schema and
+`graphql_server2` will transform the schema into a server, or in our case, a
+route in our Dart Frog server.
+
+Next, we need to create the schema. Consider this hypothetical API:
+
+> THe Cool Games API is a GraphQL server that provides a way to query cool games
+> for cool people to download.
+
+Our example schema is composed of an entity called game, that has three fields,
+`id`, `name`, `downloadLink`.
+
+We can model that entity with the following plain Dart class:
+
+```dart
+class Game {
+  const Game({
+    required this.id,
+    required this.name,
+    required this.downloadLink,
+  });
+
+  final int id;
+  final String name;
+  final String downloadLink;
+}
+```
+
+We can then describe that model in a GraphQL schema:
+
+```dart
+GraphQLObjectType createGameSchema(
+  RequestContext context,
+) {
+  final gameType = objectType(
+    'game',
+    fields: [
+      field('id', graphQLInt, resolve: (obj, args) => (obj as Game).id),
+      field(
+        'name',
+        graphQLString,
+        resolve: (obj, args) => (obj as Game).name,
+      ),
+      field(
+        'downloadLink',
+        graphQLString,
+        resolve: (obj, args) => (obj as Game).downloadLink,
+      ),
+    ],
+  );
+  return gameType;
+}
+```
+
+Next, we need to create a full schema that includes the queries we will expose
+from our server.
+
+Let's write a repository that we can use to query games:
+
+```dart
+class GameRepository {
+  Future<List<Game>> fetchGames();
+  Future<Game?> fetchGameById(int id);
+}
+```
+
+:::tip
+
+Don't forget to provide the repository to our context using
+[dependency injection](https://dart-frog.dev/basics/dependency-injection).
+
+:::
+
+The code to create the queries would look something like:
+
+```dart
+GraphQL createGraphQL(RequestContext context) {
+  final gameSchema = createGameSchema(context);
+
+  final schema = graphQLSchema(
+    queryType: objectType(
+      'Query',
+      fields: [
+        field(
+          'games',
+          listOf(gameSchema),
+          resolve: (_, __) =>
+            context.read<GameRepository>()
+              .fetchGames(),
+        ),
+        field(
+          'findGame',
+          gameSchema,
+          inputs: [
+            GraphQLFieldInput('id', graphQLInt),
+          ],
+          resolve: (_, args) =>
+            context.read<GameRepository>().fetchGameById(
+              args['id'] as int,
+            ),
+        ),
+      ],
+    ),
+  );
+
+  return GraphQL(schema);
+}
+```
+
+Finally, we need to expose this via a route. Let's create a `graphql.dart` route
+in our server with the following code:
+
+```dart
+Future<Response> onRequest(RequestContext context) async {
+  if (context.request.method != HttpMethod.post) {
+    return Response(statusCode: 405);
+  }
+
+  final queryJson = await context.request.json();
+
+  if (queryJson is! Map<String, dynamic> || !queryJson.containsKey('query')) {
+    return Response(statusCode: 400, body: 'Missing "query" field in JSON.');
+  }
+
+  final query = queryJson['query'] as String;
+  final variables = queryJson['variables'] as Map<String, dynamic>?;
+
+  final graphQL = createGraphQL(context);
+  final data = await graphQL.parseAndExecute(
+    query,
+    variableValues: variables ?? {},
+  );
+
+  return Response.json(body: {'data': data as Map<String, dynamic>});
+}
+```
+
+And that's all there is to it! You can now query your server for games using
+GraphQL:
+
+```bash
+$ curl http://localhost:8080/graphql \
+  -H "Content-Type: application/json" \
+  -X POST \
+  -d '{ "query": " query AllGames() { games() { id name downloadLink } } "}'
+```
+
+The above query should produce the following response:
+
+```json
+{
+	"data": {
+		"games": [
+			{
+				"id": "1",
+				"name": "Mine Cat Digger",
+				"downloadLink": "https://g4me.info/catdigger"
+			},
+			{
+				"id": "2",
+				"name": "Pixelado",
+				"downloadLink": "https://g4me.info/pixelado"
+			}
+		]
+	}
+}
+```
+
+:::note
+
+These are real games that I made! Download them for free on Android or iOS to
+support my work 💙
+
+:::
+
+## Summary
+
+In this blog we walked through how to set up the base schema and expose queries.
+To see a real working example, check out the
+[full source](https://github.com/erickzanardo/game_list_server) and feel free to
+clone and run the example locally.
