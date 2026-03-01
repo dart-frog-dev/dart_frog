@@ -1,3 +1,7 @@
+# 1.2.13
+
+- fix: remove superfluous log from development server output
+
 # 1.2.12
 
 - fix: route mounting order ([#1931](https://github.com/dart-frog-dev/dart_frog/pull/1931))
