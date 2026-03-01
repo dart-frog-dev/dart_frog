@@ -13,14 +13,14 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.6",
-    "@astrojs/starlight": "^0.37.5",
-    "astro": "^5.17.1",
+    "@astrojs/starlight": "^0.37.6",
+    "astro": "^5.18.0",
     "sharp": "^0.34.5",
-    "starlight-blog": "^0.25.2"
+    "starlight-blog": "^0.25.3"
   },
   "devDependencies": {
     "@astrojs/starlight-tailwind": "^4.0.2",
-    "@tailwindcss/vite": "^4.1.18",
+    "@tailwindcss/vite": "^4.2.1",
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
