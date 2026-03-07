@@ -88,6 +88,12 @@ export default defineConfig({
 							picture: '/headshots/dart-frog.svg',
 							url: site,
 						},
+						erickzanardo: {
+							name: 'Erick Zanardo',
+							title: 'Maintainer',
+							picture: '/headshots/erick-zanardo.png',
+							url: 'https://github.com/erickzanardo',
+						},
 					},
 				}),
 				starlightLinksValidator({
