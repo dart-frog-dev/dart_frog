@@ -190,16 +190,16 @@ Future<void>init(InternetAddress ip,int port)async{}
           'middleware': [],
           'files': [
             {
-              'name': 'index',
-              'path': '../routes/index.dart',
-              'route': '/',
+              'name': 'hello',
+              'path': '../routes/hello.dart',
+              'route': '/hello',
               'file_params': [],
               'wildcard': false,
             },
             {
-              'name': 'hello',
-              'path': '../routes/hello.dart',
-              'route': '/hello',
+              'name': 'index',
+              'path': '../routes/index.dart',
+              'route': '/',
               'file_params': [],
               'wildcard': false,
             }
@@ -1286,6 +1286,44 @@ Future<void>init(InternetAddress ip,int port)async{}
           ['slug'],
         ),
       );
+    });
+
+    test(
+        'orders by wildcard, then total segments '
+        'when specificity is equal', () {
+      final configuration = buildRouteConfiguration(
+        createTempDir(
+          files: [
+            'routes/x/index.dart',
+            'routes/x/[id].dart',
+            'routes/x/[...rest].dart',
+          ],
+        ),
+      );
+
+      final xDir = configuration.directories.firstWhere((d) => d.route == '/x');
+      final fileRoutes = xDir.files.map((f) => f.route).toList();
+
+      expect(fileRoutes, equals(['/<id>', '/', '/']));
+      expect(xDir.files.last.wildcard, isTrue);
+    });
+
+    test(
+        'uses route string as deterministic '
+        'fallback when specificity is equal', () {
+      final configuration = buildRouteConfiguration(
+        createTempDir(
+          files: [
+            'routes/x/a.dart',
+            'routes/x/b.dart',
+          ],
+        ),
+      );
+
+      final xDir = configuration.directories.firstWhere((d) => d.route == '/x');
+      final fileRoutes = xDir.files.map((f) => f.route).toList();
+
+      expect(fileRoutes, equals(['/a', '/b']));
     });
   });
 

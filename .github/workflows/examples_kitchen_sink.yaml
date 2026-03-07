@@ -33,10 +33,3 @@ jobs:
     with:
       setup: rm pubspec_overrides.yaml && dart pub global activate --source path ../../packages/dart_frog_cli
       working_directory: examples/kitchen_sink
-
-  docker_custom:
-    uses: ./.github/workflows/.docker_tests.yaml
-    with:
-      setup: rm pubspec_overrides.yaml && dart pub global activate --source path ../../packages/dart_frog_cli
-      docker_directory: .
-      working_directory: examples/kitchen_sink

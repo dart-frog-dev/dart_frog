@@ -1,4 +1,5 @@
 import 'package:dart_frog_gen/dart_frog_gen.dart';
+import 'package:dart_frog_gen/src/route_specificity.dart';
 import 'package:equatable/equatable.dart';
 import 'package:path/path.dart' as path;
 
@@ -28,6 +29,22 @@ typedef OnRouteConflict = void Function(
   String conflictingEndpoint,
 );
 
+bool _overlaps(List<String> routeA, List<String> routeB) {
+  if (routeA.length != routeB.length) return false;
+
+  for (var i = 0; i < routeA.length; i++) {
+    final segmentA = routeA[i];
+    final segmentB = routeB[i];
+
+    if (segmentA == segmentB) continue;
+    if (segmentA.isDynamic || segmentB.isDynamic) continue;
+
+    return false;
+  }
+
+  return true;
+}
+
 /// Reports existence of route conflicts on a [RouteConfiguration].
 void reportRouteConflicts(
   RouteConfiguration configuration, {
@@ -46,30 +63,15 @@ void reportRouteConflicts(
 
   final indirectConflicts = configuration.endpoints.entries
       .map((entry) {
+        final keyParts = entry.key.segments.toList();
+
         final matches = configuration.endpoints.keys.where((other) {
-          final keyParts = entry.key.split('/');
-          if (other == entry.key) {
-            return false;
-          }
+          if (other == entry.key) return false;
 
-          final otherParts = other.split('/');
+          final otherParts = other.segments.toList();
 
-          var match = false;
-
-          if (keyParts.length == otherParts.length) {
-            for (var i = 0; i < keyParts.length; i++) {
-              if ((keyParts[i] == otherParts[i]) ||
-                  (keyParts[i].startsWith('<') ||
-                      otherParts[i].startsWith('<'))) {
-                match = true;
-              } else {
-                match = false;
-                break;
-              }
-            }
-          }
-
-          return match;
+          if (!_overlaps(keyParts, otherParts)) return false;
+          return compareRouteSpecificity(keyParts, otherParts) == 0;
         });
 
         if (matches.isNotEmpty) {
