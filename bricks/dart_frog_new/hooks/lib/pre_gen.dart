@@ -159,6 +159,15 @@ void _preGenMiddleware(
 
   const middlewareFilename = '_middleware.dart';
 
+  final createsMiddlewareOfMiddleware = routePath
+      .split('/')
+      .where((segment) => segment.isNotEmpty)
+      .contains('_middleware');
+  if (createsMiddlewareOfMiddleware) {
+    context.logger.err('Cannot create middleware inside another middleware.');
+    return exit(1);
+  }
+
   // Get the path to directory containing the middleware file
   final String middlewareContainingDir;
   if (routePath == '/') {

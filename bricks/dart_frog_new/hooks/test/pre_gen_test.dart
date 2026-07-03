@@ -470,6 +470,32 @@ void main() {
         expect(exitCalls, equals([1]));
       });
 
+      test('exit(1) if creating middleware inside middleware', () {
+        final exitCalls = <int>[];
+        context.vars['route_path'] = '/_middleware';
+
+        final directory = io.Directory.systemTemp.createTempSync(
+          'dart_frog_new_hooks_test',
+        );
+        addTearDown(() {
+          directory.deleteSync(recursive: true);
+        });
+
+        preGen(
+          context,
+          buildConfiguration: (_) => validRouteConfiguration,
+          exit: exitCalls.add,
+          directory: directory,
+        );
+
+        verify(
+          () => logger.err(
+            '''Cannot create middleware inside another middleware.''',
+          ),
+        );
+        expect(exitCalls, equals([1]));
+      });
+
       test('Renames a wrapping route that exists as file to an index', () {
         final exitCalls = <int>[];
 
