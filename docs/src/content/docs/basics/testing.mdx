@@ -133,9 +133,11 @@ We can unit test this piece of middleware in isolation using `package:test` and
 `package:mocktail` just like before.
 
 To test this, we need to import our middleware, create a mock `RequestContext`
-using `package:mocktail`, apply our middleware to a dummy handler, and invoke
-the handler with a mock request context. Then, we can assert that the simple
-handler we applied the middleware to had access to the provided value.
+using `package:mocktail`, stub `context.provide` (which the `provider` middleware
+calls under the hood to inject the value), apply our middleware to a dummy
+handler, and invoke the handler with the mock request context. Then, we can
+capture the value the middleware provided and assert that it matches what we
+expect.
 
 ```dart
 import 'package:dart_frog/dart_frog.dart';
@@ -150,22 +152,20 @@ void main() {
   group('middleware', () {
     test('provides greeting', () async {
       // Arrange
-      String? greeting;
-      final handler = middleware(
-        (context) {
-          greeting = context.read<String>();
-          return Response(body: '');
-        },
-      );
+      final handler = middleware((_) => Response(body: ''));
       final request = Request.get(Uri.parse('http://localhost/'));
       final context = _MockRequestContext();
       when(() => context.request).thenReturn(request);
+      when(() => context.provide<String>(any())).thenReturn(context);
 
       // Act
       await handler(context);
 
       // Assert
-      expect(greeting, equals('Hello World'));
+      final create = verify(() => context.provide<String>(captureAny()))
+          .captured
+          .single as String Function();
+      expect(create(), equals('Hello World'));
     });
   });
 }
@@ -173,7 +173,9 @@ void main() {
 
 :::note
 
-We are stubbing the `context.request` with a real `Request` object so that the
-`provider` is able to inject the value.
+The `provider` middleware injects values by calling `context.provide`, so we
+stub it to return the mocked `context` and capture the callback it was given.
+Invoking that captured callback lets us assert the value the middleware
+provides. (We also stub `context.request` with a real `Request` object.)
 
 :::
