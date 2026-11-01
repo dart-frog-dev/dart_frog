@@ -25,7 +25,7 @@ on:
 
 jobs:
   build:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v1
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v2
     with:
       working_directory: examples/todos
       analyze_directories: "routes test"
@@ -38,11 +38,11 @@ jobs:
       working_directory: examples/todos
 
   todos_data_source:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v1
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v2
     with:
       working_directory: examples/todos/packages/todos_data_source
 
   in_memory_todos_data_source:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v1
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v2
     with:
       working_directory: examples/todos/packages/in_memory_todos_data_source

@@ -20,7 +20,7 @@ on:
 
 jobs:
   build:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v1
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v2
     with:
       working_directory: packages/dart_frog_cli
       concurrency: 1
@@ -53,6 +53,6 @@ jobs:
         run: dart test -j 1
 
   pana:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/pana.yml@v1
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/pana.yml@v2
     with:
       working_directory: packages/dart_frog_cli

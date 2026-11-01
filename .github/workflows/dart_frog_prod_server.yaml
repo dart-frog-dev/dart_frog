@@ -14,7 +14,7 @@ on:
 
 jobs:
   build:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v1
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v2
     with:
       working_directory: bricks/dart_frog_prod_server/hooks
       analyze_directories: .
