@@ -30,6 +30,12 @@ RouteConfiguration buildRouteConfiguration(Directory directory) {
   ];
   final routes = <RouteFile>[];
   final rogueRoutes = <RouteFile>[];
+  // Order the directory mounts so that more specific mounts are registered on
+  // the root router before the shorter prefixes they share. `Router.mount`
+  // also matches `prefix/<rest>` and falls through on a 404, so without this a
+  // request to `/tasks/add` could be captured by a `/tasks` mount that has a
+  // dynamic `/<taskId>` child (see #1959). Ties fall back to the route string
+  // for a stable, deterministic order.
   final directories = _getRouteDirectories(
     directory: routesDirectory,
     routesDirectory: routesDirectory,
@@ -43,7 +49,15 @@ RouteConfiguration buildRouteConfiguration(Directory directory) {
       }
     },
     onRogueRoute: rogueRoutes.add,
-  );
+  )..sort((a, b) {
+      final specificity = compareRouteDirectorySpecificity(
+        [...a.route.segments],
+        [...b.route.segments],
+      );
+      if (specificity != 0) return specificity;
+      return a.route.compareTo(b.route);
+    });
+
   final publicDirectory = Directory(path.join(directory.path, 'public'));
   final mainDartFile = File(path.join(directory.path, 'main.dart'));
 
@@ -323,7 +337,11 @@ class RouteConfiguration {
   final List<MiddlewareFile> middleware;
 
   /// List of all route directories.
-  /// Sorted from leaf nodes to root.
+  ///
+  /// Ordered by mount specificity (most specific first) so that, when the
+  /// directories are mounted on the root router in order, a longer literal
+  /// path (e.g. `/tasks/add`) is registered before a shorter prefix
+  /// (e.g. `/tasks`) that could otherwise capture it via a dynamic child.
   final List<RouteDirectory> directories;
 
   /// List of all route files.
