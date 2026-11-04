@@ -66,7 +66,12 @@ Actual MIME type: "application/json"
         bytes: () async* {},
       );
 
-      expect(formData.fields, equals({'foo': 'bar'}));
+      expect(
+        formData.fields,
+        equals({
+          'foo': ['bar'],
+        }),
+      );
       expect(formData.files, isEmpty);
     });
 
@@ -81,7 +86,13 @@ Actual MIME type: "application/json"
         bytes: () async* {},
       );
 
-      expect(formData.fields, equals({'foo': 'bar', 'bar': 'baz'}));
+      expect(
+        formData.fields,
+        equals({
+          'foo': ['bar'],
+          'bar': ['baz'],
+        }),
+      );
       expect(formData.files, isEmpty);
     });
 
@@ -101,7 +112,12 @@ Actual MIME type: "application/json"
           },
         );
 
-        expect(formData.fields, equals({'foo': 'bar'}));
+        expect(
+          formData.fields,
+          equals({
+            'foo': ['bar'],
+          }),
+        );
         expect(formData.files, isEmpty);
       });
 
@@ -130,11 +146,13 @@ Actual MIME type: "application/json"
         expect(
           formData.files,
           equals({
-            'my_file': isUploadedFile(
-              'my_file.txt',
-              ContentType.text,
-              'file content',
-            ),
+            'my_file': [
+              isUploadedFile(
+                'my_file.txt',
+                ContentType.text,
+                'file content',
+              ),
+            ],
           }),
         );
       });
@@ -168,20 +186,30 @@ Actual MIME type: "application/json"
           },
         );
 
-        expect(formData.fields, equals({'foo': 'bar', 'bar': 'baz'}));
+        expect(
+          formData.fields,
+          equals({
+            'foo': ['bar'],
+            'bar': ['baz'],
+          }),
+        );
         expect(
           formData.files,
           equals({
-            'my_file': isUploadedFile(
-              'my_file.txt',
-              ContentType.text,
-              'file content',
-            ),
-            'my_other_file': isUploadedFile(
-              'my_other_file.txt',
-              ContentType.text,
-              'file content',
-            ),
+            'my_file': [
+              isUploadedFile(
+                'my_file.txt',
+                ContentType.text,
+                'file content',
+              ),
+            ],
+            'my_other_file': [
+              isUploadedFile(
+                'my_other_file.txt',
+                ContentType.text,
+                'file content',
+              ),
+            ],
           }),
         );
       });
@@ -189,23 +217,54 @@ Actual MIME type: "application/json"
   });
 
   group('$FormData', () {
-    test('is backwards compatible with a Map<String, String>', () {
+    test('supports Map<String, List<String>> access', () {
       final formData = FormData(
-        fields: {'foo': 'bar', 'bar': 'baz'},
+        fields: {
+          'foo': ['bar'],
+          'bar': ['baz'],
+        },
         files: {},
       );
 
-      expect(formData['foo'], equals('bar'));
+      expect(formData['foo'], equals(['bar']));
       expect(formData.keys, equals(['foo', 'bar']));
-      expect(formData.values, equals(['bar', 'baz']));
+      expect(
+        formData.values,
+        equals([
+          ['bar'],
+          ['baz'],
+        ]),
+      );
 
       formData.remove('bar');
-      expect(formData, equals({'foo': 'bar'}));
-      expect(formData.fields, equals({'foo': 'bar'}));
+      expect(
+        formData,
+        equals({
+          'foo': ['bar'],
+        }),
+      );
+      expect(
+        formData.fields,
+        equals({
+          'foo': ['bar'],
+        }),
+      );
 
-      formData['bar'] = 'baz';
-      expect(formData, equals({'foo': 'bar', 'bar': 'baz'}));
-      expect(formData.fields, equals({'foo': 'bar', 'bar': 'baz'}));
+      formData['bar'] = ['baz'];
+      expect(
+        formData,
+        equals({
+          'foo': ['bar'],
+          'bar': ['baz'],
+        }),
+      );
+      expect(
+        formData.fields,
+        equals({
+          'foo': ['bar'],
+          'bar': ['baz'],
+        }),
+      );
 
       formData.clear();
       expect(formData, equals(isEmpty));

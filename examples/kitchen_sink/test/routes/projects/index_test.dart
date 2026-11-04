@@ -56,9 +56,9 @@ void main() {
         response.json(),
         completion(
           equals({
-            'project_configuration': const <String, String>{
-              'name': 'my_app',
-              'version': '3.3.8',
+            'project_configuration': const <String, List<String>>{
+              'name': ['my_app'],
+              'version': ['3.3.8'],
             },
           }),
         ),
