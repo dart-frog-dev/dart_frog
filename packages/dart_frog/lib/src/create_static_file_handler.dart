@@ -5,7 +5,7 @@ import 'package:shelf_static/shelf_static.dart';
 /// Defaults to the `public` directory.
 Handler createStaticFileHandler({
   String path = 'public',
-  String? defaultDocument,
+  String? defaultDocument = 'index.html',
 }) {
   return fromShelfHandler(
     createStaticHandler(path, defaultDocument: defaultDocument),
