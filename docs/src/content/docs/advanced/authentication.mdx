@@ -31,6 +31,10 @@ while Cookie-based authentication uses the `Cookie` header, as defined in
 package provides support for Basic, Bearer, and Cookie-based authentications,
 which are common authentication methods used by many developers.
 
+The `Basic` and `Bearer` schemes in the `Authorization` header are matched
+case-insensitively, as defined in
+[RFC 9110](https://www.rfc-editor.org/rfc/rfc9110#section-11.1).
+
 ### Basic Authentication
 
 Like its name infers, this is a basic authentication scheme that consists of the
