@@ -3,15 +3,20 @@ import 'dart:io';
 
 import 'package:dart_frog/dart_frog.dart';
 
+final _whitespace = RegExp(r'\s+');
+
 extension on Map<String, String> {
+  /// Returns the credentials of the `Authorization` header when its scheme
+  /// matches [type] case-insensitively (RFC 9110 §11.1), or `null` otherwise.
   String? authorization(String type) {
-    final value = this['Authorization']?.split(' ');
+    final value = this['Authorization']?.trim().split(_whitespace);
 
-    if (value != null && value.length == 2 && value.first == type) {
-      return value.last;
-    }
-
-    return null;
+    return switch (value) {
+      [final scheme, final credentials]
+          when scheme.toLowerCase() == type.toLowerCase() =>
+        credentials,
+      _ => null,
+    };
   }
 
   String? bearer() => authorization('Bearer');
