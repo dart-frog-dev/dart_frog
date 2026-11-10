@@ -98,8 +98,21 @@ Middleware basicAuthentication<T extends Object>({
 
         final authorization = context.request.headers.basic();
         if (authorization != null) {
-          final [username, password] =
-              String.fromCharCodes(base64Decode(authorization)).split(':');
+          final String credentials;
+          try {
+            credentials = String.fromCharCodes(base64Decode(authorization));
+          } on FormatException {
+            return Response(statusCode: HttpStatus.unauthorized);
+          }
+
+          // The user-id cannot contain a colon, but the password can
+          // (RFC 7617 §2), so split on the first colon only.
+          final separator = credentials.indexOf(':');
+          if (separator == -1) {
+            return Response(statusCode: HttpStatus.unauthorized);
+          }
+          final username = credentials.substring(0, separator);
+          final password = credentials.substring(separator + 1);
 
           final user = await call(username, password);
           if (user != null) {
