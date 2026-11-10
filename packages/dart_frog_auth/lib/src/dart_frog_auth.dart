@@ -3,19 +3,48 @@ import 'dart:io';
 
 import 'package:dart_frog/dart_frog.dart';
 
+final _whitespace = RegExp(r'\s+');
+
 extension on Map<String, String> {
+  /// Returns the credentials of the `Authorization` header when its scheme
+  /// matches [type] case-insensitively (RFC 9110 §11.1), or `null` otherwise.
   String? authorization(String type) {
-    final value = this['Authorization']?.split(' ');
+    final value = this['Authorization']?.trim().split(_whitespace);
 
-    if (value != null && value.length == 2 && value.first == type) {
-      return value.last;
-    }
-
-    return null;
+    return switch (value) {
+      [final scheme, final credentials]
+          when scheme.toLowerCase() == type.toLowerCase() =>
+        credentials,
+      _ => null,
+    };
   }
 
   String? bearer() => authorization('Bearer');
-  String? basic() => authorization('Basic');
+
+  /// Returns the decoded `Basic` credentials, or `null` when they are missing
+  /// or malformed.
+  (String username, String password)? basic() {
+    final token = authorization('Basic');
+    if (token == null) return null;
+
+    final String credentials;
+    try {
+      credentials = utf8.decode(base64Decode(token));
+    } on FormatException {
+      return null;
+    }
+
+    // The user-id cannot contain a colon, but the password can
+    // (RFC 7617 §2), so split on the first colon only.
+    final separator = credentials.indexOf(':');
+    if (separator == -1) return null;
+
+    return (
+      credentials.substring(0, separator),
+      credentials.substring(separator + 1),
+    );
+  }
+
   Map<String, String>? cookies() {
     final cookieString = this['Cookie'];
     if (cookieString == null) return null;
@@ -91,11 +120,8 @@ Middleware basicAuthentication<T extends Object>({
           }
         }
 
-        final authorization = context.request.headers.basic();
-        if (authorization != null) {
-          final [username, password] =
-              String.fromCharCodes(base64Decode(authorization)).split(':');
-
+        final credentials = context.request.headers.basic();
+        if (credentials case (final username, final password)) {
           final user = await call(username, password);
           if (user != null) {
             return handler(context.provide(() => user));

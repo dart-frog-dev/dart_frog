@@ -2,6 +2,7 @@
 // ignore_for_file: prefer_const_constructors
 // Not required for test files
 // ignore_for_file: deprecated_member_use_from_same_package
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dart_frog/dart_frog.dart';
@@ -13,12 +14,28 @@ class _MockRequestContext extends Mock implements RequestContext {}
 
 class _MockRequest extends Mock implements Request {}
 
+class _MockBasicAuthenticator extends Mock {
+  Future<_User?> call(
+    RequestContext context,
+    String username,
+    String password,
+  );
+}
+
+class _MockBearerAuthenticator extends Mock {
+  Future<_User?> call(RequestContext context, String token);
+}
+
 class _User {
   const _User(this.id);
   final String id;
 }
 
 void main() {
+  setUpAll(() {
+    registerFallbackValue(_MockRequestContext());
+  });
+
   group('$basicAuthentication', () {
     late RequestContext context;
     late Request request;
@@ -114,6 +131,22 @@ void main() {
           );
         },
       );
+
+      test('matches the scheme case-insensitively', () async {
+        when(() => request.headers).thenReturn({
+          'Authorization': 'basic dXNlcjpwYXNz',
+        });
+        (String, String)? received;
+        final middleware = basicAuthentication<_User>(
+          userFromCredentials: (username, password) async {
+            received = (username, password);
+            return _User('');
+          },
+        );
+        final response = await middleware((_) async => Response())(context);
+        expect(response.statusCode, equals(HttpStatus.ok));
+        expect(received, equals(('user', 'pass')));
+      });
 
       test("skips routes that doesn't match the custom predicate", () async {
         var called = false;
@@ -217,6 +250,51 @@ void main() {
           );
         },
       );
+
+      group('parses the Authorization header', () {
+        late _MockBasicAuthenticator authenticator;
+
+        String encode(String credentials) =>
+            base64Encode(utf8.encode(credentials));
+
+        setUp(() {
+          authenticator = _MockBasicAuthenticator();
+          when(() => authenticator(any(), any(), any()))
+              .thenAnswer((_) async => _User(''));
+        });
+
+        for (final (header, username, password) in [
+          ('basic ${encode('user:pass')}', 'user', 'pass'),
+          ('Basic ${encode('user:pa:ss')}', 'user', 'pa:ss'),
+          ('Basic ${encode('user:pässwörd')}', 'user', 'pässwörd'),
+        ]) {
+          test('authenticates ${jsonEncode(header)}', () async {
+            when(() => request.headers).thenReturn({'Authorization': header});
+            final middleware = basicAuthentication<_User>(
+              authenticator: authenticator.call,
+            );
+            final response = await middleware((_) async => Response())(context);
+            expect(response.statusCode, equals(HttpStatus.ok));
+            verify(() => authenticator(context, username, password)).called(1);
+          });
+        }
+
+        for (final header in [
+          'Basic !!!',
+          'Basic ${encode('nocolon')}',
+          'Basic ${base64Encode([0x75, 0x3a, 0xff])}',
+        ]) {
+          test('returns 401 for ${jsonEncode(header)}', () async {
+            when(() => request.headers).thenReturn({'Authorization': header});
+            final middleware = basicAuthentication<_User>(
+              authenticator: authenticator.call,
+            );
+            final response = await middleware((_) async => Response())(context);
+            expect(response.statusCode, equals(HttpStatus.unauthorized));
+            verifyNever(() => authenticator(any(), any(), any()));
+          });
+        }
+      });
 
       test("skips routes that doesn't match the custom predicate", () async {
         var called = false;
@@ -335,6 +413,22 @@ void main() {
         },
       );
 
+      test('matches the scheme case-insensitively', () async {
+        when(() => request.headers).thenReturn({
+          'Authorization': 'bearer 1234',
+        });
+        String? received;
+        final middleware = bearerAuthentication<_User>(
+          userFromToken: (token) async {
+            received = token;
+            return _User('');
+          },
+        );
+        final response = await middleware((_) async => Response())(context);
+        expect(response.statusCode, equals(HttpStatus.ok));
+        expect(received, equals('1234'));
+      });
+
       test("skips routes that doesn't match the custom predicate", () async {
         var called = false;
 
@@ -437,6 +531,52 @@ void main() {
           );
         },
       );
+
+      group('parses the Authorization header', () {
+        late _MockBearerAuthenticator authenticator;
+
+        setUp(() {
+          authenticator = _MockBearerAuthenticator();
+          when(() => authenticator(any(), any()))
+              .thenAnswer((_) async => _User(''));
+        });
+
+        for (final header in [
+          'bearer 1234',
+          'BEARER 1234',
+          'Bearer   1234',
+          'Bearer\t1234',
+          '  Bearer 1234  ',
+        ]) {
+          test('authenticates ${jsonEncode(header)}', () async {
+            when(() => request.headers).thenReturn({'Authorization': header});
+            final middleware = bearerAuthentication<_User>(
+              authenticator: authenticator.call,
+            );
+            final response = await middleware((_) async => Response())(context);
+            expect(response.statusCode, equals(HttpStatus.ok));
+            verify(() => authenticator(context, '1234')).called(1);
+          });
+        }
+
+        for (final header in [
+          'Bearer',
+          'Bearer ',
+          'Bearer 1234 extra',
+          '',
+          'Basic 1234',
+        ]) {
+          test('returns 401 for ${jsonEncode(header)}', () async {
+            when(() => request.headers).thenReturn({'Authorization': header});
+            final middleware = bearerAuthentication<_User>(
+              authenticator: authenticator.call,
+            );
+            final response = await middleware((_) async => Response())(context);
+            expect(response.statusCode, equals(HttpStatus.unauthorized));
+            verifyNever(() => authenticator(any(), any()));
+          });
+        }
+      });
 
       test("skips routes that doesn't match the custom predicate", () async {
         var called = false;
