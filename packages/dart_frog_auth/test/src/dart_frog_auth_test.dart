@@ -266,6 +266,7 @@ void main() {
         for (final (header, username, password) in [
           ('basic ${encode('user:pass')}', 'user', 'pass'),
           ('Basic ${encode('user:pa:ss')}', 'user', 'pa:ss'),
+          ('Basic ${encode('user:pässwörd')}', 'user', 'pässwörd'),
         ]) {
           test('authenticates ${jsonEncode(header)}', () async {
             when(() => request.headers).thenReturn({'Authorization': header});
@@ -281,6 +282,7 @@ void main() {
         for (final header in [
           'Basic !!!',
           'Basic ${encode('nocolon')}',
+          'Basic ${base64Encode([0x75, 0x3a, 0xff])}',
         ]) {
           test('returns 401 for ${jsonEncode(header)}', () async {
             when(() => request.headers).thenReturn({'Authorization': header});

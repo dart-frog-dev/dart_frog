@@ -100,7 +100,7 @@ Middleware basicAuthentication<T extends Object>({
         if (authorization != null) {
           final String credentials;
           try {
-            credentials = String.fromCharCodes(base64Decode(authorization));
+            credentials = utf8.decode(base64Decode(authorization));
           } on FormatException {
             return Response(statusCode: HttpStatus.unauthorized);
           }
