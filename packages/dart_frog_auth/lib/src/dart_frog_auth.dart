@@ -20,9 +20,16 @@ extension on Map<String, String> {
     final cookieString = this['Cookie'];
     if (cookieString == null) return null;
 
-    final cookiesEntries = cookieString.split('; ').map((cookie) {
-      final [key, value] = cookie.split('=');
-      return MapEntry(key, value);
+    final cookiesEntries = cookieString
+        .split(';')
+        .map((cookie) => cookie.trim())
+        .where((cookie) => cookie.contains('='))
+        .map((cookie) {
+      final separator = cookie.indexOf('=');
+      return MapEntry(
+        cookie.substring(0, separator),
+        cookie.substring(separator + 1),
+      );
     });
 
     return Map.fromEntries(cookiesEntries);
@@ -93,12 +100,22 @@ Middleware basicAuthentication<T extends Object>({
 
         final authorization = context.request.headers.basic();
         if (authorization != null) {
-          final [username, password] =
-              String.fromCharCodes(base64Decode(authorization)).split(':');
+          final String credentials;
+          try {
+            credentials = String.fromCharCodes(base64Decode(authorization));
+          } on FormatException {
+            return Response(statusCode: HttpStatus.unauthorized);
+          }
 
-          final user = await call(username, password);
-          if (user != null) {
-            return handler(context.provide(() => user));
+          final separator = credentials.indexOf(':');
+          if (separator != -1) {
+            final username = credentials.substring(0, separator);
+            final password = credentials.substring(separator + 1);
+
+            final user = await call(username, password);
+            if (user != null) {
+              return handler(context.provide(() => user));
+            }
           }
         }
 
