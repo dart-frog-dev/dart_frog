@@ -20,7 +20,31 @@ extension on Map<String, String> {
   }
 
   String? bearer() => authorization('Bearer');
-  String? basic() => authorization('Basic');
+
+  /// Returns the decoded `Basic` credentials, or `null` when they are missing
+  /// or malformed.
+  (String username, String password)? basic() {
+    final token = authorization('Basic');
+    if (token == null) return null;
+
+    final String credentials;
+    try {
+      credentials = utf8.decode(base64Decode(token));
+    } on FormatException {
+      return null;
+    }
+
+    // The user-id cannot contain a colon, but the password can
+    // (RFC 7617 §2), so split on the first colon only.
+    final separator = credentials.indexOf(':');
+    if (separator == -1) return null;
+
+    return (
+      credentials.substring(0, separator),
+      credentials.substring(separator + 1),
+    );
+  }
+
   Map<String, String>? cookies() {
     final cookieString = this['Cookie'];
     if (cookieString == null) return null;
@@ -96,24 +120,8 @@ Middleware basicAuthentication<T extends Object>({
           }
         }
 
-        final authorization = context.request.headers.basic();
-        if (authorization != null) {
-          final String credentials;
-          try {
-            credentials = utf8.decode(base64Decode(authorization));
-          } on FormatException {
-            return Response(statusCode: HttpStatus.unauthorized);
-          }
-
-          // The user-id cannot contain a colon, but the password can
-          // (RFC 7617 §2), so split on the first colon only.
-          final separator = credentials.indexOf(':');
-          if (separator == -1) {
-            return Response(statusCode: HttpStatus.unauthorized);
-          }
-          final username = credentials.substring(0, separator);
-          final password = credentials.substring(separator + 1);
-
+        final credentials = context.request.headers.basic();
+        if (credentials case (final username, final password)) {
           final user = await call(username, password);
           if (user != null) {
             return handler(context.provide(() => user));
