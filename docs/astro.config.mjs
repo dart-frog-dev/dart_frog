@@ -1,9 +1,11 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import { satteri, satteriHeadingIdsPlugin } from '@astrojs/markdown-satteri';
 import starlight from '@astrojs/starlight';
 import tailwindcss from '@tailwindcss/vite';
 import starlightBlog from 'starlight-blog';
 import starlightLinksValidator from 'starlight-links-validator';
+import { normalizeHeadingIds } from './plugins/normalize-heading-ids';
 
 const site = 'https://dart-frog.dev/';
 
@@ -13,7 +15,6 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'Dart Frog',
-			tagline: 'A fast, minimalistic backend framework for Dart 🎯',
 			logo: {
 				light: './src/assets/logo-dark.png',
 				dark: './src/assets/logo-light.png',
@@ -59,19 +60,19 @@ export default defineConfig({
 				},
 				{
 					label: 'Basics',
-					autogenerate: { directory: 'basics' },
+					items: [{ autogenerate: { directory: 'basics' } }],
 				},
 				{
 					label: 'Tutorials',
-					autogenerate: { directory: 'tutorials' },
+					items: [{ autogenerate: { directory: 'tutorials' } }],
 				},
 				{
 					label: 'Deploy',
-					autogenerate: { directory: 'deploy' },
+					items: [{ autogenerate: { directory: 'deploy' } }],
 				},
 				{
 					label: 'Advanced',
-					autogenerate: { directory: 'advanced' },
+					items: [{ autogenerate: { directory: 'advanced' } }],
 				},
 				{
 					label: '🗺️ Roadmap',
@@ -104,6 +105,11 @@ export default defineConfig({
 			],
 		}),
 	],
+	markdown: {
+		processor: satteri({
+			hastPlugins: [satteriHeadingIdsPlugin(), normalizeHeadingIds],
+		}),
+	},
 	vite: { plugins: [tailwindcss()] },
 	redirects: { discord: 'https://discord.gg/ykpUvKxw9k' },
 });

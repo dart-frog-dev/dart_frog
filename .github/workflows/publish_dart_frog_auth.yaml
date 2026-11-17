@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: 📚 Git Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: 📦 Publish
         uses: ./.github/actions/pub_publish

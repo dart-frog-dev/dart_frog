@@ -1,3 +1,7 @@
+# 1.2.14
+
+- feat: `dart_frog create` bump sdk constraints ([#1946](https://github.com/dart-frog-dev/dart_frog/pull/1946))
+
 # 1.2.13
 
 - fix: remove superfluous log from development server output
