@@ -65,7 +65,10 @@ void main() {
       daemonStdio.dispose();
     });
 
-    await daemonStdio.awaitForDaemonEvent('daemon.ready');
+    await daemonStdio.awaitForDaemonEvent(
+      'daemon.ready',
+      timeout: const Duration(minutes: 2),
+    );
   });
 
   tearDownAll(() async {

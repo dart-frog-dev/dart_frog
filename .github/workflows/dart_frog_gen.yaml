@@ -18,27 +18,27 @@ on:
 
 jobs:
   build_ubuntu:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v1
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v2
     with:
       concurrency: 1
       runs_on: ubuntu-latest
       working_directory: packages/dart_frog_gen
 
   build_windows:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v1
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v2
     with:
       concurrency: 1
       runs_on: windows-latest
       working_directory: packages/dart_frog_gen
 
   build_macos:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v1
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v2
     with:
       concurrency: 1
       runs_on: macos-latest
       working_directory: packages/dart_frog_gen
 
   pana:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/pana.yml@v1
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/pana.yml@v2
     with:
       working_directory: packages/dart_frog_gen

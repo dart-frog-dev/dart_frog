@@ -69,10 +69,10 @@ void main() {
           return Response();
         },
         'localhost',
-        3000,
+        3003,
       );
       final client = HttpClient();
-      final request = await client.getUrl(Uri.parse('http://localhost:3000'));
+      final request = await client.getUrl(Uri.parse('http://localhost:3003'));
       await request.close();
       expect(connectionInfo.remoteAddress.address, equals('::1'));
       await server.close();
@@ -80,9 +80,9 @@ void main() {
 
     group('X-Powered-By-Header', () {
       test('is configured by default', () async {
-        final server = await serve((_) => Response(), 'localhost', 3000);
+        final server = await serve((_) => Response(), 'localhost', 3004);
         final client = HttpClient();
-        final request = await client.getUrl(Uri.parse('http://localhost:3000'));
+        final request = await client.getUrl(Uri.parse('http://localhost:3004'));
         final response = await request.close();
         expect(
           response.headers.value('X-Powered-By'),
@@ -96,11 +96,11 @@ void main() {
         final server = await serve(
           (_) => Response(),
           'localhost',
-          3000,
+          3005,
           poweredByHeader: poweredByHeader,
         );
         final client = HttpClient();
-        final request = await client.getUrl(Uri.parse('http://localhost:3000'));
+        final request = await client.getUrl(Uri.parse('http://localhost:3005'));
         final response = await request.close();
         expect(
           response.headers.value('X-Powered-By'),
@@ -113,11 +113,11 @@ void main() {
         final server = await serve(
           (_) => Response(),
           'localhost',
-          3000,
+          3006,
           poweredByHeader: null,
         );
         final client = HttpClient();
-        final request = await client.getUrl(Uri.parse('http://localhost:3000'));
+        final request = await client.getUrl(Uri.parse('http://localhost:3006'));
         final response = await request.close();
         expect(response.headers.value('X-Powered-By'), isNull);
         await server.close();
@@ -128,10 +128,10 @@ void main() {
       test(
           '''when false throws a SocketException when binding bind to the same combination of address and port''',
           () async {
-        final server1 = await serve((_) => Response(), 'localhost', 3000);
+        final server1 = await serve((_) => Response(), 'localhost', 3007);
 
         await expectLater(
-          () async => serve((_) => Response(), 'localhost', 3000),
+          () async => serve((_) => Response(), 'localhost', 3007),
           throwsA(isA<SocketException>()),
         );
 
@@ -231,13 +231,13 @@ SFTrELxay/xfdivEUxK9wEIG
       final server = await serve(
         (_) => Response(),
         'localhost',
-        3000,
+        3008,
         securityContext: securityContext,
       );
       final client = HttpClient()
         ..badCertificateCallback =
             (X509Certificate cert, String host, int port) => cert.pem == chain;
-      final request = await client.getUrl(Uri.parse('https://localhost:3000'));
+      final request = await client.getUrl(Uri.parse('https://localhost:3008'));
       final response = await request.close();
       expect(response.statusCode, equals(HttpStatus.ok));
       await server.close();
@@ -246,11 +246,11 @@ SFTrELxay/xfdivEUxK9wEIG
     test(
         '''throws a HandshakeException when trying to use https without a securityContext''',
         () async {
-      await serve((_) => Response(), 'localhost', 3000);
+      await serve((_) => Response(), 'localhost', 3009);
       final client = HttpClient();
 
       await expectLater(
-        () => client.getUrl(Uri.parse('https://localhost:3000')),
+        () => client.getUrl(Uri.parse('https://localhost:3009')),
         throwsA(isA<HandshakeException>()),
       );
     });
