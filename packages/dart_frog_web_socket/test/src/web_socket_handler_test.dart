@@ -74,7 +74,7 @@ void main() {
             protocols: ['one', 'two', 'three'],
           );
           expect(webSocket.protocol, equals('two'));
-          return webSocket.close();
+          await webSocket.close();
         } finally {
           await server.close();
         }
@@ -96,7 +96,7 @@ void main() {
             protocols: ['one', 'two', 'three'],
           );
           expect(webSocket.protocol, isNull);
-          return webSocket.close();
+          await webSocket.close();
         } finally {
           await server.close();
         }

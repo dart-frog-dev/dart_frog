@@ -29,6 +29,14 @@ Future<void> _dartFrogNew({
   required String what,
   required Directory directory,
 }) async {
+  if (!directory.existsSync()) {
+    fail(
+      '''
+Working directory does not exist.
+`dart_frog new $what $routePath`: ${directory.path}''',
+    );
+  }
+
   await runProcess(
     'dart_frog',
     ['new', what, routePath],
