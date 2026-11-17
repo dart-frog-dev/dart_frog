@@ -51,8 +51,10 @@ void main() {
   late ProcessSignal sigint;
   late RestorableDirectoryGeneratorTarget generatorTarget;
   late GeneratorHooks generatorHooks;
-
   late DevServerRunner devServerRunner;
+
+  String? processExecutable;
+  List<String>? processArguments;
 
   setUp(() {
     logger = _MockLogger();
@@ -81,7 +83,11 @@ void main() {
       directoryWatcher: (_) => directoryWatcher,
       generatorTarget: (_, {createFile, logger}) => generatorTarget,
       isWindows: isWindows,
-      startProcess: (_, __, {runInShell = false}) async => process,
+      startProcess: (executable, arguments, {runInShell = false}) async {
+        processExecutable = executable;
+        processArguments = arguments;
+        return process;
+      },
       sigint: sigint,
       runProcess: (_, __) async => processResult,
       runtimeCompatibilityCallback: (_) {},
@@ -150,7 +156,8 @@ void main() {
             onVarsChanged: any(named: 'onVarsChanged'),
           ),
         ).called(1);
-
+        expect(processExecutable, equals('dart'));
+        expect(processArguments?.first, equals('run'));
         verify(() {
           progress.complete(
             'Running on ${link(
