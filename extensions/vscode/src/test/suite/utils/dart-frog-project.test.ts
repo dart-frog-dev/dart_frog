@@ -37,63 +37,63 @@ suite("normalizeRoutePath", () => {
 
     assert.equal(
       normalizeRoutePath(`${dartFrogPath}/routes`, dartFrogPath),
-      "/"
+      "/",
     );
     assert.equal(
       normalizeRoutePath(`${dartFrogPath}/routes/index.dart`, dartFrogPath),
-      "/"
+      "/",
     );
     assert.equal(
       normalizeRoutePath(`${dartFrogPath}/routes/z.py`, dartFrogPath),
-      "z"
+      "z",
     );
     assert.equal(
       normalizeRoutePath(`${dartFrogPath}/routes/tennis.dart`, dartFrogPath),
-      "tennis"
+      "tennis",
     );
     assert.equal(
       normalizeRoutePath(
         `${dartFrogPath}/routes/sports/tennis.dart`,
-        dartFrogPath
+        dartFrogPath,
       ),
-      "sports/tennis"
+      "sports/tennis",
     );
     assert.equal(
       normalizeRoutePath(
         `${dartFrogPath}/routes/sports/tennis/players/[id]/spanish/nadal.dart`,
-        dartFrogPath
+        dartFrogPath,
       ),
-      "sports/tennis/players/[id]/spanish/nadal"
+      "sports/tennis/players/[id]/spanish/nadal",
     );
     assert.equal(
       normalizeRoutePath(
         `${dartFrogPath}/routes/a/routes/b/index.dart`,
-        dartFrogPath
+        dartFrogPath,
       ),
-      "a/routes/b"
+      "a/routes/b",
     );
     assert.equal(
       normalizeRoutePath(`${dartFrogPath}/routes/a/b/`, dartFrogPath),
-      "a/b"
+      "a/b",
     );
     assert.equal(
       normalizeRoutePath(`${dartFrogPath}/routes/a/routes/b/`, dartFrogPath),
-      "a/routes/b"
+      "a/routes/b",
     );
     assert.equal(
       normalizeRoutePath(`${dartFrogPath}/routes/a/[id]/b/`, dartFrogPath),
-      "a/[id]/b"
+      "a/[id]/b",
     );
     assert.equal(
       normalizeRoutePath(`${dartFrogPath}/tennis.dart`, dartFrogPath),
-      "/"
+      "/",
     );
     assert.equal(
       normalizeRoutePath(
         `${dartFrogPath}/routes/a/b/_middleware.dart`,
-        dartFrogPath
+        dartFrogPath,
       ),
-      "a/b"
+      "a/b",
     );
   });
 });
@@ -112,7 +112,7 @@ suite("nearestParentDartFrogProject", () => {
       "../../../utils/dart-frog-project",
       {
         fs: fsStub,
-      }
+      },
     ).nearestParentDartFrogProject;
   });
 
@@ -133,21 +133,21 @@ suite("nearestParentDartFrogProject", () => {
 
     assert.equal(
       nearestParentDartFrogProject(
-        `${dartFrogPath}/routes/a/routes/b/index.dart`
+        `${dartFrogPath}/routes/a/routes/b/index.dart`,
       ),
-      dartFrogPath
+      dartFrogPath,
     );
     assert.equal(
       nearestParentDartFrogProject(`${dartFrogPath}/routes/index.dart`),
-      dartFrogPath
+      dartFrogPath,
     );
     assert.equal(
       nearestParentDartFrogProject(`${dartFrogPath}/routes/z.py`),
-      dartFrogPath
+      dartFrogPath,
     );
     assert.equal(
       nearestParentDartFrogProject(`${dartFrogPath}/tennis.dart`),
-      dartFrogPath
+      dartFrogPath,
     );
   });
 
@@ -156,7 +156,7 @@ suite("nearestParentDartFrogProject", () => {
     const routesPath1 = path.join(dartFrogPath1, "routes");
     const pubspecPath1 = path.join(dartFrogPath1, "pubspec.yaml");
 
-    const dartFrogPath2 = "home/user/Developer/myserver";
+    const dartFrogPath2 = "/home/user/Developer/myserver";
     const routesPath2 = path.join(dartFrogPath2, "routes");
     const pubspecPath2 = path.join(dartFrogPath2, "pubspec.yaml");
 
@@ -174,13 +174,13 @@ suite("nearestParentDartFrogProject", () => {
 
     assert.equal(
       nearestParentDartFrogProject(
-        `${dartFrogPath2}/routes/a/routes/b/index.dart`
+        `${dartFrogPath2}/routes/a/routes/b/index.dart`,
       ),
-      dartFrogPath2
+      dartFrogPath2,
     );
     assert.equal(
       nearestParentDartFrogProject(`${dartFrogPath1}/routes/index.dart`),
-      dartFrogPath1
+      dartFrogPath1,
     );
   });
 
@@ -196,9 +196,70 @@ suite("nearestParentDartFrogProject", () => {
       .returns(invalidPubspecYaml);
 
     const result = nearestParentDartFrogProject(
-      `${dartFrogPath}/fruits/pineapple.dart`
+      `${dartFrogPath}/fruits/pineapple.dart`,
     );
     assert.equal(result, undefined);
+  });
+
+  test("stops at the filesystem root", () => {
+    fsStub.existsSync.returns(false);
+
+    const root = path.parse(process.cwd()).root;
+    const filePath = path.join(root, "a", "b", "c.dart");
+
+    const result = nearestParentDartFrogProject(filePath);
+
+    assert.equal(result, undefined);
+    const checkedDirectories = fsStub.existsSync
+      .getCalls()
+      .map((call: any) => path.dirname(call.args[0]));
+    assert.deepEqual(
+      [...new Set(checkedDirectories)],
+      [filePath, path.join(root, "a", "b"), path.join(root, "a"), root],
+    );
+  });
+
+  test("returns the root when it is a Dart Frog project", () => {
+    const root = path.parse(process.cwd()).root;
+    const routesPath = path.join(root, "routes");
+    const pubspecPath = path.join(root, "pubspec.yaml");
+
+    fsStub.existsSync.withArgs(routesPath).returns(true);
+    fsStub.existsSync.withArgs(pubspecPath).returns(true);
+    fsStub.readFileSync
+      .withArgs(pubspecPath, "utf-8")
+      .returns(validPubspecYaml);
+
+    assert.equal(
+      nearestParentDartFrogProject(path.join(root, "routes", "index.dart")),
+      root,
+    );
+  });
+
+  suite("returns undefined for relative paths", () => {
+    let traceStub: any;
+
+    beforeEach(() => {
+      traceStub = sinon.stub(console, "trace");
+      fsStub.existsSync.returns(true);
+      fsStub.readFileSync.returns(validPubspecYaml);
+    });
+
+    for (const relativePath of [
+      "Untitled-1",
+      "workingDirectory",
+      "home/user/routes/index.dart",
+      "extension-output-x#1",
+      ".",
+    ]) {
+      test(`"${relativePath}"`, () => {
+        const result = nearestParentDartFrogProject(relativePath);
+
+        assert.equal(result, undefined);
+        sinon.assert.notCalled(fsStub.existsSync);
+        sinon.assert.calledOnce(traceStub);
+      });
+    }
   });
 });
 
@@ -218,7 +279,7 @@ suite("nearestChildDartFrogProjects", () => {
       "../../../utils/dart-frog-project",
       {
         fs: fsStub,
-      }
+      },
     ).nearestChildDartFrogProjects;
   });
 
@@ -496,7 +557,7 @@ suite("resolveDartFrogProjectPathFromWorkspaceFolders", () => {
       "../../../utils/dart-frog-project",
       {
         vscode: vscodeStub,
-      }
+      },
     ).resolveDartFrogProjectPathFromWorkspaceFolders;
 
     nearestParentDartFrogProject = sinon.stub();
@@ -513,7 +574,7 @@ suite("resolveDartFrogProjectPathFromWorkspaceFolders", () => {
       .returns(projectUri.uri.fsPath);
 
     const dartFrogProjectPath = resolveDartFrogProjectPathFromWorkspaceFolders(
-      nearestParentDartFrogProject
+      nearestParentDartFrogProject,
     );
 
     assert.deepEqual(dartFrogProjectPath, [projectUri.uri.fsPath]);
@@ -525,7 +586,7 @@ suite("resolveDartFrogProjectPathFromWorkspaceFolders", () => {
 
       const dartFrogProjectPath =
         resolveDartFrogProjectPathFromWorkspaceFolders(
-          nearestParentDartFrogProject
+          nearestParentDartFrogProject,
         );
 
       assert.deepEqual(dartFrogProjectPath, undefined);
@@ -539,7 +600,7 @@ suite("resolveDartFrogProjectPathFromWorkspaceFolders", () => {
 
       const dartFrogProjectPath =
         resolveDartFrogProjectPathFromWorkspaceFolders(
-          nearestParentDartFrogProject
+          nearestParentDartFrogProject,
         );
 
       assert.deepEqual(dartFrogProjectPath, undefined);
@@ -563,7 +624,7 @@ suite("resolveDartFrogProjectPathFromActiveTextEditor", () => {
       "../../../utils/dart-frog-project",
       {
         vscode: vscodeStub,
-      }
+      },
     ).resolveDartFrogProjectPathFromActiveTextEditor;
 
     nearestParentDartFrogProject = sinon.stub();
@@ -587,7 +648,7 @@ suite("resolveDartFrogProjectPathFromActiveTextEditor", () => {
       .returns(`home/project`);
 
     const dartFrogProjectPath = resolveDartFrogProjectPathFromActiveTextEditor(
-      nearestParentDartFrogProject
+      nearestParentDartFrogProject,
     );
 
     assert.deepEqual(dartFrogProjectPath, projectUri.uri.fsPath);
@@ -599,7 +660,7 @@ suite("resolveDartFrogProjectPathFromActiveTextEditor", () => {
 
       const dartFrogProjectPath =
         resolveDartFrogProjectPathFromActiveTextEditor(
-          nearestParentDartFrogProject
+          nearestParentDartFrogProject,
         );
 
       assert.deepEqual(dartFrogProjectPath, undefined);
@@ -620,7 +681,7 @@ suite("resolveDartFrogProjectPathFromActiveTextEditor", () => {
 
       const dartFrogProjectPath =
         resolveDartFrogProjectPathFromActiveTextEditor(
-          nearestParentDartFrogProject
+          nearestParentDartFrogProject,
         );
 
       assert.deepEqual(dartFrogProjectPath, undefined);
@@ -639,7 +700,7 @@ suite("resolveDartFrogProjectPathFromActiveTextEditor", () => {
 
       const dartFrogProjectPath =
         resolveDartFrogProjectPathFromActiveTextEditor(
-          nearestParentDartFrogProject
+          nearestParentDartFrogProject,
         );
 
       assert.deepEqual(dartFrogProjectPath, undefined);
@@ -710,7 +771,7 @@ suite("quickPickProject", () => {
         {
           placeHolder,
         },
-        [projectPath1, projectPath2]
+        [projectPath1, projectPath2],
       );
 
       const onDidChangeSelection =
@@ -742,7 +803,7 @@ suite("quickPickProject", () => {
         {
           ignoreFocusOut,
         },
-        [projectPath1, projectPath2]
+        [projectPath1, projectPath2],
       );
 
       const onDidChangeSelection =
@@ -774,7 +835,7 @@ suite("quickPickProject", () => {
         {
           canPickMany,
         },
-        [projectPath1, projectPath2]
+        [projectPath1, projectPath2],
       );
 
       const onDidChangeSelection =
@@ -841,7 +902,7 @@ suite("quickPickProject", () => {
         {
           onDidSelectItem,
         },
-        [projectPath1, projectPath2]
+        [projectPath1, projectPath2],
       );
 
       const onDidChangeSelection =
@@ -861,7 +922,7 @@ suite("quickPickProject", () => {
         {
           onDidSelectItem,
         },
-        [projectPath1, projectPath2]
+        [projectPath1, projectPath2],
       );
 
       const onDidChangeSelection =
