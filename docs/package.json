@@ -13,8 +13,10 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.12",
+    "@astrojs/markdown-satteri": "^0.4.10",
     "@astrojs/starlight": "^0.43.1",
     "astro": "^7.4.4",
+    "satteri": "^0.11.7",
     "sharp": "^0.35.5",
     "starlight-blog": "^0.30.2"
   },

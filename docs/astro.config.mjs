@@ -1,9 +1,11 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import { satteri, satteriHeadingIdsPlugin } from '@astrojs/markdown-satteri';
 import starlight from '@astrojs/starlight';
 import tailwindcss from '@tailwindcss/vite';
 import starlightBlog from 'starlight-blog';
 import starlightLinksValidator from 'starlight-links-validator';
+import { normalizeHeadingIds } from './plugins/normalize-heading-ids';
 
 const site = 'https://dart-frog.dev/';
 
@@ -103,6 +105,11 @@ export default defineConfig({
 			],
 		}),
 	],
+	markdown: {
+		processor: satteri({
+			hastPlugins: [satteriHeadingIdsPlugin(), normalizeHeadingIds],
+		}),
+	},
 	vite: { plugins: [tailwindcss()] },
 	redirects: { discord: 'https://discord.gg/ykpUvKxw9k' },
 });
