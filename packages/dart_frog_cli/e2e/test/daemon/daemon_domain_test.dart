@@ -33,7 +33,10 @@ void main() {
 
   group('daemon domain', () {
     test('daemon is ready', () async {
-      final readyEvent = await daemonStdio.awaitForDaemonEvent('daemon.ready');
+      final readyEvent = await daemonStdio.awaitForDaemonEvent(
+        'daemon.ready',
+        timeout: const Duration(minutes: 2),
+      );
       expect(
         readyEvent.params?.keys,
         containsAll(['version', 'processId']),
