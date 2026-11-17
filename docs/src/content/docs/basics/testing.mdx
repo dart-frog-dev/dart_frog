@@ -133,10 +133,10 @@ We can unit test this piece of middleware in isolation using `package:test` and
 `package:mocktail` just like before.
 
 To test this, we need to import our middleware, create a mock `RequestContext`
-using `package:mocktail`, stub `context.provide` (which the `provider` middleware
-calls under the hood to inject the value), apply our middleware to a dummy
-handler, and invoke the handler with the mock request context. Then, we can
-capture the value the middleware provided and assert that it matches what we
+using `package:mocktail`, stub `context.provide` (which the `provider`
+middleware calls under the hood to inject the value), apply our middleware to a
+dummy handler, and invoke the handler with the mock request context. Then, we
+can capture the value the middleware provided and assert that it matches what we
 expect.
 
 ```dart
