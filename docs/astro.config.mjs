@@ -13,7 +13,6 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'Dart Frog',
-			tagline: 'A fast, minimalistic backend framework for Dart 🎯',
 			logo: {
 				light: './src/assets/logo-dark.png',
 				dark: './src/assets/logo-light.png',
@@ -59,19 +58,19 @@ export default defineConfig({
 				},
 				{
 					label: 'Basics',
-					autogenerate: { directory: 'basics' },
+					items: [{ autogenerate: { directory: 'basics' } }],
 				},
 				{
 					label: 'Tutorials',
-					autogenerate: { directory: 'tutorials' },
+					items: [{ autogenerate: { directory: 'tutorials' } }],
 				},
 				{
 					label: 'Deploy',
-					autogenerate: { directory: 'deploy' },
+					items: [{ autogenerate: { directory: 'deploy' } }],
 				},
 				{
 					label: 'Advanced',
-					autogenerate: { directory: 'advanced' },
+					items: [{ autogenerate: { directory: 'advanced' } }],
 				},
 				{
 					label: '🗺️ Roadmap',
