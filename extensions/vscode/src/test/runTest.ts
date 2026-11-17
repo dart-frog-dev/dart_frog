@@ -8,7 +8,8 @@
  */
 
 import * as cp from "child_process";
-import * as os from 'os';
+import * as fs from "fs";
+import * as os from "os";
 import * as path from "path";
 import {
   downloadAndUnzipVSCode,
@@ -16,32 +17,64 @@ import {
   runTests,
 } from "@vscode/test-electron";
 
+const VSCODE_VERSION = "1.146.0";
+
 async function main() {
   try {
     const extensionDevelopmentPath = path.resolve(__dirname, "../../");
     const extensionTestsPath = path.resolve(__dirname, "./suite/index");
-    const vscodeExecutablePath = await downloadAndUnzipVSCode();
-    const [cliPath, ...args] =
-      resolveCliArgsFromVSCodeExecutablePath(vscodeExecutablePath);
+    const root = fs.mkdtempSync(
+      path.join(os.tmpdir(), "dart-frog-vscode-test-"),
+    );
+    const userDataDir = path.join(root, "user-data");
+    const extensionsDir = path.join(root, "extensions");
 
-    // Install Dart Code extension
-    cp.spawnSync(
-      cliPath,
-      [...args, "--install-extension", "Dart-Code.dart-code"],
-      {
-        encoding: "utf-8",
-        stdio: "inherit",
-      }
+    fs.mkdirSync(path.join(userDataDir, "User"), { recursive: true });
+    fs.writeFileSync(
+      path.join(userDataDir, "User", "settings.json"),
+      JSON.stringify(
+        {
+          "chat.disableAIFeatures": true,
+          "github.copilot.enable": { "*": false },
+          "extensions.autoUpdate": false,
+          "extensions.autoCheckUpdates": false,
+          "telemetry.telemetryLevel": "off",
+          "update.mode": "none",
+          "workbench.startupEditor": "none",
+          "security.workspace.trust.enabled": false,
+        },
+        null,
+        2,
+      ),
     );
 
-    // Download VSCode, unzip it and run the integration test
+    const vscodeExecutablePath = await downloadAndUnzipVSCode(VSCODE_VERSION);
+    const [cliPath] =
+      resolveCliArgsFromVSCodeExecutablePath(vscodeExecutablePath);
+
+    cp.spawnSync(
+      cliPath,
+      [
+        `--user-data-dir=${userDataDir}`,
+        `--extensions-dir=${extensionsDir}`,
+        "--install-extension",
+        "Dart-Code.dart-code",
+      ],
+      { encoding: "utf-8", stdio: "inherit" },
+    );
+
     await runTests({
       vscodeExecutablePath,
       extensionDevelopmentPath,
       extensionTestsPath,
       launchArgs: [
-      `--user-data-dir=${path.join(os.tmpdir(), 'dart-frog-vscode-test')}`,
-    ],
+        `--user-data-dir=${userDataDir}`,
+        `--extensions-dir=${extensionsDir}`,
+        "--disable-workspace-trust",
+        "--skip-welcome",
+        "--skip-release-notes",
+        "--disable-gpu",
+      ],
     });
   } catch (err) {
     console.error("❌ Failed to run tests");
