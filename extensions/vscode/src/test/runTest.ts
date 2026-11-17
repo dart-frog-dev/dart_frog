@@ -8,6 +8,7 @@
  */
 
 import * as cp from "child_process";
+import * as os from 'os';
 import * as path from "path";
 import {
   downloadAndUnzipVSCode,
@@ -38,6 +39,9 @@ async function main() {
       vscodeExecutablePath,
       extensionDevelopmentPath,
       extensionTestsPath,
+      launchArgs: [
+      `--user-data-dir=${path.join(os.tmpdir(), 'dart-frog-vscode-test')}`,
+    ],
     });
   } catch (err) {
     console.error("❌ Failed to run tests");
