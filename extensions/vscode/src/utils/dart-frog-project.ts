@@ -82,9 +82,13 @@ export function nearestParentDartFrogProject(
 
   let currentPath = filePath;
   while (true) {
-    if (isDartFrogProject(currentPath)) return currentPath;
+    if (isDartFrogProject(currentPath)) {
+      return currentPath;
+    }
     const parentPath = path.dirname(currentPath);
-    if (parentPath === currentPath) return undefined;
+    if (parentPath === currentPath) {
+      return undefined;
+    }
     currentPath = parentPath;
   }
 }
