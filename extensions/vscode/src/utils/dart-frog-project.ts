@@ -30,7 +30,7 @@ import {
  */
 export function normalizeRoutePath(
   selectedPath: string,
-  dartFrogProjectPath: string
+  dartFrogProjectPath: string,
 ): string {
   const routesPath = path.join(dartFrogProjectPath, "routes");
   if (!selectedPath.startsWith(routesPath)) {
@@ -71,19 +71,26 @@ export function normalizeRoutePath(
  * project.
  */
 export function nearestParentDartFrogProject(
-  filePath: string
+  filePath: string,
 ): string | undefined {
-  const root = path.parse(filePath).root;
+  if (!path.isAbsolute(filePath)) {
+    console.trace(
+      `nearestParentDartFrogProject called with a relative path: "${filePath}"`,
+    );
+    return undefined;
+  }
 
   let currentPath = filePath;
-  while (currentPath !== root) {
+  while (true) {
     if (isDartFrogProject(currentPath)) {
       return currentPath;
     }
-    currentPath = path.dirname(currentPath);
+    const parentPath = path.dirname(currentPath);
+    if (parentPath === currentPath) {
+      return undefined;
+    }
+    currentPath = parentPath;
   }
-
-  return undefined;
 }
 
 /**
@@ -101,7 +108,7 @@ export function nearestParentDartFrogProject(
  * Dart Frog projects in the {@link filePath}.
  */
 export function nearestChildDartFrogProjects(
-  filePath: string
+  filePath: string,
 ): Array<string> | undefined {
   if (!fs.existsSync(filePath) || !fs.statSync(filePath).isDirectory()) {
     return undefined;
@@ -201,12 +208,12 @@ export function canResolveDartFrogProjectPath(): boolean {
  */
 export function resolveDartFrogProjectPathFromWorkspaceFolders(
   _nearestParentDartFrogProject: (
-    filePath: string
-  ) => string | undefined = nearestParentDartFrogProject
+    filePath: string,
+  ) => string | undefined = nearestParentDartFrogProject,
 ): Array<string> | undefined {
   if (workspace.workspaceFolders && workspace.workspaceFolders.length > 0) {
     const currentWorkspaceFolder = path.normalize(
-      workspace.workspaceFolders[0].uri.fsPath
+      workspace.workspaceFolders[0].uri.fsPath,
     );
     if (_nearestParentDartFrogProject(currentWorkspaceFolder)) {
       return [currentWorkspaceFolder];
@@ -234,15 +241,15 @@ export function resolveDartFrogProjectPathFromWorkspaceFolders(
  */
 export function resolveDartFrogProjectPathFromActiveTextEditor(
   _nearestParentDartFrogProject: (
-    filePath: string
-  ) => string | undefined = nearestParentDartFrogProject
+    filePath: string,
+  ) => string | undefined = nearestParentDartFrogProject,
 ): string | undefined {
   if (window.activeTextEditor) {
     const currentTextEditorPath = path.normalize(
-      window.activeTextEditor.document.uri.fsPath
+      window.activeTextEditor.document.uri.fsPath,
     );
     const dartFrogProjectPath = _nearestParentDartFrogProject(
-      currentTextEditorPath
+      currentTextEditorPath,
     );
 
     if (dartFrogProjectPath) {
@@ -273,7 +280,7 @@ export function resolveDartFrogProjectPathFromActiveTextEditor(
  */
 export async function quickPickProject(
   options: QuickPickOptions,
-  projectPaths: string[]
+  projectPaths: string[],
 ) {
   if (projectPaths.length === 0) {
     return;
@@ -288,7 +295,7 @@ export async function quickPickProject(
   quickPick.ignoreFocusOut = options.ignoreFocusOut ?? true;
   quickPick.canSelectMany = options.canPickMany ?? false;
   quickPick.items = projectPaths.map(
-    (projectPath) => new PickableDartFrogProject(projectPath)
+    (projectPath) => new PickableDartFrogProject(projectPath),
   );
   quickPick.show();
 
