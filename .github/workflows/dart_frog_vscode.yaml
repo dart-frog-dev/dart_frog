@@ -23,6 +23,7 @@ jobs:
         working-directory: extensions/vscode
 
     runs-on: macos-latest
+    timeout-minutes: 3
 
     steps:
       - name: 📚 Git Checkout
