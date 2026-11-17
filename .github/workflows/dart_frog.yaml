@@ -23,6 +23,6 @@ jobs:
       working_directory: packages/dart_frog
 
   pana:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/pana.yml@v1
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/pana.yml@v2
     with:
       working_directory: packages/dart_frog

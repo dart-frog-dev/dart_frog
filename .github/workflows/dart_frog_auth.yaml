@@ -22,6 +22,6 @@ jobs:
     with:
       working_directory: packages/dart_frog_auth
   pana:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/pana.yml@v1
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/pana.yml@v2
     with:
       working_directory: packages/dart_frog_auth
