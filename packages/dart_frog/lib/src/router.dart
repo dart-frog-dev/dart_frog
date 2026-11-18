@@ -63,7 +63,10 @@ class Router {
   /// `HEAD` is always wrong. To explicitly implement a `HEAD` handler it must
   /// be registered before the `GET` handler.
   void add(String verb, String route, Function handler) {
-    if (!isHttpMethod(verb)) {
+    // QUERY (RFC 10008) is not yet recognized by package:http_methods.
+    // Remove this allowance once a release includes it:
+    // https://github.com/google/dart-neats/pull/421
+    if (!isHttpMethod(verb) && verb.toUpperCase() != 'QUERY') {
       throw ArgumentError.value(verb, 'verb', 'expected a valid HTTP method');
     }
 
@@ -221,6 +224,11 @@ class Router {
 
   /// Handle `PATCH` request to [route] using [handler].
   void patch(String route, Function handler) => add('PATCH', route, handler);
+
+  /// Handle `QUERY` request to [route] using [handler].
+  ///
+  /// See [RFC 10008](https://www.rfc-editor.org/info/rfc10008/).
+  void query(String route, Function handler) => add('QUERY', route, handler);
 
   static Response _defaultNotFound(RequestContext context) => routeNotFound;
 
