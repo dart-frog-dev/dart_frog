@@ -21,7 +21,12 @@ enum HttpMethod {
   post('POST'),
 
   /// PUT HTTP Method
-  put('PUT');
+  put('PUT'),
+
+  /// QUERY HTTP Method
+  ///
+  /// See [RFC 10008](https://www.rfc-editor.org/info/rfc10008/).
+  query('QUERY');
 
   /// {@macro http_method}
   const HttpMethod(this.value);

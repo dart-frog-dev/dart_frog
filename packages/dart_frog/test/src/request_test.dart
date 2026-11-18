@@ -163,6 +163,13 @@ ${HttpMethod.values.map((m) => m.value.toUpperCase()).join(', ')}.'''),
       });
     });
 
+    group('query', () {
+      test('has correct method', () {
+        final request = Request('QUERY', localhost);
+        expect(request.method, equals(HttpMethod.query));
+      });
+    });
+
     group('bytes', () {
       test('has correct body', () {
         final bytes = utf8.encode('hello');
