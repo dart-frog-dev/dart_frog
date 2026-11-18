@@ -533,6 +533,61 @@ void main() {
     expect(response.body(), completion(equals('Route not found')));
   });
 
+  group('405 Allow header', () {
+    Future<Response> trace(Router app, String path) {
+      final context = _MockRequestContext();
+      when(() => context.request).thenReturn(
+        Request('TRACE', Uri.parse('http://localhost$path')),
+      );
+      return Future.value(app(context));
+    }
+
+    test('lists the methods registered for the path', () async {
+      final app = Router()
+        ..get('/hello', (RequestContext context) => Response())
+        ..post('/hello', (RequestContext context) => Response())
+        ..delete('/other', (RequestContext context) => Response());
+
+      final response = await trace(app, '/hello');
+
+      expect(response.statusCode, equals(HttpStatus.methodNotAllowed));
+      expect(response.headers['allow'], equals('GET, HEAD, POST'));
+      expect(await response.body(), equals('Method not allowed'));
+    });
+
+    test('lists every supported method for an all handler', () async {
+      final app = Router()
+        ..all('/hello', (RequestContext context) => Response());
+
+      final response = await trace(app, '/hello');
+
+      expect(
+        response.headers['allow'],
+        equals('DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT'),
+      );
+    });
+
+    test('is empty when no route matches the path', () async {
+      final app = Router()
+        ..get('/hello', (RequestContext context) => Response());
+
+      final response = await trace(app, '/missing');
+
+      expect(response.statusCode, equals(HttpStatus.methodNotAllowed));
+      expect(response.headers['allow'], equals(''));
+    });
+
+    test('is not added to a custom methodNotAllowedHandler response', () async {
+      final app = Router(
+        methodNotAllowedHandler: (context) => Response(statusCode: 405),
+      )..get('/hello', (RequestContext context) => Response());
+
+      final response = await trace(app, '/hello');
+
+      expect(response.headers.containsKey('allow'), isFalse);
+    });
+  });
+
   test('can call Router.methodNotAllowed.body() multiple times', () async {
     final b1 = await Router.methodNotAllowed.body();
     expect(b1, 'Method not allowed');
