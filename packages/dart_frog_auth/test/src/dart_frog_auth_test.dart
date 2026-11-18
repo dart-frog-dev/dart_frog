@@ -26,6 +26,10 @@ class _MockBearerAuthenticator extends Mock {
   Future<_User?> call(RequestContext context, String token);
 }
 
+class _MockCookieAuthenticator extends Mock {
+  Future<_User?> call(RequestContext context, Map<String, String> cookies);
+}
+
 class _User {
   const _User(this.id);
   final String id;
@@ -670,6 +674,50 @@ void main() {
         );
       },
     );
+
+    group('parses the Cookie header', () {
+      late _MockCookieAuthenticator authenticator;
+
+      setUp(() {
+        authenticator = _MockCookieAuthenticator();
+        when(() => authenticator(any(), any()))
+            .thenAnswer((_) async => _User(''));
+      });
+
+      for (final (header, cookies) in [
+        ('token=abc==', {'token': 'abc=='}),
+        ('token=a=b; theme=dark', {'token': 'a=b', 'theme': 'dark'}),
+        ('a=1;b=2', {'a': '1', 'b': '2'}),
+        ('a=1; b=2;', {'a': '1', 'b': '2'}),
+        ('a=1;  b=2', {'a': '1', 'b': '2'}),
+        (' a = 1 ', {'a': '1'}),
+        ('flag; a=1', {'a': '1'}),
+        ('=abc; a=1', {'a': '1'}),
+        ('a=', {'a': ''}),
+      ]) {
+        test('authenticates ${jsonEncode(header)}', () async {
+          when(() => request.headers).thenReturn({'Cookie': header});
+          final middleware = cookieAuthentication<_User>(
+            authenticator: authenticator.call,
+          );
+          final response = await middleware((_) async => Response())(context);
+          expect(response.statusCode, equals(HttpStatus.ok));
+          verify(() => authenticator(context, cookies)).called(1);
+        });
+      }
+
+      for (final header in ['', ' ', ';', 'flag', '=abc']) {
+        test('returns 401 for ${jsonEncode(header)}', () async {
+          when(() => request.headers).thenReturn({'Cookie': header});
+          final middleware = cookieAuthentication<_User>(
+            authenticator: authenticator.call,
+          );
+          final response = await middleware((_) async => Response())(context);
+          expect(response.statusCode, equals(HttpStatus.unauthorized));
+          verifyNever(() => authenticator(any(), any()));
+        });
+      }
+    });
 
     test("skips routes that doesn't match the custom predicate", () async {
       var called = false;
