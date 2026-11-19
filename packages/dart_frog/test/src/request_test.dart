@@ -204,7 +204,14 @@ ${HttpMethod.values.map((m) => m.value.toUpperCase()).join(', ')}.'''),
           headers: contentTypeFormUrlEncoded,
           body: 'foo=bar',
         );
-        expect(request.formData(), completion(equals({'foo': 'bar'})));
+        expect(
+          request.formData(),
+          completion(
+            equals({
+              'foo': ['bar'],
+            }),
+          ),
+        );
       });
 
       test('has correct data (multiple key/value pairs)', () async {
@@ -215,7 +222,12 @@ ${HttpMethod.values.map((m) => m.value.toUpperCase()).join(', ')}.'''),
         );
         expect(
           request.formData(),
-          completion(equals({'foo': 'bar', 'bar': 'baz'})),
+          completion(
+            equals({
+              'foo': ['bar'],
+              'bar': ['baz'],
+            }),
+          ),
         );
       });
     });

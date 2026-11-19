@@ -282,7 +282,7 @@ Future<Response> onRequest(RequestContext context) async {
   final formData = await request.formData();
 
   // Retrieve an uploaded file.
-  final photo = formData.files['photo'];
+  final photo = formData.files['photo']?.first;
 
   if (photo == null || photo.contentType.mimeType != contentTypePng.mimeType) {
     return Response(statusCode: HttpStatus.badRequest);

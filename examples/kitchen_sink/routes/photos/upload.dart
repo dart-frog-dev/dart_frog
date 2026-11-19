@@ -6,7 +6,7 @@ final contentTypePng = ContentType('image', 'png');
 
 Future<Response> onRequest(RequestContext context) async {
   final formData = await context.request.formData();
-  final photo = formData.files['photo'];
+  final photo = formData.files['photo']?.first;
 
   if (photo == null || photo.contentType.mimeType != contentTypePng.mimeType) {
     return Response(statusCode: HttpStatus.badRequest);
