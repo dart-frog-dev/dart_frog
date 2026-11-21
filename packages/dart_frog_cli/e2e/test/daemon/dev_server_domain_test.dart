@@ -307,10 +307,7 @@ void main() {
       expect(exitCode, equals(0));
     });
 
-    testServer(
-        // TODO(renancaraujo): this fails on linux: https://github.com/dart-frog-dev/dart_frog/issues/807
-        skip: Platform.isLinux,
-        'GET on project 1 server 1: connection refused', (host) async {
+    testServer('GET on project 1 server 1: connection refused', (host) async {
       final responseFuture = http.get(Uri.parse(host));
 
       await expectLater(
@@ -321,10 +318,7 @@ void main() {
 
     testServer(
       port: project2ServerPort,
-      // TODO(renancaraujo): this fails on linux: https://github.com/dart-frog-dev/dart_frog/issues/807
-      skip: Platform.isLinux,
       'GET / on project 2: connection refused',
-
       (host) async {
         final responseFuture = http.get(Uri.parse(host));
 
@@ -340,8 +334,6 @@ void main() {
     testServer(
       port: project1Server2Port,
       'GET / on project 1 server 2: connection refused',
-      // TODO(renancaraujo): this fails on linux: https://github.com/dart-frog-dev/dart_frog/issues/807
-      skip: Platform.isLinux,
       (host) async {
         await expectLater(
           () async {
