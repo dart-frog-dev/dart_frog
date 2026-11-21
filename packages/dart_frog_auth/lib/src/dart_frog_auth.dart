@@ -45,16 +45,28 @@ extension on Map<String, String> {
     );
   }
 
+  /// Returns the cookies of the `Cookie` header, or `null` when it is missing
+  /// or has no valid cookie.
+  ///
+  /// Pairs are separated by `;` and split on their first `=`, as values can
+  /// contain `=`. Names and values are trimmed, and pairs without `=` or with
+  /// an empty name are skipped (RFC 6265 §5.2).
   Map<String, String>? cookies() {
     final cookieString = this['Cookie'];
     if (cookieString == null) return null;
 
-    final cookiesEntries = cookieString.split('; ').map((cookie) {
-      final [key, value] = cookie.split('=');
-      return MapEntry(key, value);
-    });
+    final cookies = <String, String>{};
+    for (final pair in cookieString.split(';')) {
+      final separator = pair.indexOf('=');
+      if (separator == -1) continue;
 
-    return Map.fromEntries(cookiesEntries);
+      final name = pair.substring(0, separator).trim();
+      if (name.isEmpty) continue;
+
+      cookies[name] = pair.substring(separator + 1).trim();
+    }
+
+    return cookies.isEmpty ? null : cookies;
   }
 }
 
