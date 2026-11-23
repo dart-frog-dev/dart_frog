@@ -178,7 +178,15 @@ class Router {
       try {
         method = context.request.method;
       } on UnsupportedHttpMethodException {
-        return _methodNotAllowedHandler(context);
+        final response = await _methodNotAllowedHandler(context);
+        // RFC 9110 requires a 405 response to list the allowed methods.
+        // https://www.rfc-editor.org/info/rfc9110/#name-405-method-not-allowed
+        if (identical(response, methodNotAllowed)) {
+          return response.copyWith(
+            headers: {HttpHeaders.allowHeader: _allowedMethods(context)},
+          );
+        }
+        return response;
       }
 
       if (route.verb != method.value.toUpperCase() && route.verb != 'ALL') {
@@ -193,6 +201,22 @@ class Router {
       }
     }
     return _notFoundHandler(context);
+  }
+
+  /// The methods registered for the requested path, as an `Allow` header
+  /// value. A handler registered with [all] allows every [HttpMethod].
+  String _allowedMethods(RequestContext context) {
+    final path = '/${context.request._request.url.path}';
+    final methods = <String>{};
+    for (final route in _routes) {
+      if (route.match(path) == null) continue;
+      if (route.verb == 'ALL') {
+        methods.addAll(HttpMethod.values.map((method) => method.value));
+        break;
+      }
+      methods.add(route.verb);
+    }
+    return ([...methods]..sort()).join(', ');
   }
 
   // Handlers for all methods
