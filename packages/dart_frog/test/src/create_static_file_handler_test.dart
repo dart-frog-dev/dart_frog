@@ -9,7 +9,7 @@ import 'package:test/test.dart';
 void main() {
   group('createStaticFileHandler', () {
     test('serves static files', () async {
-      const port = 3003;
+      const port = 3103;
       final tempDir = Directory.systemTemp.createTempSync();
 
       const messageContents = 'hello world';
@@ -57,7 +57,7 @@ void main() {
     });
 
     test('serves default document', () async {
-      const port = 3003;
+      const port = 3104;
       final tempDir = Directory.systemTemp.createTempSync();
 
       const messageContents = 'hello world';
