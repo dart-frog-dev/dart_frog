@@ -218,7 +218,7 @@ class Car {
   final Wheel wheel;
 
   Car({
-    required this.wheel;
+    required this.wheel,
   });
 }
 
@@ -262,7 +262,7 @@ followed:
 Handler middleware(Handler handler) {
   return handler
       .use(B())
-      .use(A())
+      .use(A());
 }
 ```
 
@@ -273,7 +273,7 @@ In the example we gave at the beginning where `carMiddlewareProvider` depends on
 Handler middleware(Handler handler) {
   return handler
       .use(carMiddlewareProvider())
-      .use(wheelMiddlewareProvider())
+      .use(wheelMiddlewareProvider());
 }
 ```
 
@@ -284,7 +284,7 @@ Handler middleware(Handler handler) {
   return handler
       // This won't work because Dart Frog resolves from bottom to top
       .use(wheelMiddlewareProvider())
-      .use(carMiddlewareProvider())
+      .use(carMiddlewareProvider());
 }
 ```
 

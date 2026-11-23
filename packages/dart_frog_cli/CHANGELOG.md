@@ -1,3 +1,8 @@
+# 1.2.15
+
+- fix: regenerate native assets when running development server ([#1991](https://github.com/dart-frog-dev/dart_frog/pull/1991))
+- deps: various dependency upgrades
+
 # 1.2.14
 
 - feat: `dart_frog create` bump sdk constraints ([#1946](https://github.com/dart-frog-dev/dart_frog/pull/1946))

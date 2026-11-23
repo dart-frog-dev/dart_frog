@@ -1,6 +1,6 @@
 name: dart_frog_gen
 description: Code generation tooling for Dart Frog — a fast, minimalistic backend framework for Dart.
-version: 2.1.0
+version: 2.1.2
 homepage: https://dart-frog.dev
 repository: https://github.com/dart-frog-dev/dart_frog
 issue_tracker: https://github.com/dart-frog-dev/dart_frog/issues
@@ -15,7 +15,7 @@ environment:
   sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
-  equatable: ^2.0.5
+  equatable: ">=2.0.0 <4.0.0"
   path: ^1.8.1
   pubspec_parse: ^1.2.2
 

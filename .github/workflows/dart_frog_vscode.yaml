@@ -23,15 +23,16 @@ jobs:
         working-directory: extensions/vscode
 
     runs-on: macos-latest
+    timeout-minutes: 3
 
     steps:
       - name: 📚 Git Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: 🎯 Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
-          node-version: 22.11.0
+          node-version: 25.2.1
           cache: "npm"
           cache-dependency-path: extensions/vscode/package-lock.json
 
