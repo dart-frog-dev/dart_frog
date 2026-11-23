@@ -181,6 +181,7 @@ class Router {
         final response = await _methodNotAllowedHandler(context);
         if (!identical(response, methodNotAllowed)) return response;
         // RFC 9110 requires a 405 response to list the allowed methods.
+        // https://www.rfc-editor.org/info/rfc9110/#name-405-method-not-allowed
         return response.copyWith(
           headers: {HttpHeaders.allowHeader: _allowedMethods(context)},
         );
