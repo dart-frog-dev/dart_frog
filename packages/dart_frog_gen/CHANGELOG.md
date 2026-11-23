@@ -1,10 +1,14 @@
+# 2.1.2
+
+- fix: order routes from most specific to least specific ([#1969](https://github.com/dart-frog-dev/dart_frog/pull/1969))
+
 # 2.1.1
 
 - deps: various dependency upgrades
 
 # 2.1.0
 
-- feat: allow static routes to take precedence over dynamic routes ([#19222](https://github.com/dart-frog-dev/dart_frog/pull/19222))
+- feat: allow static routes to take precedence over dynamic routes ([#1922](https://github.com/dart-frog-dev/dart_frog/pull/1922))
 
 # 2.0.2
 
