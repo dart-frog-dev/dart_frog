@@ -534,12 +534,12 @@ void main() {
   });
 
   group('405 Allow header', () {
-    Future<Response> trace(Router app, String path) {
+    Future<Response> trace(Router app, String path) async {
       final context = _MockRequestContext();
       when(() => context.request).thenReturn(
         Request('TRACE', Uri.parse('http://localhost$path')),
       );
-      return Future.value(app(context));
+      return app(context);
     }
 
     test('lists the methods registered for the path', () async {

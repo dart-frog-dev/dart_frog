@@ -209,11 +209,11 @@ class Router {
       if (route.match(path) == null) continue;
       if (route.verb == 'ALL') {
         methods.addAll(HttpMethod.values.map((method) => method.value));
-      } else {
-        methods.add(route.verb);
+        break;
       }
+      methods.add(route.verb);
     }
-    return (methods.toList()..sort()).join(', ');
+    return ([...methods]..sort()).join(', ');
   }
 
   // Handlers for all methods
