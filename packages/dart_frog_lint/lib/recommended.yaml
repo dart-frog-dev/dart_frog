@@ -25,6 +25,7 @@ linter:
     - annotate_overrides
     - annotate_redeclares
     - avoid_bool_literals_in_conditional_expressions
+    - avoid_catches_without_on_clauses
     - avoid_catching_errors
     - avoid_double_and_int_checks
     - avoid_dynamic_calls
@@ -78,11 +79,15 @@ linter:
     - do_not_use_environment
     - empty_catches
     - empty_constructor_bodies
+    - empty_container_bodies
     - empty_statements
     - eol_at_end_of_file
     - exhaustive_cases
+    - file_names
     - flutter_style_todos
+    - future_sync_value
     - hash_and_equals
+    - initialize_in_field_declaration
     - implementation_imports
     - implicit_call_tearoffs
     - implicit_reopen
@@ -113,7 +118,7 @@ linter:
     - null_check_on_nullable_type_parameter
     - null_closures
     - omit_local_variable_types
-    - one_member_abstracts
+    - omit_obvious_local_variable_types
     - only_throw_errors
     - overridden_fields
     - package_api_docs
@@ -135,6 +140,7 @@ linter:
     - prefer_final_in_for_each
     - prefer_final_locals
     - prefer_for_elements_to_map_fromIterable
+    - prefer_foreach
     - prefer_function_declarations_over_variables
     - prefer_generic_function_type_aliases
     - prefer_if_elements_to_conditional_expressions
@@ -157,8 +163,10 @@ linter:
     - provide_deprecation_message
     - public_member_api_docs
     - recursive_getters
+    - remove_deprecations_in_breaking_versions
     - require_trailing_commas
     - secure_pubspec_urls
+    - simple_directive_paths
     - sized_box_for_whitespace
     - sized_box_shrink_expand
     - slash_for_doc_comments
@@ -167,6 +175,7 @@ linter:
     - sort_pub_dependencies
     - sort_unnamed_constructors_first
     - strict_top_level_inference
+    - switch_on_type
     - test_types_in_equals
     - throw_in_finally
     - tighten_type_of_initializing_formals
@@ -180,6 +189,7 @@ linter:
     - unnecessary_const
     - unnecessary_constructor_name
     - unnecessary_getters_setters
+    - unnecessary_ignore
     - unnecessary_lambdas
     - unnecessary_late
     - unnecessary_library_directive
@@ -197,6 +207,7 @@ linter:
     - unnecessary_string_interpolations
     - unnecessary_this
     - unnecessary_to_list_in_spreads
+    - unnecessary_unawaited
     - unnecessary_underscores
     - unreachable_from_main
     - unrelated_type_equality_checks
@@ -212,6 +223,7 @@ linter:
     - use_key_in_widget_constructors
     - use_late_for_private_fields_and_variables
     - use_named_constants
+    - use_null_aware_elements
     - use_raw_strings
     - use_rethrow_when_possible
     - use_setters_to_change_properties
@@ -220,5 +232,7 @@ linter:
     - use_super_parameters
     - use_test_throws_matchers
     - use_to_and_as_if_applicable
+    - use_truncating_division
     - valid_regexps
+    - var_with_no_type_annotation
     - void_checks
