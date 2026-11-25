@@ -86,6 +86,14 @@ void main() {
 
       expect(response.statusCode, equals(HttpStatus.methodNotAllowed));
     });
+
+    test('when method is QUERY', () async {
+      when(() => request.method).thenReturn(HttpMethod.query);
+
+      final response = await route.onRequest(context);
+
+      expect(response.statusCode, equals(HttpStatus.methodNotAllowed));
+    });
   });
 
   group('GET /todos', () {

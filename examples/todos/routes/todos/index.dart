@@ -10,11 +10,7 @@ FutureOr<Response> onRequest(RequestContext context) async {
       return _get(context);
     case HttpMethod.post:
       return _post(context);
-    case HttpMethod.delete:
-    case HttpMethod.head:
-    case HttpMethod.options:
-    case HttpMethod.patch:
-    case HttpMethod.put:
+    case _:
       return Response(statusCode: HttpStatus.methodNotAllowed);
   }
 }

@@ -61,6 +61,15 @@ void main() {
     );
   });
 
+  test('add accepts QUERY verb regardless of case', () {
+    expect(
+      () => Router()
+        ..add('QUERY', '/route', (RequestContext context) => Response())
+        ..add('query', '/route', (RequestContext context) => Response()),
+      returnsNormally,
+    );
+  });
+
   test('mount throws ArgumentError when route does not start with a slash', () {
     expect(
       () => Router()
@@ -288,6 +297,34 @@ void main() {
     expect(response.body, equals('Route not found'));
 
     response = await http.put(Uri.parse('${server.url}/hello/world'));
+    expect(response.statusCode, equals(HttpStatus.ok));
+    expect(response.body, equals('hello'));
+  });
+
+  test('query handler', () async {
+    final context = _MockRequestContext();
+    final app = Router()
+      ..query('/hello/world', (RequestContext context) {
+        return Response(body: 'hello');
+      });
+
+    server.mount((request) async {
+      when(() => context.request).thenReturn(
+        Request(request.method, request.requestedUri),
+      );
+      final response = await app(context);
+      final body = await response.body();
+      return shelf.Response(response.statusCode, body: body);
+    });
+
+    var response = await http.get(Uri.parse('${server.url}/hello/world'));
+    expect(response.statusCode, equals(HttpStatus.notFound));
+    expect(response.body, equals('Route not found'));
+
+    final streamedResponse = await http.Client().send(
+      http.Request('QUERY', Uri.parse('${server.url}/hello/world')),
+    );
+    response = await http.Response.fromStream(streamedResponse);
     expect(response.statusCode, equals(HttpStatus.ok));
     expect(response.body, equals('hello'));
   });

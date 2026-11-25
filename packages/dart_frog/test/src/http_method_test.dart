@@ -45,5 +45,13 @@ void main() {
         expect(method.toString(), equals('HttpMethod.put'));
       });
     });
+
+    group('QUERY', () {
+      test('has correct value and toString', () {
+        final method = HttpMethod.query;
+        expect(method.value, equals('QUERY'));
+        expect(method.toString(), equals('HttpMethod.query'));
+      });
+    });
   });
 }
