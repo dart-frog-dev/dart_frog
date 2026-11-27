@@ -1,5 +1,4 @@
 // Not needed for test file
-// ignore_for_file: prefer_const_constructors
 
 import 'dart:io';
 
@@ -23,11 +22,13 @@ void main() {
       final formData = FormData(
         fields: {},
         files: {
-          'photo': UploadedFile(
-            'file.txt',
-            ContentType.text,
-            Stream.fromIterable([[]]),
-          ),
+          'photo': [
+            UploadedFile(
+              'file.txt',
+              ContentType.text,
+              Stream.fromIterable([[]]),
+            ),
+          ],
         },
       );
       when(request.formData).thenAnswer((_) async => formData);
@@ -44,11 +45,13 @@ void main() {
       final formData = FormData(
         fields: {},
         files: {
-          'photo': UploadedFile(
-            'picture.png',
-            ContentType('image', 'png'),
-            Stream.fromIterable([[]]),
-          ),
+          'photo': [
+            UploadedFile(
+              'picture.png',
+              ContentType('image', 'png'),
+              Stream.fromIterable([[]]),
+            ),
+          ],
         },
       );
       when(request.formData).thenAnswer((_) async => formData);

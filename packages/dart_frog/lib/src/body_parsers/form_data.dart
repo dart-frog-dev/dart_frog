@@ -61,7 +61,11 @@ bool _isMultipartFormData(ContentType? contentType) {
 }
 
 FormData _extractFormUrlEncodedFormData({required String body}) {
-  return FormData(fields: Uri.splitQueryString(body), files: {});
+  final query = Uri.splitQueryString(body);
+  final fields = <String, List<String>>{};
+
+  query.forEach((k, v) => fields.putIfAbsent(k, () => []).add(v));
+  return FormData(fields: fields, files: {});
 }
 
 final _keyValueRegexp = RegExp('(?:(?<key>[a-zA-Z0-9-_]+)="(?<value>.*?)";*)+');
@@ -75,8 +79,8 @@ Future<FormData> _extractMultipartFormData({
   final boundary = mediaType.parameters['boundary'];
   final transformer = MimeMultipartTransformer(boundary!);
 
-  final fields = <String, String>{};
-  final files = <String, UploadedFile>{};
+  final fields = <String, List<String>>{};
+  final files = <String, List<UploadedFile>>{};
 
   await for (final part in transformer.bind(bytes)) {
     final contentDisposition = part.headers['content-disposition'];
@@ -93,14 +97,16 @@ Future<FormData> _extractMultipartFormData({
     final fileName = values['filename'];
 
     if (fileName != null) {
-      files[name] = UploadedFile(
-        fileName,
-        ContentType.parse(part.headers['content-type'] ?? 'text/plain'),
-        part,
-      );
+      files.putIfAbsent(name, () => []).add(
+            UploadedFile(
+              fileName,
+              ContentType.parse(part.headers['content-type'] ?? 'text/plain'),
+              part,
+            ),
+          );
     } else {
       final bytes = (await part.toList()).fold(<int>[], (p, e) => p..addAll(e));
-      fields[name] = utf8.decode(bytes);
+      fields.putIfAbsent(name, () => []).add(utf8.decode(bytes));
     }
   }
 
@@ -110,27 +116,27 @@ Future<FormData> _extractMultipartFormData({
 /// {@template form_data}
 /// The fields and files of received form data request.
 /// {@endtemplate}
-class FormData with MapMixin<String, String> {
+class FormData with MapMixin<String, List<String>> {
   /// {@macro form_data}
   const FormData({
-    required Map<String, String> fields,
-    required Map<String, UploadedFile> files,
+    required Map<String, List<String>> fields,
+    required Map<String, List<UploadedFile>> files,
   })  : _fields = fields,
         _files = files;
 
-  final Map<String, String> _fields;
+  final Map<String, List<String>> _fields;
 
-  final Map<String, UploadedFile> _files;
+  final Map<String, List<UploadedFile>> _files;
 
   /// The fields that were submitted in the form.
-  Map<String, String> get fields => Map.unmodifiable(_fields);
+  Map<String, List<String>> get fields => Map.unmodifiable(_fields);
 
   /// The files that were uploaded in the form.
-  Map<String, UploadedFile> get files => Map.unmodifiable(_files);
+  Map<String, List<UploadedFile>> get files => Map.unmodifiable(_files);
 
   @override
   @Deprecated('Use `fields[key]` to retrieve values')
-  String? operator [](Object? key) => _fields[key] ?? _files[key]?.toString();
+  List<String>? operator [](Object? key) => _fields[key];
 
   @override
   @Deprecated('Use `fields.keys` to retrieve field keys')
@@ -138,13 +144,13 @@ class FormData with MapMixin<String, String> {
 
   @override
   @Deprecated('Use `fields.values` to retrieve field values')
-  Iterable<String> get values => _fields.values;
+  Iterable<List<String>> get values => _fields.values;
 
   @override
   @Deprecated(
     'FormData should be immutable, in the future this will thrown an error',
   )
-  void operator []=(String key, String value) => _fields[key] = value;
+  void operator []=(String key, List<String> value) => _fields[key] = value;
 
   @override
   @Deprecated(
@@ -156,7 +162,7 @@ class FormData with MapMixin<String, String> {
   @Deprecated(
     'FormData should be immutable, in the future this will thrown an error',
   )
-  String? remove(Object? key) => _fields.remove(key);
+  List<String>? remove(Object? key) => _fields.remove(key);
 }
 
 /// {@template uploaded_file}
