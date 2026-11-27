@@ -1,6 +1,7 @@
 name: Docker Tests
 
 on:
+  pull_request:
   workflow_call:
     inputs:
       setup:
