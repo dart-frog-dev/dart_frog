@@ -56,9 +56,7 @@ class ListCommand extends DartFrogCommand {
         ..info('==============\n');
     }
 
-    for (final endpoint in configuration.endpoints.keys) {
-      logger.info(endpoint);
-    }
+    configuration.endpoints.keys.forEach(logger.info);
 
     return ExitCode.success.code;
   }
