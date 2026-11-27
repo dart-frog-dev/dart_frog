@@ -1,6 +1,3 @@
-// ignoring for testing purposes
-// ignore_for_file: prefer_const_constructors
-
 import 'dart:io';
 
 import 'package:bearer_authentication/hash_extension.dart';

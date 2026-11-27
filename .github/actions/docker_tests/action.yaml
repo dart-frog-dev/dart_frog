@@ -1,0 +1,64 @@
+name: Docker Tests
+description: Run E2E tests against production servers on Docker
+
+inputs:
+  setup:
+    description: "An optional setup script"
+    required: false
+    default: ""
+  docker_directory:
+    description: "An optional docker directory. Defaults to build."
+    required: false
+    default: "build"
+  test_directory:
+    description: "An optional test directory. Defaults to e2e."
+    required: false
+    default: "e2e"
+  working_directory:
+    description: "An optional working directory. Defaults to ."
+    required: false
+    default: "."
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: 🎯 Setup Dart
+      uses: dart-lang/setup-dart@v1
+
+    - name: ⚙️ Run Setup
+      working-directory: ${{ inputs.working_directory }}
+      if: ${{ inputs.setup != '' }}
+      shell: ${{ inputs.shell }}
+      run: ${{ inputs.setup }}
+
+    - name: 📦 Install Dependencies
+      working-directory: ${{ inputs.working_directory }}
+      shell: ${{ inputs.shell }}
+      run: dart pub get
+
+    - name: 🐸 Dart Frog Build
+      working-directory: ${{ inputs.working_directory }}
+      shell: ${{ inputs.shell }}
+      run: dart_frog build
+
+    - name: 🐳 Build Docker Image
+      working-directory: ${{ inputs.working_directory }}
+      shell: ${{ inputs.shell }}
+      run: docker build -q ${{ inputs.docker_directory}} -t e2e-image
+
+    - name: ⚡️ Run Docker Image
+      working-directory: ${{ inputs.working_directory }}
+      shell: ${{ inputs.shell }}
+      run: docker run -d -p 8080:8080 --name e2e --rm e2e-image
+
+    - name: 🧪 Run Docker Tests
+      working-directory: ${{ inputs.working_directory }}
+      shell: ${{ inputs.shell }}
+      run: dart test ${{ inputs.test_directory }}
+
+    - name: 🧹 Docker Cleanup
+      working-directory: ${{ inputs.working_directory }}
+      if: always()
+      shell: ${{ inputs.shell }}
+      run: docker rm -f e2e || true

@@ -8,8 +8,6 @@ void main() {
   group('requestLogger', () {
     var gotLog = false;
 
-    // ignoring to align with shelf logger
-    // ignore: avoid_positional_boolean_parameters
     void logger(String msg, bool isError) {
       expect(gotLog, isFalse);
       gotLog = true;
