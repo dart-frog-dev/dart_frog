@@ -2,34 +2,28 @@
 FROM dart:{{dartVersion}} AS build
 
 WORKDIR /app
-{{#hasExternalDependencies}}
-
-# Copy external dependencies
-COPY ./.dart_frog_path_dependencies  ./.dart_frog_path_dependencies
-COPY ./pubspec_overrides.yaml ./pubspec_overrides.yaml
-{{/hasExternalDependencies}}
-# Copy Dependencies
+{{#hasExternalDependencies}}COPY ./.dart_frog_path_dependencies  ./.dart_frog_path_dependencies{{/hasExternalDependencies}}
+{{#hasExternalDependencies}}COPY ./pubspec_overrides.yaml ./pubspec_overrides.yaml{{/hasExternalDependencies}}
 {{#pathDependencies}}COPY {{{.}}} ./{{{.}}}
 {{/pathDependencies}}
-{{^hasExternalDependencies}}
-# Install Dependencies
-{{#pathDependencies}}RUN dart pub get -C {{{.}}}
-{{/pathDependencies}}
+{{^hasExternalDependencies}}{{#pathDependencies}}RUN dart pub get -C {{{.}}}{{/pathDependencies}}
 {{/hasExternalDependencies}}
-# Resolve app dependencies.
+# Copy dependencies
 COPY pubspec.* ./
 COPY pubspec_overrides.yaml* ./
 RUN dart pub get
 
-# Copy app source code and AOT compile it.
+# Copy app source
 COPY . .
+
 # Ensure packages are still up-to-date if anything has changed
 RUN dart pub get --offline
+
 # AOT compile
 RUN dart build cli -t bin/server.dart -o /dist
 
 # Build minimal serving image from AOT-compiled `/dist` and required system
-# libraries and configuration files stored in `/runtime/` from the build stage.
+# libraries and configuration files stored in `/runtime/` from the build stage
 FROM scratch
 COPY --from=build /runtime/ /
 COPY --from=build /dist/bundle/ /app/
