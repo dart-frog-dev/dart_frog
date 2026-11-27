@@ -90,10 +90,9 @@ class DaemonLogger implements Logger {
   @override
   void flush([void Function(String?)? print]) {
     final writeln = print ?? info;
-    for (final message in _queue) {
-      writeln(message);
-    }
-    _queue.clear();
+    _queue
+      ..forEach(writeln)
+      ..clear();
   }
 
   @override

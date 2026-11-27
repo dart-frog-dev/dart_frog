@@ -5,7 +5,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 import 'package:todos_data_source/todos_data_source.dart';
 
-import '../../../routes/todos/[id].dart' as route;
+import '../../../routes/todos/%5Bid%5D.dart' as route;
 
 class _MockRequestContext extends Mock implements RequestContext {}
 

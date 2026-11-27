@@ -4,7 +4,7 @@ import 'package:dart_frog/dart_frog.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
-import '../../routes/[message].dart' as route;
+import '../../routes/%5Bmessage%5D.dart' as route;
 
 class _MockRequestContext extends Mock implements RequestContext {}
 

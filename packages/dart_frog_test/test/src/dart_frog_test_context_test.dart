@@ -1,5 +1,3 @@
-// ignoring for testing purposes
-// ignore_for_file: prefer_const_constructors
 import 'package:dart_frog/dart_frog.dart';
 import 'package:dart_frog_test/dart_frog_test.dart';
 import 'package:test/test.dart';
