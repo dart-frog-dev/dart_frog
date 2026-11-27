@@ -45,7 +45,7 @@ runs:
     - name: 🐳 Build Docker Image
       working-directory: ${{ inputs.working_directory }}
       shell: ${{ inputs.shell }}
-      run: docker build -q ${{ inputs.docker_directory}} -t e2e-ima ge
+      run: docker build -q ${{ inputs.docker_directory}} -t e2e-image
 
     - name: ⚡️ Run Docker Image
       working-directory: ${{ inputs.working_directory }}
