@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ${{inputs.working_directory}}
+        working-directory: ${{inputs.working_directory || "."}}
 
     steps:
       - name: 📚 Git Checkout
@@ -46,13 +46,13 @@ jobs:
         run: dart_frog build
 
       - name: 🐳 Build Docker Image
-        run: docker build -q ${{inputs.docker_directory}} -t e2e-image
+        run: docker build -q ${{inputs.docker_directory || "build"}} -t e2e-image
 
       - name: ⚡️ Run Docker Image
         run: docker run -d -p 8080:8080 --name e2e --rm e2e-image
 
       - name: 🧪 Run Docker Tests
-        run: dart test ${{inputs.test_directory}}
+        run: dart test ${{inputs.test_directory || "e2e"}}
 
       - name: 🧹 Docker Cleanup
         if: always()
