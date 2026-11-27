@@ -33,6 +33,9 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v7
+
       - name: 🐳 Docker Tests
         uses: ./.github/actions/docker_tests
         with:

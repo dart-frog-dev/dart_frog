@@ -22,9 +22,6 @@ inputs:
     using: "composite"
 
     steps:
-      - name: 📚 Git Checkout
-        uses: actions/checkout@v7
-
       - name: 🎯 Setup Dart
         uses: dart-lang/setup-dart@v1
 
