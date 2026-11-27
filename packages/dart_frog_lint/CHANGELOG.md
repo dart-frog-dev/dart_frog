@@ -1,3 +1,7 @@
+# 0.1.4
+
+- fix: remove [`simple_directive_paths`](https://dart.dev/tools/linter-rules/simple_directive_paths) due to false positives
+
 # 0.1.3
 
 - feat: add new rules to recommended set
