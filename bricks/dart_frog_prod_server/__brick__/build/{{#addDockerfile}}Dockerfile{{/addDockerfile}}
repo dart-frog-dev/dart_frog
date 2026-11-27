@@ -6,7 +6,8 @@ WORKDIR /app
 {{#hasExternalDependencies}}COPY ./pubspec_overrides.yaml ./pubspec_overrides.yaml{{/hasExternalDependencies}}
 {{#pathDependencies}}COPY {{{.}}} ./{{{.}}}
 {{/pathDependencies}}
-{{^hasExternalDependencies}}{{#pathDependencies}}RUN dart pub get -C {{{.}}}{{/pathDependencies}}
+{{^hasExternalDependencies}}{{#pathDependencies}}RUN dart pub get -C {{{.}}}
+{{/pathDependencies}}
 {{/hasExternalDependencies}}
 # Copy dependencies
 COPY pubspec.* ./
