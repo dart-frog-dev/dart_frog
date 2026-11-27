@@ -84,19 +84,17 @@ class DevCommand extends DartFrogCommand {
   }
 
   void _stopListeningForHelpers() {
+    // Restore the terminal before canceling the subscription. Canceling it
+    // closes stdin, after which `hasTerminal` is false and the modes can no
+    // longer be reset, leaving the shell without echo.
+    if (stdin.hasTerminal) {
+      stdin
+        ..lineMode = true
+        ..echoMode = true;
+    }
+
     _stdinSubscription?.cancel();
     _stdinSubscription = null;
-
-    // The command may lose terminal after sigint, even though
-    // the stdin subscription may have been created when the
-    // devserver started.
-    // That is why this check is made after the subscription
-    // is canceled, if existent.
-    if (!stdin.hasTerminal) return;
-
-    stdin
-      ..lineMode = true
-      ..echoMode = true;
   }
 
   @override

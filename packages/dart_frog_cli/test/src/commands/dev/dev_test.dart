@@ -331,6 +331,27 @@ void main() {
         verify(() => stdin.lineMode = true).called(1);
       });
 
+      test('restores the terminal before stdin is closed', () async {
+        // Canceling the stdin subscription closes stdin, after which
+        // `hasTerminal` is false.
+        var stdinClosed = false;
+        stdinController.onCancel = () => stdinClosed = true;
+        when(() => stdin.hasTerminal).thenAnswer((_) => !stdinClosed);
+
+        command.run().ignore();
+        await Future<void>.delayed(Duration.zero);
+
+        givenOnHotReloadEnabled();
+        await Future<void>.delayed(Duration.zero);
+
+        exitCodeCompleter.complete(ExitCode.success);
+        await Future<void>.delayed(Duration.zero);
+
+        expect(stdinClosed, isTrue);
+        verify(() => stdin.lineMode = true).called(1);
+        verify(() => stdin.echoMode = true).called(1);
+      });
+
       test('cancels subscription when dev server throws', () async {
         final startCompleter = Completer<void>();
         when(() => runner.start(any())).thenAnswer((_) async {
