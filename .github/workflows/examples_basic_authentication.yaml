@@ -31,10 +31,13 @@ jobs:
       report_on: "routes"
 
   docker:
+    # TODO(erickzanardo): temporarirly disabled while dart_frog_auth is
+    # no published yet.
     if: false
-    uses: ./.github/actions/docker_tests
-    with:
-      # TODO(erickzanardo): temporarirly disabled while dart_frog_auth is
-      # no published yet.
-      setup: rm pubspec_overrides.yaml && dart pub global activate --source path ../../packages/dart_frog_cli
-      working_directory: examples/basic_authentication
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🐳 Docker Tests
+        uses: ./.github/actions/docker_tests
+        with:
+          setup: rm pubspec_overrides.yaml && dart pub global activate --source path ../../packages/dart_frog_cli
+          working_directory: examples/basic_authentication
