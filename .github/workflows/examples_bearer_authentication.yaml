@@ -32,7 +32,7 @@ jobs:
 
   docker:
     if: false
-    uses: ./.github/workflows/.docker_tests.yaml
+    uses: ./.github/actions/docker_tests
     with:
       # TODO(erickzanardo): temporarirly disabled while dart_frog_auth is
       # no published yet.

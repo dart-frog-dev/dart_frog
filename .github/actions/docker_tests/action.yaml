@@ -1,0 +1,59 @@
+name: Docker Tests
+description: Run E2E tests against production servers on Docker
+inputs:
+  setup:
+    required: false
+    type: string
+    default: ""
+  docker_directory:
+    required: false
+    type: string
+    default: "build"
+  test_directory:
+    required: false
+    type: string
+    default: "e2e"
+  working_directory:
+    required: false
+    type: string
+    default: "."
+
+  runs:
+    using: "composite"
+
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v7
+
+      - name: 🎯 Setup Dart
+        uses: dart-lang/setup-dart@v1
+
+      - name: ⚙️ Run Setup
+        working-directory: ${{ inputs.working_directory }}
+        if: ${{inputs.setup != ''}}
+        run: ${{inputs.setup}}
+
+      - name: 📦 Install Dependencies
+        working-directory: ${{ inputs.working_directory }}
+        run: dart pub get
+
+      - name: 🐸 Dart Frog Build
+        working-directory: ${{ inputs.working_directory }}
+        run: dart_frog build
+
+      - name: 🐳 Build Docker Image
+        working-directory: ${{ inputs.working_directory }}
+        run: docker build -q ${{inputs.docker_directory}} -t e2e-image
+
+      - name: ⚡️ Run Docker Image
+        working-directory: ${{ inputs.working_directory }}
+        run: docker run -d -p 8080:8080 --name e2e --rm e2e-image
+
+      - name: 🧪 Run Docker Tests
+        working-directory: ${{ inputs.working_directory }}
+        run: dart test ${{inputs.test_directory}}
+
+      - name: 🧹 Docker Cleanup
+        working-directory: ${{ inputs.working_directory }}
+        if: always()
+        run: docker rm -f e2e || true
