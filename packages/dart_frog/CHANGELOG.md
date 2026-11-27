@@ -1,3 +1,12 @@
+# 1.2.8
+
+- fix: add allow header to default method not found (405) response ([#1993](https://github.com/dart-frog-dev/dart_frog/pull/1993))
+
+# 1.2.7
+
+- fix: hot reload in development server ([#1998](https://github.com/dart-frog-dev/dart_frog/pull/1998))
+- deps: various dependency upgrades
+
 # 1.2.6
 
 - fix: revert `Expando` perf optimization ([#1908](https://github.com/dart-frog-dev/dart_frog/pull/1908))

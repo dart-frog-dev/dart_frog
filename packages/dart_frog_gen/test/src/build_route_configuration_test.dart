@@ -233,21 +233,6 @@ Future<void>init(InternetAddress ip,int port)async{}
     test('includes nested routes', () {
       const expected = [
         {
-          'name': '_',
-          'route': '/',
-          'middleware': [],
-          'files': [
-            {
-              'name': 'index',
-              'path': '../routes/index.dart',
-              'route': '/',
-              'file_params': [],
-              'wildcard': false,
-            }
-          ],
-          'directory_params': [],
-        },
-        {
           'name': '_echo',
           'route': '/echo',
           'middleware': [],
@@ -256,6 +241,21 @@ Future<void>init(InternetAddress ip,int port)async{}
               'name': 'echo_message',
               'path': '../routes/echo/message.dart',
               'route': '/message',
+              'file_params': [],
+              'wildcard': false,
+            }
+          ],
+          'directory_params': [],
+        },
+        {
+          'name': '_',
+          'route': '/',
+          'middleware': [],
+          'files': [
+            {
+              'name': 'index',
+              'path': '../routes/index.dart',
+              'route': '/',
               'file_params': [],
               'wildcard': false,
             }
@@ -328,21 +328,6 @@ Future<void>init(InternetAddress ip,int port)async{}
     test('includes dynamic route', () {
       const expected = [
         {
-          'name': '_',
-          'route': '/',
-          'middleware': [],
-          'files': [
-            {
-              'name': 'index',
-              'path': '../routes/index.dart',
-              'route': '/',
-              'file_params': [],
-              'wildcard': false,
-            }
-          ],
-          'directory_params': [],
-        },
-        {
           'name': '_echo',
           'route': '/echo',
           'middleware': [],
@@ -352,6 +337,21 @@ Future<void>init(InternetAddress ip,int port)async{}
               'path': '../routes/echo/[message].dart',
               'route': '/<message>',
               'file_params': ['message'],
+              'wildcard': false,
+            }
+          ],
+          'directory_params': [],
+        },
+        {
+          'name': '_',
+          'route': '/',
+          'middleware': [],
+          'files': [
+            {
+              'name': 'index',
+              'path': '../routes/index.dart',
+              'route': '/',
+              'file_params': [],
               'wildcard': false,
             }
           ],
@@ -473,21 +473,6 @@ Future<void>init(InternetAddress ip,int port)async{}
     test('includes dynamic nested directory routes w/cascading middleware', () {
       const expected = [
         {
-          'name': '_',
-          'route': '/',
-          'middleware': [],
-          'files': [
-            {
-              'name': 'index',
-              'path': '../routes/index.dart',
-              'route': '/',
-              'file_params': [],
-              'wildcard': false,
-            }
-          ],
-          'directory_params': [],
-        },
-        {
           'name': '_api',
           'route': '/api',
           'middleware': [],
@@ -496,6 +481,21 @@ Future<void>init(InternetAddress ip,int port)async{}
               'name': 'api_v1',
               'path': '../routes/api/v1.dart',
               'route': '/v1',
+              'file_params': [],
+              'wildcard': false,
+            }
+          ],
+          'directory_params': [],
+        },
+        {
+          'name': '_',
+          'route': '/',
+          'middleware': [],
+          'files': [
+            {
+              'name': 'index',
+              'path': '../routes/index.dart',
+              'route': '/',
               'file_params': [],
               'wildcard': false,
             }
@@ -1045,14 +1045,14 @@ Future<void>init(InternetAddress ip,int port)async{}
     test('detects rogue routes.', () {
       const expected = [
         {
-          'name': '_',
-          'route': '/',
+          'name': '_api_v1',
+          'route': '/api/v1',
           'middleware': [],
           'files': [
             {
-              'name': 'api',
-              'path': '../routes/api.dart',
-              'route': '/api',
+              'name': 'api_v1_hello',
+              'path': '../routes/api/v1/hello.dart',
+              'route': '/hello',
               'file_params': [],
               'wildcard': false,
             }
@@ -1082,14 +1082,14 @@ Future<void>init(InternetAddress ip,int port)async{}
           'directory_params': [],
         },
         {
-          'name': '_api_v1',
-          'route': '/api/v1',
+          'name': '_',
+          'route': '/',
           'middleware': [],
           'files': [
             {
-              'name': 'api_v1_hello',
-              'path': '../routes/api/v1/hello.dart',
-              'route': '/hello',
+              'name': 'api',
+              'path': '../routes/api.dart',
+              'route': '/api',
               'file_params': [],
               'wildcard': false,
             }
@@ -1166,21 +1166,6 @@ Future<void>init(InternetAddress ip,int port)async{}
     test('does not report rogue route when index.dart already exists', () {
       const expected = [
         {
-          'name': '_',
-          'route': '/',
-          'middleware': [],
-          'files': [
-            {
-              'name': 'api',
-              'path': '../routes/api.dart',
-              'route': '/api',
-              'file_params': [],
-              'wildcard': false,
-            }
-          ],
-          'directory_params': [],
-        },
-        {
           'name': '_api',
           'route': '/api',
           'middleware': [],
@@ -1189,6 +1174,21 @@ Future<void>init(InternetAddress ip,int port)async{}
               'name': 'api_index',
               'path': '../routes/api/index.dart',
               'route': '/',
+              'file_params': [],
+              'wildcard': false,
+            }
+          ],
+          'directory_params': [],
+        },
+        {
+          'name': '_',
+          'route': '/',
+          'middleware': [],
+          'files': [
+            {
+              'name': 'api',
+              'path': '../routes/api.dart',
+              'route': '/api',
               'file_params': [],
               'wildcard': false,
             }
@@ -1324,6 +1324,65 @@ Future<void>init(InternetAddress ip,int port)async{}
       final fileRoutes = xDir.files.map((f) => f.route).toList();
 
       expect(fileRoutes, equals(['/a', '/b']));
+    });
+
+    test(
+        'mounts static sibling directories before a dynamic sibling file '
+        'https://github.com/dart-frog-dev/dart_frog/issues/1959', () {
+      final configuration = buildRouteConfiguration(
+        createTempDir(
+          files: [
+            'routes/tasks/index.dart',
+            'routes/tasks/[taskId].dart',
+            'routes/tasks/add/index.dart',
+            'routes/tasks/start/index.dart',
+          ],
+        ),
+      );
+
+      final mountOrder = configuration.directories.map((d) => d.route).toList();
+
+      // `/tasks/add` and `/tasks/start` must be mounted before `/tasks`.
+      // Otherwise `Router.mount('/tasks', ...)` matches `/tasks/add` first and
+      // its dynamic `/<taskId>` child resolves the request with
+      // `taskId == 'add'` instead of hitting the `add/` route.
+      expect(mountOrder, equals(['/tasks/add', '/tasks/start', '/tasks']));
+      expect(
+        mountOrder.indexOf('/tasks/add'),
+        lessThan(mountOrder.indexOf('/tasks')),
+      );
+      expect(
+        mountOrder.indexOf('/tasks/start'),
+        lessThan(mountOrder.indexOf('/tasks')),
+      );
+    });
+
+    test(
+        'mounts a deeply nested static sibling before its dynamic '
+        'sibling file '
+        'https://github.com/dart-frog-dev/dart_frog/issues/1959', () {
+      final configuration = buildRouteConfiguration(
+        createTempDir(
+          files: [
+            'routes/api/v1/event/[eventId]/tasks/index.dart',
+            'routes/api/v1/event/[eventId]/tasks/[taskId].dart',
+            'routes/api/v1/event/[eventId]/tasks/add/index.dart',
+            'routes/api/v1/event/[eventId]/tasks/start/index.dart',
+          ],
+        ),
+      );
+
+      final mountOrder = configuration.directories.map((d) => d.route).toList();
+
+      const tasks = '/api/v1/event/<eventId>/tasks';
+      expect(
+        mountOrder.indexOf('$tasks/add'),
+        lessThan(mountOrder.indexOf(tasks)),
+      );
+      expect(
+        mountOrder.indexOf('$tasks/start'),
+        lessThan(mountOrder.indexOf(tasks)),
+      );
     });
   });
 
