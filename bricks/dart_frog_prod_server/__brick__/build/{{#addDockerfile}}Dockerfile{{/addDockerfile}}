@@ -1,5 +1,4 @@
 # Official Dart image: https://hub.docker.com/_/dart
-# Specify the Dart SDK base image version using dart:<version> (ex: dart:2.17)
 FROM dart:{{dartVersion}} AS build
 
 WORKDIR /app
@@ -26,13 +25,14 @@ RUN dart pub get
 COPY . .
 # Ensure packages are still up-to-date if anything has changed
 RUN dart pub get --offline
-RUN dart compile exe bin/server.dart -o bin/server
+# AOT compile
+RUN dart build cli -t bin/server.dart -o /dist
 
-# Build minimal serving image from AOT-compiled `/server` and required system
+# Build minimal serving image from AOT-compiled `/dist` and required system
 # libraries and configuration files stored in `/runtime/` from the build stage.
 FROM scratch
 COPY --from=build /runtime/ /
-COPY --from=build /app/bin/server /app/bin/
+COPY --from=build /dist/bundle/ /app/
 {{#serveStaticFiles}}COPY --from=build /app/public /public/{{/serveStaticFiles}}
 
 # Start server.
