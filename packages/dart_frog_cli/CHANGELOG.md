@@ -1,3 +1,8 @@
+# 1.2.16
+
+- fix: restore the terminal before closing stdin in dev ([#2006](https://github.com/dart-frog-dev/dart_frog/pull/2006))
+- feat: `dart_frog build` supports build hooks ([#2008](https://github.com/dart-frog-dev/dart_frog/pull/2008))
+
 # 1.2.15
 
 - fix: regenerate native assets when running development server ([#1991](https://github.com/dart-frog-dev/dart_frog/pull/1991))
